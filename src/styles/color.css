@@ -1,0 +1,68 @@
+a,p,span,div,table,thead,tbody,tr,th,td,h1,h2,h3,h4,h5,h6{
+    color: #000 !important;
+}
+.badge,#scroll-top{
+    background-color: #FF3F6C !important;
+    color: #fff !important;
+}
+button{
+    background-color: #FF3F6C !important;
+    color: #fff !important;
+    border: none !important;
+}
+.slider-indicators span {
+  background-color: #FF3F6C !important;
+}
+#uncontrolled-tab-example .nav-item .active{
+  border-bottom: 2px solid #FF3F6C !important;
+  color: #FF3F6C !important;
+}
+.buy-now-btn{
+  background: none !important;
+  border: 1px solid #FF3F6C !important;
+  color: #FF3F6C !important;
+}
+.checkout-button a{
+  background-color: #FF3F6C !important;
+  border: none;
+}
+.btn-accent,.btn-outline-accent,.btn-outline-danger{
+  background-color: #000 !important;
+}
+.slider-indicators span.active {
+  background-color: #fff !important;
+}
+.container .product-item .product .icons .icon:hover {
+    background-color: #FF3F6C;
+    color: #fff !important;
+}
+.container .product-item .product .icons .icon:hover .bi{
+  background-color: #FF3F6C;
+  color: #fff !important;
+}
+.right-compo .fashions a:after, .left-compo a::after{
+  background-color: #FF3F6C !important;
+}
+.content-slider .text-color {
+    color: #A63B5C !important;
+}
+.accordion-header{
+    /* background-color: #000 !important; */
+    color: #000 !important;
+}
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #000 #fff;
+}
+.btn-bg{
+  background-color: #000 !important;
+}
