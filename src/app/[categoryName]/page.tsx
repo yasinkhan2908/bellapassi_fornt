@@ -8,7 +8,7 @@ import { Metadata } from 'next'
 // Build-time generation for static export
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/categories`, {
+    const res = await fetch(`${process.env.API_URL}/api/user/categories`, {
       cache: "no-store",
     });
 
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ categoryN
   
   //console.log(categoryName);
   
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/category/${categoryName}`, {
+  const res = await fetch(`${process.env.API_URL}/api/user/category/${categoryName}`, {
     cache: 'no-store',
   })
   const meta = await res.json()
@@ -74,8 +74,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const { categoryName } = await params; // 👈 Await the params
   //get category all attributes
   
-  console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/user/category-detail/${categoryName}`);
-  const catDetail = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/category-detail/${categoryName}`, {
+  console.log(`${process.env.API_URL}/api/user/category-detail/${categoryName}`);
+  const catDetail = await fetch(`${process.env.API_URL}/api/user/category-detail/${categoryName}`, {
     cache: 'no-store',
   })
   const catDetailJson = await catDetail.json()
@@ -85,7 +85,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const CateDatas = CateData.data || CateData;
   //console.log("category products bg_color",json.data.bg_color);
   //
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/category-products/${categoryName}`, {
+  const res = await fetch(`${process.env.API_URL}/api/user/category-products/${categoryName}`, {
     cache: 'no-store',
   })
   const json = await res.json()
