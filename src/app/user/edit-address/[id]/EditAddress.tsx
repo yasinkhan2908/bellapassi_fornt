@@ -156,10 +156,10 @@ export default function EditAddress({ id }: EditAddressProps) {
     setIsSubmitting(true);
     try {
       // 1️⃣ Get CSRF cookie first
-      await fetch(`${process.env.API_URL}/sanctum/csrf-cookie`);
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sanctum/csrf-cookie`);
       
       const token = session?.data?.user.token;
-      const response = await fetch(`${process.env.API_URL}/api/user/update-shipping-address`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/update-shipping-address`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ export default function EditAddress({ id }: EditAddressProps) {
     const fetchAddress = async () => {
       try {
         const token = session?.data?.user.token;
-        const response = await fetch(`${process.env.API_URL}/api/user/single-shipping-address/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/single-shipping-address/${id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
