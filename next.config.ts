@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   //output: 'export', // tells Next to perform static export
-  cacheComponents : true,
   reactStrictMode: true,
   distDir: '.next',
   images: {
