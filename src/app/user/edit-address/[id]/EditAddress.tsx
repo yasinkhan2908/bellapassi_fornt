@@ -39,7 +39,8 @@ interface EditAddressProps {
 }
 
 export default function EditAddress({ id }: EditAddressProps) {
-  const { data: session, status } = useSession();
+  const session = useSession();
+  const data = session?.data?.user.token ?? null;
   const router = useRouter(); // ✅ Initialize router
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -157,7 +158,7 @@ export default function EditAddress({ id }: EditAddressProps) {
       // 1️⃣ Get CSRF cookie first
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sanctum/csrf-cookie`);
       
-      const token = session?.user.token;
+      const token = session?.data?.user.token;
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/update-shipping-address`, {
         method: 'POST',
         headers: {
@@ -221,7 +222,7 @@ export default function EditAddress({ id }: EditAddressProps) {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const token = session?.user.token;
+        const token = session?.data?.user.token;
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/single-shipping-address/${id}`, {
           method: 'POST',
           headers: {

@@ -12,7 +12,8 @@ import { useSession } from "next-auth/react";
 
 //
 export default function Login() {
-  const { data: session, status } = useSession();
+  const session = useSession();
+  const data = session?.data ?? null;
   const router = useRouter(); // ✅ initialize router
   //toast.loading('Logging in...');
   const [mobile_number, setMobileNumber] = useState('');
@@ -31,7 +32,7 @@ export default function Login() {
                                     });
       // 2️⃣ Then login 
       //const response0 = await api.post('/api/user/user-register', { mobile_number });
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/user-register`, {
+      const response = await fetch(`${process.env.API_URL}/api/user/user-register`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

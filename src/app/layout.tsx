@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
@@ -20,12 +21,9 @@ import { Toaster } from "react-hot-toast";
 import TopLoader from "../components/common/TopLoader";
 import NextTopLoader from 'nextjs-toploader';
 
-import SessionProvider from '../components/SessionProvider';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 
 import { Suspense } from "react";
-
+import DynamicSession from "./DynamicSession";
 
 export const metadata = {
   title: 'Bella Passi - Online Fashion | Best Fashion Deals In India',
@@ -33,13 +31,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  console.log("SECRET", process.env.NEXTAUTH_SECRET);
-  const session = await getServerSession(authOptions); // ✔ Works
   return (
     <html lang="en">
       <body>
         <Suspense fallback={null}>
-          <SessionLoader />
+          <DynamicSession />
           {/* Load Bootstrap JS on client */}
           <BootstrapClient />
           <NextTopLoader color="#29d" height={3} />
@@ -55,9 +51,5 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       </body>
     </html>
   );
-}
-async function SessionLoader() {
-  const session = await getServerSession(authOptions);
-  return null;
 }
 

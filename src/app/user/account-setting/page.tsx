@@ -20,7 +20,8 @@ interface FormErrors {
 }
 
 export default function AccountSetting() { // ✅ Removed 'async'
-  const { data: session, status } = useSession();
+  const session = useSession();
+  const data = session?.data?.user.token ?? null;
   const router = useRouter();
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
@@ -63,11 +64,11 @@ export default function AccountSetting() { // ✅ Removed 'async'
   // ✅ Set client-side flag and initialize values
   useEffect(() => {
     setIsClient(true);
-    console.log("user mobile", session?.user?.mobile);
-    setMobileNumber(session?.user?.mobile ?? '');
+    console.log("user mobile", session?.data?.user.mobile);
+    setMobileNumber(session?.data?.user.mobile ?? '');
     
     // Get token from localStorage on client side only
-    const storedToken = session?.user?.token??'';
+    const storedToken = session?.data?.user.token??'';
     setToken(storedToken);
   }, [session]);
 
