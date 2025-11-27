@@ -35,6 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: 'Product Not Found',
     };
+    
+  
+  }
+  if (!res.ok) {
+    notFound();       // 👉 this sends user to _not-found page
   }
 
   const product = await res.json();

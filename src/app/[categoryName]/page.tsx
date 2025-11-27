@@ -12,7 +12,9 @@ export async function generateStaticParams() {
     const res = await fetch(`${process.env.API_URL}/api/user/categories`, {
       cache: "no-store",
     });
-
+    if (!res.ok) {
+      notFound();       // 👉 this sends user to _not-found page
+    }
     const json = await res.json();
 
     //console.log("API JSON:", json);
@@ -56,6 +58,9 @@ export async function generateMetadata({ params }: { params: Promise<{ categoryN
   const res = await fetch(`${process.env.API_URL}/api/user/category/${categoryName}`, {
     cache: 'no-store',
   })
+  if (!res.ok) {
+    notFound();       // 👉 this sends user to _not-found page
+  }
   const meta = await res.json()
   
   return {
