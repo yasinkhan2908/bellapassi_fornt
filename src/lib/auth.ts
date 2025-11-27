@@ -23,9 +23,9 @@ export const authOptions: NextAuthOptions = {
                     console.log("➡️ Payload before sending:", payload);
                     console.log(credentials.mobile);
                     console.log(credentials.otp);
-                    console.log("url",`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-verification`);
+                    console.log("url",`${process.env.API_URL}/api/user/otp-verification`);
                     // Call your OTP verification API
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-verification`, {
+                    const response = await fetch(`${process.env.API_URL}/api/user/otp-verification`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -67,6 +67,7 @@ export default function Otp() {
             });
 
             if (result?.error) {
+                console.log(result?.error);
                 toast.error('Invalid OTP. Please try again.');
             } else {
                 toast.success('OTP verified successfully!');
