@@ -24,30 +24,33 @@ import NextTopLoader from 'nextjs-toploader';
 
 import { Suspense } from "react";
 import DynamicSession from "./DynamicSession";
+import Providers from "./providers";
 
 export const metadata = {
   title: 'Bella Passi - Online Fashion | Best Fashion Deals In India',
   description: 'Affordable fashion deals for all seasons and styles',
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode  }) {
   return (
     <html lang="en">
       <body>
-        <Suspense fallback={null}>
-          <DynamicSession />
-          {/* Load Bootstrap JS on client */}
-          <BootstrapClient />
-          <NextTopLoader color="#29d" height={3} />
-          <Navbar />
+        <Providers>
+          <Suspense fallback={null}>
+            <DynamicSession />
+            {/* Load Bootstrap JS on client */}
+            <BootstrapClient />
+            <NextTopLoader color="#29d" height={3} />
+            <Navbar />
 
-          <main className="container py-4">
-            <TopLoader />   {/* enable top loading bar */}
-            {children}
-          </main>
-          <Toaster position="top-right" reverseOrder={false} />
-          <Footer />
-        </Suspense>
+            <main className="container py-4">
+              <TopLoader />   {/* enable top loading bar */}
+              {children}
+            </main>
+            <Toaster position="top-right" reverseOrder={false} />
+            <Footer />
+          </Suspense>
+        </Providers>
       </body>
     </html>
   );
