@@ -24,6 +24,7 @@ import SessionProvider from '../components/SessionProvider';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+import { Suspense } from "react";
 
 
 export const metadata = {
@@ -37,7 +38,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <SessionProvider session={session}>
+        <Suspense fallback={null}>
+          <SessionLoader />
           {/* Load Bootstrap JS on client */}
           <BootstrapClient />
           <NextTopLoader color="#29d" height={3} />
@@ -49,9 +51,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           </main>
           <Toaster position="top-right" reverseOrder={false} />
           <Footer />
-        </SessionProvider>
+        </Suspense>
       </body>
     </html>
   );
+}
+async function SessionLoader() {
+  const session = await getServerSession(authOptions);
+  return null;
 }
 

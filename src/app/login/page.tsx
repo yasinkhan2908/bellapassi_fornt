@@ -26,20 +26,29 @@ export default function Login() {
     try {
       toast.loading('Logging in...');
       // 1️⃣ Get CSRF cookie first
-      await api.get('/sanctum/csrf-cookie');
-
-      // 2️⃣ Then login
-      const response = await api.post('/api/user/user-register', { mobile_number });
-      //console.log('Login success:', response.data);
-      if (response.data.success === false) {
+      const payload = JSON.stringify({
+                                      mobile_number: mobile_number,
+                                    });
+      // 2️⃣ Then login 
+      //const response0 = await api.post('/api/user/user-register', { mobile_number });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/user-register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: payload,
+                    });
+      const data = await response.json();
+      console.log('Login success:', data.success);
+      if (data.success === false) {
         toast.dismiss();
-        toast.error(response.data.message || 'Login failed');
+        toast.error(data.message || 'Login failed');
         return;
       }
       toast.dismiss();
-      toast.success(response.data.message || 'Opt send to your mobile number!');
+      toast.success(data.message || 'Opt send to your mobile number!');
       sessionStorage.setItem('mobile', mobile_number);
-      localStorage.setItem("otp", response.data.otp);
+      localStorage.setItem("otp", data.otp);
       // ✅ redirect after short delay
       setTimeout(() => {
         router.push('/otp'); // 👈 your next page path

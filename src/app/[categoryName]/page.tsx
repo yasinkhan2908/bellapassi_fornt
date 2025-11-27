@@ -2,6 +2,7 @@
 import ClientCategory from "./ClientCategory";
 import ClientBootstrap from "./ClientBootstrap";
 import { Metadata } from 'next'
+import { notFound } from "next/navigation";
 
 //export const revalidate = 3600;
 
@@ -78,7 +79,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const catDetail = await fetch(`${process.env.API_URL}/api/user/category-detail/${categoryName}`, {
     cache: 'no-store',
   })
+  if (!catDetail.ok) {
+    notFound();       // 👉 this sends user to _not-found page
+  }
   const catDetailJson = await catDetail.json()
+ 
   console.log("category fields",catDetailJson);
   const CateData = Array.isArray(catDetailJson) ? catDetailJson : catDetailJson.data.category_field;
   // since you already extracted the data in the line above
@@ -93,6 +98,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   // since you already extracted the data in the line above
   const products = product.data || product;
   //console.log("category products bg_color",json.data.bg_color);
+  
   return (
     <>
       <ClientBootstrap />
