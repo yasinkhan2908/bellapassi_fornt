@@ -221,7 +221,7 @@ export default function EditAddress({ id }: EditAddressProps) {
   // ✅ Fixed useEffect hook
   useEffect(() => {
     const fetchAddress = async () => {
-      try {
+      // try {
         const token = session?.data?.user.token;
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/single-shipping-address/${id}`, {
           method: 'POST',
@@ -232,19 +232,20 @@ export default function EditAddress({ id }: EditAddressProps) {
         });
         
         const result = await response.json();
+        console.log("result : ",result);
         if (result.data) {
             console.log("result ",result.data);
           setFormData(result.data);
         }
-      } catch (error) {
-        console.error('Error fetching address:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'Failed to load address data',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      }
+      // } catch (error) {
+      //   console.error('Error fetching address:', error);
+      //   Swal.fire({
+      //     title: 'Error',
+      //     text: 'Failed to load address data',
+      //     icon: 'error',
+      //     confirmButtonText: 'Ok'
+      //   });
+      // }
     };
 
     if (id) fetchAddress();
