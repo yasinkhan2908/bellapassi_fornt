@@ -35,6 +35,7 @@ interface FormErrors {
 export default function AddAddressForm() {
   const session = useSession();
   const data = session?.data?.user.token ?? null;
+  console.log("address token : ",session?.data?.user.token);
   const router = useRouter(); // ✅ Initialize router
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
