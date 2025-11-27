@@ -51,6 +51,20 @@ export default function Otp() {
         const pasteData = e.clipboardData.getData("Text").replace(/\D/g, "").slice(0, length);
         const newOtp = pasteData.split("");
         setOtps(newOtp.concat(new Array(length - newOtp.length).fill("")));
+    }; // Reset OTP when component mounts
+    useEffect(() => {
+        clearOtp();
+    }, []);
+
+    // Clear OTP function
+    const clearOtp = () => {
+        setOtps(new Array(length).fill(""));
+        // Clear any stored OTP
+        //localStorage.removeItem('otp');
+        // Focus first input
+        setTimeout(() => {
+            inputsRef.current[0]?.focus();
+        }, 0);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -80,11 +94,14 @@ export default function Otp() {
                     toast.error('Session creation failed');
                 }
             }
+            clearOtp();
         } catch (error) {
             console.error('Sign in error:', error);
             toast.error('An error occurred. Please try again.');
+            clearOtp();
         } finally {
             setLoading(false);
+            clearOtp();
         }
     };
 

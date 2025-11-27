@@ -8,7 +8,7 @@
 .left-list-icon{
     font-weight: bold;
     font-size: 35px;
-}
+} 
 .left-sidebar-category li button{
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -1484,6 +1484,20 @@ ease;
     padding: 7px 10px;
     margin-bottom: 10px;
 }
+.text-red-500,.invalid-feedback{
+    color: red !important;
+}
+.opt-verify{
+    width: 30% !important;
+}
+.mobile-border{
+    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+.mobile-is-invalid{
+    border: 1px solid red !important;
+}
+
+
 
 
 #nprogress .bar {
@@ -1505,7 +1519,12 @@ ease;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
-    
+    .account .profile-menu{
+        display: block !important;
+    }
+    .opt-verify{
+        width: 100% !important;
+    }   
     .filtter-apply button{
         margin: 1rem;
         padding: 1rem 6rem;
