@@ -33,9 +33,7 @@ interface FormErrors {
 }
 
 export default function AddAddressForm() {
-  const session = useSession();
-  const data = session?.data?.user.token ?? null;
-  console.log("address token : ",session?.data?.user.token);
+  const { data: session, status } = useSession();
   const router = useRouter(); // ✅ Initialize router
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,9 +149,9 @@ export default function AddAddressForm() {
       //console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/user/add-shipping-address`);
       if (typeof window !== "undefined") {
       // safe to use window, document, localStorage, etc.
-      const token = session?.data?.user.token??'';
+      const token = session?.user.token??'';
     }
-      const token = session?.data?.user.token??'';
+      const token = session?.user.token??'';
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/add-shipping-address`, {
           method: 'POST',
           headers: {
