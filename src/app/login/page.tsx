@@ -32,7 +32,7 @@ export default function Login() {
                                     });
       // 2️⃣ Then login 
       //const response0 = await api.post('/api/user/user-register', { mobile_number });
-      const response = await fetch(`${process.env.API_URL}/api/user/user-register`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/user-register`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
