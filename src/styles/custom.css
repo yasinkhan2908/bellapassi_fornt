@@ -517,8 +517,8 @@ cubic-bezier(.4, 0, .2, 1);
 }
 .left-compo{
     background-size: contain;
-    /* display: -webkit-box;
-    display: -ms-flexbox;     */
+    display: -webkit-box;
+    display: -ms-flexbox;    
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -1485,6 +1485,7 @@ ease;
     margin-bottom: 10px;
 }
 
+
 #nprogress .bar {
   height: 3px;
   background: #29d; /* change the color if you want */
@@ -1498,6 +1499,9 @@ ease;
 }
 .is-invalid{
     border: 1px solid red !important;
+}
+.account .profile-menu{
+    display: block !important;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
