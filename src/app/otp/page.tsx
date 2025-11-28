@@ -172,49 +172,48 @@ export default function Otp() {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        // Client-side validation
-        if (!validateForm()) {
-            return;
-        }
+    e.preventDefault();   // ⭐ THIS STOPS THE FORM FROM RELOADING
 
-        setIsSubmitting(true);
+    // Client-side validation
+    if (!validateForm()) {
+        alert(123);
+        return;
+    }
 
-        const otpValue = otps.join('');
+    setIsSubmitting(true);
 
-        try {
-            const result = await signIn('credentials', {
-                mobile,
-                otp: otpValue,
-                redirect: false,
-            });
+    const otpValue = otps.join('');
 
-            if (result?.error) {
-                console.log(result?.error);
-                toast.error('Invalid OTP. Please try again.');
+    try {
+        const result = await signIn('credentials', {
+            mobile,
+            otp: otpValue,
+            redirect: false,
+        });
+
+        if (result?.error) {
+            console.log(result?.error);
+            toast.error('Invalid OTP. Please try again.');
+        } else {
+            toast.success('OTP verified successfully!');
+            
+            const session = await getSession();
+            if (session) {
+                router.push('/user/dashboard/');
             } else {
-                toast.success('OTP verified successfully!');
-                
-                // Check session and redirect
-                const session = await getSession();
-                if (session) {
-                    router.push('/user/dashboard/');
-                } else {
-                    toast.error('Session creation failed');
-                }
+                toast.error('Session creation failed');
             }
-            setIsSubmitting(false);
-            clearOtp();
-        } catch (error) {
-            console.error('Sign in error:', error);
-            toast.error('An error occurred. Please try again.');
-            clearOtp();
-            setIsSubmitting(false);
-        } finally {
-            setLoading(false);
-            clearOtp();
-            setIsSubmitting(false);
         }
-    };
+    } catch (error) {
+        console.error('Sign in error:', error);
+        toast.error('An error occurred. Please try again.');
+    } finally {
+        setLoading(false);
+        clearOtp();
+        setIsSubmitting(false);
+    }
+};
+
 
     const handleResendOtp = async () => {
         if (!mobile) {
