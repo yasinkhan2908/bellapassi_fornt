@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const product = await res.json();
-  console.log('product detail',product);
+  //console.log('product detail',product);
   return {
     title: product.data?.product_name || product.product_name || 'Product Details',
     description: product.data?.product_description || product.product_description || 'Product details page',

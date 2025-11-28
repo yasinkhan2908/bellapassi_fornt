@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function DeleteButton({ id,token }: { id: string , token:string}) {
     const router = useRouter(); // ✔️ correct router
     function handleDelete() {    
-        console.log("delete", id);
+        //console.log("delete", id);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to remove this! ",

@@ -170,7 +170,7 @@ export default function EditAddress({ id }: EditAddressProps) {
       });
       
       const result = await response.json();
-      console.log("result",result);
+      //console.log("result",result);
       if (!result.success) {
         throw new Error(result.message || 'Something went wrong!');
       }
@@ -233,9 +233,9 @@ export default function EditAddress({ id }: EditAddressProps) {
         });
         
         const result = await response.json();
-        console.log("result : ",result);
+        //console.log("result : ",result);
         if (result.data) {
-            console.log("result ",result.data);
+            //console.log("result ",result.data);
           setFormData(result.data);
         }
       // } catch (error) {

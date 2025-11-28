@@ -517,7 +517,7 @@ cubic-bezier(.4, 0, .2, 1);
 }
 .left-compo{
     background-size: contain;
-    display: -webkit-box;
+    display: block;
     display: -ms-flexbox;    
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -1496,7 +1496,10 @@ ease;
 .mobile-is-invalid{
     border: 1px solid red !important;
 }
-
+.leftsidebar .text-sm {
+    font-size: .875rem;
+    line-height: 1.75rem;
+}
 
 
 
@@ -1516,6 +1519,21 @@ ease;
 }
 .account .profile-menu{
     display: block !important;
+}
+.empty-cart{
+    padding: 10rem 0;
+}
+.empty-cart .cart-icon i{
+    font-size: 5rem;
+}
+.empty-cart .cart-icon .empty-cart-text{
+    font-size: 17px;
+    font-weight: 400;
+}
+.empty-cart .cart-continue-shopping .btn-primary{
+    margin-top: 1rem !important;
+    border-radius: 3px !important;
+    padding: 0.8rem 4rem !important;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {

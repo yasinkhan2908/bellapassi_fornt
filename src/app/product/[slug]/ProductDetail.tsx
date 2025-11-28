@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, SetStateAction,useRef, Key, JSXElementConstructor, ReactElement, ReactNode, ReactPortal } from "react";
-import { Navbar, Footer } from "../../../components/common";
 import Link from 'next/link';
 import Image from "next/image";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,6 +16,7 @@ import { Nav, Tab, Tabs } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, FreeMode, Zoom } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
+import toast from 'react-hot-toast';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,6 +24,13 @@ import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
 import 'swiper/css/zoom';
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
+import { useAppDispatch } from "../../../lib/hooks";
+import { increment, decrement } from '@/lib/slices/counterSlice';
+import { addToCart } from '@/lib/slices/cartSlice';
+import { getSessionId } from "@/lib/session";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface ImageGalleryProps {
   images: {
@@ -41,16 +48,82 @@ interface ProductDetailProps {
  
 // 3️⃣ Apply the type in your component
 export default function ProductDetail({ product }: ProductDetailProps) {
-    const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-    const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
-    const [isZoomed, setIsZoomed] = useState(false);
-    const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
-    const mainImageRef = useRef<HTMLDivElement>(null);
-    const productdetail = product.data.productdetails;
-    const images = productdetail.productimages;
-    const [qty, setQty] = useState();
+    const [quantity, setQuantity]         = useState(1);
+    const dispatch                        = useAppDispatch();
+    const router = useRouter();
+    const session = useSession();
+    const data = session?.data?.user.token ?? null;
 
-    console.log("product images",images);
+    // console.log("product data : ",product);
+    const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+    const [mainSwiper, setMainSwiper]     = useState<SwiperType | null>(null);
+    const [isZoomed, setIsZoomed]         = useState(false);
+    const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+    const mainImageRef                    = useRef<HTMLDivElement>(null);
+    const productdetail                   = product.data.productdetails;
+    const images                          = productdetail.productimages;
+    const [size, setSize]                 = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    
+
+    //add to cart data
+    const productId  = productdetail.id;
+    let categoryId   = '';
+    if (productdetail.sub_sub_sub_category_id) {
+        categoryId = productdetail.sub_sub_sub_category_id;
+    }
+    else if (productdetail.sub_sub_category_id) {
+        categoryId = productdetail.sub_sub_category_id;
+    }
+    else if (productdetail.sub_category_id) {
+        categoryId = productdetail.sub_category_id;
+    }
+    else {
+        categoryId = productdetail.category_id;
+    }
+    const sessionId = getSessionId();
+    console.log("sessionId",sessionId);
+    const handleAddToCart = async () => {
+        if (!size) {
+            toast.error('Please select a size!');
+            return;
+        }
+
+        setIsLoading(true);
+
+        // try {
+            await dispatch(
+                addToCart({
+                    product_id: productdetail.id,
+                    category_id: productdetail.category_id,
+                    size: size,
+                    quantity: quantity,
+                    session_id: sessionId,
+                    token: session?.data?.user?.token,
+                })
+            ).unwrap();  // waits for API success
+
+            toast.success("Added to cart");
+            router.refresh();
+            setIsLoading(false);
+        // } catch (error) {
+        //     toast.error("Something went wrong");
+        // } finally {
+        //     setIsLoading(false);
+        // }
+    };
+
+
+    const increaseQty = () => {
+        setQuantity((prev) => prev + 1);
+    };
+
+    const decreaseQty = () => {
+        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+    };
+
+
+    //console.log("product quantity",quantity);
 
     const handleImageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isZoomed || !mainImageRef.current) return;
@@ -197,8 +270,14 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                             <div className="mb-4">
                                 <h6 className="mb-2">Size</h6>
                                 <div className="size-options">
-                                    {productdetail.attributes?.map((attr: { id: Key | null | undefined; size: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
-                                        <div key={attr.id} className="size-option" data-size="{attr.size}">{attr.size}</div>
+                                    {productdetail.attributes?.map((attr: any) => (
+                                        <div
+                                        key={attr.id}
+                                        className={`size-option ${size === attr.size ? "active" : ""}`}
+                                        onClick={() => setSize(attr.size)}
+                                        >
+                                        {attr.size}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -206,11 +285,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                             <div className="product-quantity mb-4">
                                 <h6 className="option-title">Quantity:</h6>
                                 <div className="quantity-selector">
-                                <button className="quantity-btn decrease">
+                                <button className="quantity-btn decrease" onClick={decreaseQty}>
                                     <i className="bi bi-dash"></i>
                                 </button>
-                                <input type="number" className="quantity-input" min="1" max="24" defaultValue={1}/>
-                                <button className="quantity-btn increase" >
+                                <input type="number" className="quantity-input" min="1" max="24" value={quantity} defaultValue={1}/>
+                                <button className="quantity-btn increase" onClick={increaseQty}>
                                     <i className="bi bi-plus"></i>
                                 </button>
                                 </div>
@@ -321,8 +400,14 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         </main>
         <div className="add-to-cart-detail mt-1 text-center">
             <div className="detail-cart-btn">
-                <button className="btn btn-primary" type="button">
-                    <i className="bi bi-cart mr-2"></i>Add to Cart
+                <button className="btn btn-primary" type="button" onClick={() => handleAddToCart()}>
+                    <i className="bi bi-cart mr-2"></i>
+                    {isLoading ? (
+                        <>
+                          Processing...
+                        </>
+                      ) : 'Add to Cart'}
+                    
                 </button>
                 {/* <button className="btn btn-primary buy-now-btn" type="button">
                     <i className="bi bi-cart mr-2"></i>Buy Now

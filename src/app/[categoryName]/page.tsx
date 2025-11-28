@@ -40,7 +40,7 @@ export async function generateStaticParams() {
       categoryName: c.seo || c.slug || c.name || "unknown",
     }));
 
-    console.log("Generated category params:", params);
+    //console.log("Generated category params:", params);
 
     return params;
   } catch (err) {
@@ -80,7 +80,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const { categoryName } = await params; // 👈 Await the params
   //get category all attributes
   
-  console.log(`${process.env.API_URL}/api/user/category-detail/${categoryName}`);
+  //console.log(`${process.env.API_URL}/api/user/category-detail/${categoryName}`);
   const catDetail = await fetch(`${process.env.API_URL}/api/user/category-detail/${categoryName}`, {
     cache: 'no-store',
   })
@@ -89,11 +89,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   }
   const catDetailJson = await catDetail.json()
  
-  console.log("category fields",catDetailJson);
+  //console.log("category fields",catDetailJson);
   const CateData = Array.isArray(catDetailJson) ? catDetailJson : catDetailJson.data.category_field;
   // since you already extracted the data in the line above
   const CateDatas = CateData.data || CateData;
-  //console.log("category products bg_color",json.data.bg_color);
+  //console.log("category name",categoryName);
   //
   const res = await fetch(`${process.env.API_URL}/api/user/category-products/${categoryName}`, {
     cache: 'no-store',
@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const product = Array.isArray(json) ? json : json.data.products;
   // since you already extracted the data in the line above
   const products = product.data || product;
-  //console.log("category products bg_color",json.data.bg_color);
+  console.log("category products",products);
   
   return (
     <>

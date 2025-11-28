@@ -10,6 +10,11 @@ button{
     color: #fff !important;
     border: none !important;
 }
+.btn-primary{
+    background-color: #FF3F6C !important;
+    color: #fff !important;
+    border: none !important;
+}
 .slider-indicators span {
   background-color: #FF3F6C !important;
 }

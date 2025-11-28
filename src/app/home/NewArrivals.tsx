@@ -71,7 +71,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
     //         description: "Merlot Patent Bow Slingback Pumps.",
     //     },
     // ];
-    console.log("new products",products);
+    //console.log("new products",products);
   return (
     <section className="section mt-4" data-aos="fade-up">
         <div className="container">

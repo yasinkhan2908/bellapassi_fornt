@@ -64,7 +64,7 @@ export default function AccountSetting() { // ✅ Removed 'async'
   // ✅ Set client-side flag and initialize values
   useEffect(() => {
     setIsClient(true);
-    console.log("user mobile", session?.data?.user.mobile);
+    //console.log("user mobile", session?.data?.user.mobile);
     setMobileNumber(session?.data?.user.mobile ?? '');
     
     // Get token from localStorage on client side only
@@ -89,7 +89,7 @@ export default function AccountSetting() { // ✅ Removed 'async'
         }
         
         const responseData = await response.json();
-        console.log('data', responseData.data);
+        //console.log('data', responseData.data);
         setUser(responseData.data);
         setFormData(responseData.data);
       } catch (err) {

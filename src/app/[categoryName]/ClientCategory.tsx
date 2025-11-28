@@ -60,7 +60,7 @@ export default function ClientCategory({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [categoryName, page, hasMore, loading]);
-  console.log("page CateDatas",CateDatas);
+  //console.log("page CateDatas",CateDatas);
   return (
     <div className="index-page">
       <main className="main">

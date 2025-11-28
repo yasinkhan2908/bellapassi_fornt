@@ -8,7 +8,7 @@ export const metadata = {
 
 export default async function NotFound() {
   const session = await getServerSession(authOptions);
-  console.log("session : ",session?.user.token);
+  //console.log("session : ",session?.user.token);
   const token = session?.user.token;
   return (
     <div>

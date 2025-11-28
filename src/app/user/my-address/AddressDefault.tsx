@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function AddressDefault({ id,token }: { id: string , token:string}) {
   const router = useRouter(); // ✔️ correct router
   function handleMarkAsDefault() {
-    console.log("mark id", id);
+    //console.log("mark id", id);
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to mark as default this! ",

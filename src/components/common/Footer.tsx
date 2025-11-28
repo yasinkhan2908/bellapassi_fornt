@@ -1,5 +1,11 @@
+'use client';
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 export default function Footer() {
+  const session = useSession();
+  const token = session?.data?.user.token ?? null;
+  //console.log("header token : ",token);
   return (
     <footer className="bottom-sticky text-center bg-white sticky bottom-0 z-30">
       <section id="bottom-navigation" className="block fixed bottom-0 z-10 bg-white shadow w-full xl-max-w-screen-xl">
@@ -17,10 +23,18 @@ export default function Footer() {
               <i className="bi bi-phone"></i>
               <span className="tab tab-home block text-xs">Contact Us</span>
             </Link>
-            <Link href="/" className="w-full focus:text-sss-primary-500 hover:text-blacktext-sss-primary-500 justify-center inline-block text-center pt-2 pb-1">
-              <i className="bi bi-person"></i>
-              <span className="tab tab-home block text-xs">My Account</span>
-            </Link>
+            {token? (
+                <Link href="/user/dashboard" className="w-full focus:text-sss-primary-500 hover:text-blacktext-sss-primary-500 justify-center inline-block text-center pt-2 pb-1">
+                  <i className="bi bi-person"></i>
+                  <span className="tab tab-home block text-xs">My Account</span>
+                </Link>
+            ) : (
+                <Link href="/login" className="w-full focus:text-sss-primary-500 hover:text-blacktext-sss-primary-500 justify-center inline-block text-center pt-2 pb-1">
+                  <i className="bi bi-person"></i>
+                  <span className="tab tab-home block text-xs">My Account</span>
+                </Link>
+            )}
+            
           </div>
         </div>
       </section>

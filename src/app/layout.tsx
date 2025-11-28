@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/assets/vendor/bootstrap-icons/bootstrap-icons.css';
 import '../styles/assets/vendor/swiper/swiper-bundle.min.css';
@@ -25,6 +26,9 @@ import NextTopLoader from 'nextjs-toploader';
 import { Suspense } from "react";
 import DynamicSession from "./DynamicSession";
 import Providers from "./providers";
+import ReduxProvider from '@/components/ReduxProvider';
+import { useSelector } from "react-redux";
+
 
 export const metadata = {
   title: 'Bella Passi - Online Fashion | Best Fashion Deals In India',
@@ -35,22 +39,24 @@ export default async function RootLayout({ children }: { children: ReactNode  })
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <Suspense fallback={null}>
-            <DynamicSession />
-            {/* Load Bootstrap JS on client */}
-            <BootstrapClient />
-            <NextTopLoader color="#29d" height={3} />
-            <Navbar />
+        <ReduxProvider>
+          <Providers>
+            <Suspense fallback={null}>
+              <DynamicSession />
+              {/* Load Bootstrap JS on client */}
+              <BootstrapClient />
+              <NextTopLoader color="#29d" height={3} />
+              <Navbar />
 
-            <main className="container py-4">
-              <TopLoader />   {/* enable top loading bar */}
-              {children}
-            </main>
-            <Toaster position="top-right" reverseOrder={false} />
-            <Footer />
-          </Suspense>
-        </Providers>
+              <main className="container py-4">
+                <TopLoader />   {/* enable top loading bar */}
+                {children}
+              </main>
+              <Toaster position="top-right" reverseOrder={false} />
+              <Footer />
+            </Suspense>
+          </Providers>
+        </ReduxProvider>
       </body>
     </html>
   );
