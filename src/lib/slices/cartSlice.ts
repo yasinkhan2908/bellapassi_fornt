@@ -71,8 +71,9 @@ export const fetchCart = createAsyncThunk<
     console.log("payload session_id = ",payload.session_id);
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/cart-data`, {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${payload.token}`, // include login token
+        Authorization: `Bearer ${payload.token}`,
+        'session_id': payload.session_id,
+        'Content-Type': 'application/json',
       },
       params: {
         session_id: payload.session_id
