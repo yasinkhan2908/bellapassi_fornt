@@ -25,7 +25,16 @@ export default function Cart() {
   
   const sessionId = getSessionId();
   console.log("sessionId", sessionId);
-  const token = session?.data?.user?.token;
+  var token = '';
+  if(session?.data?.user?.token)
+  {
+    token = session?.data?.user?.token;
+  }
+  else{
+    token = '';
+  }
+    
+  
 
   const handleQuantityChange = (cartId: number, newQuantity: number) => {
     console.log("newQuantity : ", newQuantity);
@@ -153,7 +162,7 @@ export default function Cart() {
                               <button 
                                 className="remove-item btn btn-danger" 
                                 type="button"
-                                onClick={() => handleRemoveItem(item.id)}
+                                onClick={() => handleRemoveItem(item.id,sessionId,token)}
                               >
                                 <i className="bi bi-trash"></i> Remove
                               </button>

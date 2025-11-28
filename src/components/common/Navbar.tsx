@@ -11,16 +11,9 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectCartCount } from "@/lib/slices/cartSlice";
 
 export default function Navbar() {
-    const cartitems = localStorage.getItem('cart_items');
-    let cartCount = '0';
-    if (cartitems) {
-        cartCount = cartitems;
-    } 
-
-    //console.log('cartCount : ',cartCount);
-    //
     const session = useSession();
     const token = session?.data?.user.token ?? null;
+    const [cartCount, setCartCount] = useState(0);
     //console.log("header token : ",token);
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     interface MainCategory {
@@ -40,7 +33,11 @@ export default function Navbar() {
     
 
      useEffect(() => {
-
+        // Get cart count
+        if (typeof window !== "undefined") {
+            const cartItems = localStorage.getItem("cart_items");
+            setCartCount(cartItems ? JSON.parse(cartItems).length : 0);
+        }
         const fetchProfile = async () => {
           try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/main-category`, {
@@ -410,7 +407,7 @@ export default function Navbar() {
 
                             <Link href="/cart" className="header-action-btn">
                                 <i className="bi bi-cart3"></i>
-                                <span className="badge">{cartCount}</span>
+                                <span className="badge">{cartCount ?? 0}</span>
                             </Link>
 
                             

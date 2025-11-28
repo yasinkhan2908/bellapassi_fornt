@@ -186,10 +186,11 @@ const cartSlice = createSlice({
             state.items.push(newItem);
         }
 
-        state.total = state.items.reduce(
-            (sum, item) => sum + item.quantity * item.product.price,
-            0
-        );
+        state.total = state.items.reduce((sum, item) => {
+          const qty = Number(item?.quantity ?? 0);
+          const price = Number(item?.product?.price ?? 0);
+          return sum + qty * price;
+      }, 0);
       })
 
       .addCase(addToCart.rejected, (state, action) => {
@@ -208,14 +209,14 @@ const cartSlice = createSlice({
         
         state.total = state.items.reduce((total, item) => {
           //console.log("item product : ",total);
-          return total + (item.quantity * item.product.price);
+          return total + (Number(item.quantity) * Number(item.product.price));
         }, 0);
       })
       // Remove from Cart
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.items = state.items.filter(item => item.id !== action.payload);
         state.total = state.items.reduce((total, item) => {
-          return total + (item.quantity * item.product.price);
+          return total + (Number(item.quantity) * Number(item.product.price));
         }, 0);
       });
   }

@@ -7,14 +7,20 @@ export interface Product {
   image: string;
 }
 
+// types/cart.ts
 export interface CartItem {
   id: number;
-  user_id: number;
   product_id: number;
   quantity: number;
-  product: Product;
-  created_at: string;
-  updated_at: string;
+  size: string; // Add this
+  product: {
+    id: number;
+    product_name: string;
+    price: string | number;
+    product_image: {
+      image: string;
+    };
+  };
 }
 
 export interface CartState {
