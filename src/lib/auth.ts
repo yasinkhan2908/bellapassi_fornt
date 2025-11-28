@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
                   
                     if (!credentials?.mobile || !credentials?.otp) {
                         throw new Error('Mobile and OTP are required');
-                    }
+                    } 
                     const payload = JSON.stringify({
                                       mobile: credentials.mobile,
                                       otp: credentials.otp,

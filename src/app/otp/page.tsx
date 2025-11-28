@@ -95,7 +95,7 @@ export default function Otp() {
         setErrors({}); // Clear errors on paste
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit0 = async (e: React.FormEvent) => {
         e.preventDefault();
         
         // Client-side validation
@@ -169,6 +169,51 @@ export default function Otp() {
         // } finally {
         //     setIsSubmitting(false);
         // }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        // Client-side validation
+        if (!validateForm()) {
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const otpValue = otps.join('');
+
+        try {
+            const result = await signIn('credentials', {
+                mobile,
+                otp: otpValue,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                console.log(result?.error);
+                toast.error('Invalid OTP. Please try again.');
+            } else {
+                toast.success('OTP verified successfully!');
+                
+                // Check session and redirect
+                const session = await getSession();
+                if (session) {
+                    router.push('/user/dashboard/');
+                } else {
+                    toast.error('Session creation failed');
+                }
+            }
+            setIsSubmitting(false);
+            clearOtp();
+        } catch (error) {
+            console.error('Sign in error:', error);
+            toast.error('An error occurred. Please try again.');
+            clearOtp();
+            setIsSubmitting(false);
+        } finally {
+            setLoading(false);
+            clearOtp();
+            setIsSubmitting(false);
+        }
     };
 
     const handleResendOtp = async () => {
