@@ -82,7 +82,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         categoryId = productdetail.category_id;
     }
     const sessionId = getSessionId();
-    console.log("sessionId",sessionId);
+    //console.log("sessionId",sessionId);
     const handleAddToCart = async () => {
         if (!size) {
             toast.error('Please select a size!');

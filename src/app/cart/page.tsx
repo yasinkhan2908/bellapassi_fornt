@@ -19,7 +19,7 @@ export default function Cart() {
   const router = useRouter();
   const dispatch = useAppDispatch(); // Use typed dispatch
   const { items, total, loading, error } = useAppSelector(state => state.cart); // Use typed selector
-    //console.log('cart items ; ',items);
+  console.log('cart items ; ',items);
   const session = useSession();
   const data = session?.data?.user.token ?? null;
   
@@ -82,9 +82,11 @@ export default function Cart() {
 
   useEffect(() => {
     const loadCartData = async () => {
-      if (!token) return;
+      //if (!token) return;
       
       try {
+        console.log(sessionId);
+        console.log(token);
         const result = await dispatch(
           fetchCart({
             session_id: sessionId,

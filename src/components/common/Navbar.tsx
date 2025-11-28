@@ -17,7 +17,7 @@ export default function Navbar() {
     
     //
     const session = useSession();
-    console.log("session data : ",session);
+    //console.log("session data : ",session);
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     interface MainCategory {
         id: number;
