@@ -180,7 +180,7 @@ export default function Cart() {
                           <div className="quantity-selector">
                             <button 
                               className="quantity-btn decrease" 
-                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                              onClick={() => handleQuantityChange(item.id, Number(item.quantity) - Number(1))}
                               disabled={item.quantity <= 1}
                             >
                               <i className="bi bi-dash"></i>
@@ -195,7 +195,7 @@ export default function Cart() {
                             />
                             <button 
                               className="quantity-btn increase" 
-                              onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                              onClick={() => handleQuantityChange(item.id, Number(item.quantity) + Number(1))}
                             >
                               <i className="bi bi-plus"></i>
                             </button>
