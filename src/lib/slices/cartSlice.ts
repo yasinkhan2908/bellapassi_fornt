@@ -114,7 +114,7 @@ export const updateCartItem = createAsyncThunk(
   async (payload: UpdateCartPayload, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/user/update-cart-data/${payload.cartId}`, {
-        quantity: payload.quantity
+        quantity: Number(payload.quantity)
       });
       return response.data;
     } catch (error: any) {

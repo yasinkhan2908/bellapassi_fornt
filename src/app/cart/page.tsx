@@ -44,7 +44,7 @@ export default function Cart() {
     dispatch(
       updateCartItem({
         cartId: cartId,
-        quantity: newQuantity
+        quantity: Number(newQuantity)
       })
     );
   };
@@ -87,12 +87,12 @@ export default function Cart() {
       try {
         console.log(sessionId);
         console.log(token);
-        const result = await dispatch(
-          fetchCart({
-            session_id: sessionId,
-            token: token,
-          })
-        ).unwrap();
+          const result = await dispatch(
+            fetchCart({
+              session_id: sessionId,
+              token: token,
+            })
+          ).unwrap();
         
         console.log('Cart loaded successfully:', result);
       } catch (err) {
