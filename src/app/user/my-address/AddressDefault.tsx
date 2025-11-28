@@ -28,7 +28,7 @@ export default function AddressDefault({ id,token }: { id: string , token:string
                     return;
                 }
                 toast.dismiss();
-                toast.success(responseData.message || 'Successfully mark as default address!');
+                toast.success('Successfully mark as default address!');
                 //
                 router.refresh(); // 🔥 force server component to re-render
             }

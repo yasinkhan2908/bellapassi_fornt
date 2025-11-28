@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect } from "react";
 import Swal from 'sweetalert2';
 
+import { useSession } from "next-auth/react";
 import { 
   fetchCart, 
   updateCartItem, 
@@ -12,7 +13,6 @@ import {
 } from '../../lib/slices/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'; // Use typed hooks
 import { getSessionId } from '@/lib/session';
-import { useSession } from 'next-auth/react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 export default function Cart() {
@@ -247,9 +247,16 @@ export default function Cart() {
                     <span className="summary-value">₹ {total.toFixed(2)}</span>
                   </div>
                   <div className="checkout-button">
-                    <Link href="/address" className="btn btn-accent text-white w-100">
-                      Proceed to Checkout <i className="bi bi-arrow-right"></i>
-                    </Link>
+                     {token? (
+                          <Link href="/address" className="btn btn-accent text-white w-100">
+                            Proceed to Checkout <i className="bi bi-arrow-right"></i>
+                          </Link>
+                      ) : (
+                          <Link href="/login" className="btn btn-accent text-white w-100">
+                            Proceed to Checkout <i className="bi bi-arrow-right"></i>
+                          </Link>
+                      )}
+                    
                   </div>
                   <div className="continue-shopping">
                     <Link href="/products" className="btn btn-link text-white w-100">
