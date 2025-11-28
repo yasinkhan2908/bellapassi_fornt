@@ -3,25 +3,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
-import { useSelector } from 'react-redux';
-import type { RootState } from '@/lib/store';
-
-import { useAppSelector } from "@/lib/hooks";
-import { selectCartCount } from "@/lib/slices/cartSlice";
-
+import type { RootState } from "../../lib/store";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'; // Use typed hooks
+import { 
+  fetchCart, 
+  updateCartItem, 
+  removeFromCart 
+} from '../../lib/slices/cartSlice';
+import { getSessionId } from '@/lib/session';
 export default function Navbar() {
-    const cartitems = localStorage.getItem('cart_items');
-    let cartCount = '0';
-    if (cartitems) {
-        cartCount = cartitems;
-    } 
-
-    //console.log('cartCount : ',cartCount);
+    const dispatch = useAppDispatch(); // Use typed dispatch
+    
     //
     const session = useSession();
-    const token = session?.data?.user.token ?? null;
-    //console.log("header token : ",token);
+    console.log("session data : ",session);
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     interface MainCategory {
         id: number;
@@ -37,10 +33,43 @@ export default function Navbar() {
     const [maincategorys, setMainCategory] = useState<MainCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
+    const { items, total, loading, error } = useAppSelector(state => state.cart); // Use typed selector
+    const cartCount = items.length;
+    //
+    const sessionId = getSessionId();
+    console.log("sessionId", sessionId);
+    var token = '';
+    if(session?.data?.user?.token)
+    {
+    token = session?.data?.user?.token;
+    }
+    else{
+    token = '';
+    }
+    //
+    useEffect(() => {
+        const loadCartData = async () => {
+          if (!token) return;
+          
+          try {
+            const result = await dispatch(
+              fetchCart({
+                session_id: sessionId,
+                token: token,
+              })
+            ).unwrap();
+            
+            console.log('Cart loaded successfully:', result);
+          } catch (err) {
+            console.error('Failed to load cart:', err);
+          }
+        };
     
-
-     useEffect(() => {
-
+        loadCartData();
+      }, [dispatch, sessionId, token]);
+    //
+    useEffect(() => {
+        
         const fetchProfile = async () => {
           try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/main-category`, {

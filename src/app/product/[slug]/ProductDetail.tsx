@@ -288,7 +288,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                 <button className="quantity-btn decrease" onClick={decreaseQty}>
                                     <i className="bi bi-dash"></i>
                                 </button>
-                                <input type="number" className="quantity-input" min="1" max="24" value={quantity} defaultValue={1}/>
+                                <input type="number" className="quantity-input" min="1" max="24" value={quantity} readOnly/>
                                 <button className="quantity-btn increase" onClick={increaseQty}>
                                     <i className="bi bi-plus"></i>
                                 </button>

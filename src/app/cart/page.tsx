@@ -19,12 +19,12 @@ export default function Cart() {
   const router = useRouter();
   const dispatch = useAppDispatch(); // Use typed dispatch
   const { items, total, loading, error } = useAppSelector(state => state.cart); // Use typed selector
-
+    //console.log('cart items ; ',items);
   const session = useSession();
   const data = session?.data?.user.token ?? null;
   
   const sessionId = getSessionId();
-  console.log("sessionId", sessionId);
+  //console.log("sessionId", sessionId);
   var token = '';
   if(session?.data?.user?.token)
   {
@@ -152,7 +152,7 @@ export default function Cart() {
                         <div className="col-lg-6 col-12 mb-3 mb-lg-0">
                           <div className="product-info d-flex align-items-center">
                             <div className="product-image">
-                              <Image height={40} width={40} src={item.product.product_image.image ?? ''} alt={item.product.product_name as string} className="img-fluid" loading="lazy" />
+                              <Image height={40} width={40} src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid" loading="lazy" />
                             </div>
                             <div className="product-details">
                               <h6 className="product-title">{item.product.product_name}</h6>
