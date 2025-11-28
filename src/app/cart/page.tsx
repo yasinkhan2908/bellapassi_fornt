@@ -24,7 +24,7 @@ export default function Cart() {
   const data = session?.data?.user.token ?? null;
   
   const sessionId = getSessionId();
-  //console.log("sessionId", sessionId);
+  console.log("login Token", session?.data?.user?.token);
   var token = '';
   if(session?.data?.user?.token)
   {
