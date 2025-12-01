@@ -42,7 +42,7 @@ export const AccountSidebar = ({}: AccountSidebarProps) => {
             <nav className="menu-nav">
                 <ul className="nav flex-column dashboard-nav" role="tablist">
                     {menuItems.map((item) => (
-                        <li key={item.path} className="nav-item" role="presentation">
+                        <li key={item.path} className="nav-item" role="presentation" >
                             <Link className="nav-link" href={item.path}>
                                 <i className={item.icon}></i>
                                 <span>{item.name}</span>

@@ -32,7 +32,7 @@ export const SecondCategory = ({}: SecondCategoryProps) => {
                 >
                 <SwiperSlide className="text-center">
                     <div className="collection-item-v2 hover-img">
-                        <Link href="/mordern-backpack" className="collection-inner">
+                        <Link href="/mordern-backpack" className="collection-inner" prefetch={false}>
                             <div className="collection-image img-style">
                                 <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-27.jpg" src="/img/collection-27.jpg" alt="collection-img" loading="lazy"/>
                             </div>
@@ -53,7 +53,7 @@ export const SecondCategory = ({}: SecondCategoryProps) => {
                 </SwiperSlide>
                 <SwiperSlide className="text-center">
                     <div className="collection-item-v2 hover-img">
-                        <Link href="/season-collection" className="collection-inner">
+                        <Link href="/season-collection" className="collection-inner" prefetch={false}>
                             <div className="collection-image img-style">
                                 <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-28.jpg" src="/img/collection-28.jpg" alt="collection-img" loading="lazy"/>
                             </div>
@@ -74,7 +74,7 @@ export const SecondCategory = ({}: SecondCategoryProps) => {
                 </SwiperSlide>
                 <SwiperSlide className="text-center">
                     <div className="collection-item-v2 hover-img">
-                        <Link href="/stradivarius-top-trainers" className="collection-inner">
+                        <Link href="/stradivarius-top-trainers" className="collection-inner" prefetch={false}>
                             <div className="collection-image img-style">
                                 <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-26.jpg" src="/img/collection-26.jpg" alt="collection-img" loading="lazy"/>
                             </div>

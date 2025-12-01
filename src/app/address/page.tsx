@@ -165,7 +165,7 @@ export default function Address() {
                     <div className="section-header">
                       <div className="add-address d-flex flat-title flex-row justify-content-between align-items-center">
                         <h5>Select Address</h5>
-                        <Link href="/add-address" className="btn btn-primary btn-sm mb-4 text-white">
+                        <Link href="/add-address" className="btn btn-primary btn-sm mb-4 text-white" prefetch={false}>
                           <i className="bi bi-plus-lg"></i> Add Address
                         </Link>
                       </div>
@@ -183,7 +183,7 @@ export default function Address() {
                                 <div><i className="bi bi-envelope"></i> {address.email}</div>
                                 <div><i className="bi bi-telephone"></i> {address.mobile}</div>
                               </div>
-                              <Link href="/user/my-address/" className="btn btn-primary btn-sm mt-3 text-white">
+                              <Link href="/user/my-address/" className="btn btn-primary btn-sm mt-3 text-white" prefetch={false}>
                                 <i className="bi bi-geo-alt"></i> Change Address
                               </Link>
                             </div>
@@ -191,7 +191,7 @@ export default function Address() {
                         ) : (
                           <div className="text-center py-4">
                             <p>No address found</p>
-                            <Link href="/add-address" className="btn btn-primary text-white">
+                            <Link href="/add-address" className="btn btn-primary text-white" prefetch={false}>
                               Add Your First Address
                             </Link>
                           </div>
@@ -212,7 +212,7 @@ export default function Address() {
                             No items found in cart to checkout
                         </div>
                         <div className='cart-continue-shopping'>
-                            <Link href={'/'} className='btn btn-primary'>Continue Shopping</Link>
+                            <Link href={'/'} className='btn btn-primary' prefetch={false}>Continue Shopping</Link>
                         </div>
                     </div>
                  ) : (
@@ -240,7 +240,7 @@ export default function Address() {
                                 quantity: number; 
                                 }) => (
                                     <div className="order-item">
-                                        <Link target="_blank" href="" className="sc-product-thumb">  
+                                        <Link target="_blank" href="" className="sc-product-thumb" prefetch={false}>  
                                             <div className="order-item-image">
                                                 <Image height={40} width={40} loading='lazy' src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid"/>
                                             </div>
@@ -320,11 +320,11 @@ export default function Address() {
                 </button>
   
                 {token ? (
-                  <Link href="/checkout" className="btn btn-primary process-to-checkout">
+                  <Link href="/checkout" className="btn btn-primary process-to-checkout" prefetch={false}>
                     Proceed to Checkout <i className="bi bi-arrow-right"></i>
                   </Link>
                 ) : (
-                  <Link href="/login" className="btn btn-primary">
+                  <Link href="/login" className="btn btn-primary" prefetch={false}>
                     Proceed to Checkout <i className="bi bi-arrow-right"></i>
                   </Link>
                 )}

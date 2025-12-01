@@ -106,7 +106,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
                                     <div className="product">
                                     <Link
                                         href={`/product/${product.slug}-${product.id}`}
-                                        className="w-100"
+                                        className="w-100"  prefetch={false}
                                     >
                                         <Image
                                         width={282}
@@ -125,7 +125,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
 
                                     <Link
                                     href={`/product/${product.slug}-${product.id}`}
-                                    className="w-100"
+                                    className="w-100" prefetch={false}
                                     >
                                     <div className="product-name-dtl">
                                         <div className="title p-3 pb-1">

@@ -27,7 +27,7 @@ export const CurrentlyLoving = ({ title, subtitle, items }: CurrentlyLovingProps
               <div id="scrollContainer" className="d-flex flex-no-wrap overflow-x-scroll scrolling-touch tems-start">
                 {items.map((item, index) => (
                     <div key={index} className="w-36 mr-2 relative">
-                        <Link href={item.url} target="_blank" aria-label="Visit our Stars">
+                        <Link href={item.url} target="_blank" aria-label="Visit our Stars" prefetch={false}>
                             <Image width={40} height={40} src={item.image} alt="How people are wearing our products." loading="lazy" data-src={item.image} className="w-100"/>
                         </Link>
                     </div>

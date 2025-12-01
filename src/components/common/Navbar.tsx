@@ -121,7 +121,7 @@ export default function Navbar() {
         <div className="main-header"> 
             <div className="container-fluid container-xl">
                 <div className="d-flex py-1 align-items-center justify-content-between">
-                    <Link href="#" className="logo d-flex align-items-center left-list-icon"  data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                    <Link href="#" className="logo d-flex align-items-center left-list-icon"  data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" prefetch={false}>
                         <i className="bi bi-list"></i>
                     </Link>
                     <div className="offcanvas offcanvas-start leftsidebar " id="sidebar" aria-labelledby="sidebarLabel">
@@ -158,7 +158,7 @@ export default function Navbar() {
                                     selectedCategory.map((category, index) => (
                                         <div key={category.id} className="d-flex items-center cat-lst p-1">
                                             <span className="p-2 pl-4 font-semibold text-sm w-100">
-                                                <Link href={`/${category.seo}`} className="" onClick={closeSidebar}>
+                                                <Link href={`/${category.seo}`} className="" onClick={closeSidebar}  prefetch={false}>
                                                     <div className="d-flex">
                                                         <div className="w-10 relative">
                                                             <Image
@@ -199,17 +199,17 @@ export default function Navbar() {
                         <div className="h-6 bg-gray-100"></div>
                         <div className="d-flex p-4 justify-around bg-white">
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Follow on Facebook">
+                                <Link href="#" target="_blank" aria-label="Follow on Facebook" prefetch={false}>
                                     <Image width={32} height={32} src="/img/fb.png" className="img-fluid" alt="Follow Bella Passi on Facebook" loading="lazy"/>
                                 </Link>
                             </div>
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Follow on Instagram">
+                                <Link href="#" target="_blank" aria-label="Follow on Instagram" prefetch={false}>
                                     <Image width={32} height={32} src="/img/instagram.jpeg" className="img-fluid" alt="Follow Bella Passi on Instagram" loading="lazy"/>
                                 </Link>
                             </div>
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Join Bella Passi to get offers">
+                                <Link href="#" target="_blank" aria-label="Join Bella Passi to get offers" prefetch={false}>
                                     <Image width={32} height={32} src="/img/telegram-512.webp" alt="" className="img-fluid"  aria-label="Join to get offers" loading="lazy"/>
                                 </Link>
                             </div>
@@ -221,10 +221,10 @@ export default function Navbar() {
                             <div className="h-6 bg-gray-100 leftside-sigh">
                                 <div className="d-flex justify-around text-sss-primary-500">
                                     <div className="underline-offset-4">
-                                        <Link href="/login" className=""> Sign In</Link>
+                                        <Link href="/login" className="" prefetch={false}> Sign In</Link>
                                     </div>
                                     <div className="underline-offset-4">
-                                        <Link href="/login" className=""> Login</Link>
+                                        <Link href="/login" className="" prefetch={false}> Login</Link>
                                     </div>
                                 </div>
                             </div> 
@@ -232,7 +232,7 @@ export default function Navbar() {
                             <div className="h-6 bg-gray-100 leftside-sigh">
                                 <div className="d-flex justify-around text-sss-primary-500">
                                     <div className="underline-offset-4">
-                                        <Link href="/user/dashboard" className=""> My Account</Link>
+                                        <Link href="/user/dashboard" className="" prefetch={false}> My Account</Link>
                                     </div>
                                 </div>
                             </div> 
@@ -244,21 +244,21 @@ export default function Navbar() {
                             <div className="d-flex flex-row py-2.5">
                                 <div>
                                     {token? (
-                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black">
+                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-house-door"></i>
                                         </Link>
                                     ) : (
-                                        <Link href="/login" className="inline-block no-underline hover:text-black">
+                                        <Link href="/login" className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-house-door"></i>
                                         </Link>
                                     )}
                                 </div>
                                 {token? (
-                                    <Link href="/user/dashboard">
+                                    <Link href="/user/dashboard" prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Account</p>
                                     </Link>
                                 ) : (
-                                    <Link href="/login">
+                                    <Link href="/login" prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Account</p>
                                     </Link>
                                 )}
@@ -266,11 +266,11 @@ export default function Navbar() {
                             <div className="d-flex flex-row py-2.5">
                                 <div>
                                     {token? (
-                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black">
+                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-cart"></i>
                                         </Link>
                                     ) : (
-                                        <Link href="/login" className="inline-block no-underline hover:text-black">
+                                        <Link href="/login" className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-cart"></i>
                                         </Link>
                                     )}
@@ -280,11 +280,11 @@ export default function Navbar() {
                                 </div>
 
                                 {token? (
-                                    <Link href="/user/dashboard">
+                                    <Link href="/user/dashboard" prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Orders</p>
                                     </Link>
                                 ) : (
-                                    <Link href="/login">
+                                    <Link href="/login" prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Orders</p>
                                     </Link>
                                 )}
@@ -292,44 +292,44 @@ export default function Navbar() {
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black">
+                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-envelope"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="">
+                                <Link href="#" className="" prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Support</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black">
+                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-award"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="">
+                                <Link href="#" className="" prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Coupon</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black">
+                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-fire"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="">
+                                <Link href="#" className="" prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Refunds</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black">
+                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-credit-card"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="">
+                                <Link href="#" className="" prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">Contact Details</p>
                                 </Link>
                             </div>
@@ -346,22 +346,22 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     Returns &amp; Exchange
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     Shipping Policy
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     FAQ
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     Terms &amp; Conditions
                                                 </Link>
                                             </div>
@@ -380,17 +380,17 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     About US
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     Our Stores
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="">
+                                                <Link href="#" className="" prefetch={false}>
                                                     Privacy Policy
                                                 </Link>
                                             </div>
@@ -400,7 +400,7 @@ export default function Navbar() {
                             </div>
                         </div>
                     </div>
-                        <Link href="/" className="logo d-flex align-items-center">
+                        <Link href="/" className="logo d-flex align-items-center" prefetch={false}>
                             <Image src="/img/logo7.webp" width={195} height={25} alt="logo" loading="lazy" unoptimized/>
                         </Link>
 
@@ -421,23 +421,23 @@ export default function Navbar() {
                                 <i className="bi bi-house-door"></i>
                             </Link> */}
                             {token? (
-                                <Link href="/user/dashboard" className="header-action-btn">
+                                <Link href="/user/dashboard" className="header-action-btn" prefetch={false}>
                                     <i className="bi bi-person"></i>
                                 </Link>
                             ) : (
-                                <Link href="/login" className="header-action-btn">
+                                <Link href="/login" className="header-action-btn" prefetch={false}>
                                     <i className="bi bi-person"></i>
                                 </Link>
                             )}
                                     
                                 
 
-                            <Link href="/contact" className="header-action-btn d-none d-md-block">
+                            <Link href="/contact" className="header-action-btn d-none d-md-block" prefetch={false}>
                                 <i className="bi bi-heart"></i>
                                 <span className="badge">0</span>
                             </Link>
 
-                            <Link href="/cart" className="header-action-btn">
+                            <Link href="/cart" className="header-action-btn" prefetch={false}>
                                 <i className="bi bi-cart3"></i>
                                 <span className="badge">{cartCount}</span>
                             </Link>

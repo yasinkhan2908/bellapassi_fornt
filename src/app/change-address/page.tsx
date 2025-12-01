@@ -34,8 +34,8 @@ export default function AddressPage() {
                                             <h5>Select Address</h5>
                                         </div>
                                         <div className="text-right">
-                                            <Link href="/add-address" className="btn btn-primary btn-sm mb-4 text-white mr-3"><i className="bi bi-plus-lg"></i> Add Address</Link>
-                                            <Link href="/address" className="btn btn-primary btn-sm mb-4 text-white"><i className="bi bi bi-arrow-left-short"></i> Back</Link>
+                                            <Link href="/add-address" className="btn btn-primary btn-sm mb-4 text-white mr-3" prefetch={false}><i className="bi bi-plus-lg"></i> Add Address</Link>
+                                            <Link href="/address" className="btn btn-primary btn-sm mb-4 text-white" prefetch={false}><i className="bi bi bi-arrow-left-short"></i> Back</Link>
                                         </div>
                                     </div>
                                 </div>

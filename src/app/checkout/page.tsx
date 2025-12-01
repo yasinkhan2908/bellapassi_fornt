@@ -114,7 +114,7 @@ export default function Checkout() {
                       No items found in cart to checkout
                     </div>
                     <div className='cart-continue-shopping'>
-                      <Link href={'/'} className='btn btn-primary'>Continue Shopping</Link>
+                      <Link href={'/'} className='btn btn-primary' prefetch={false}>Continue Shopping</Link>
                     </div>
                   </div>
                 ) : (
@@ -214,7 +214,7 @@ export default function Checkout() {
                                 quantity: number; 
                                 }) => (
                                     <div className="order-item">
-                                        <Link target="_blank" href="" className="sc-product-thumb">  
+                                        <Link target="_blank" href="" className="sc-product-thumb" prefetch={false}>  
                                             <div className="order-item-image">
                                                 <Image height={40} width={40} loading='lazy' src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid"/>
                                             </div>
@@ -326,7 +326,7 @@ export default function Checkout() {
                         Place Order <i className="bi bi-arrow-right"></i>
                         </button>
                 ) : (
-                    <Link href="/login" className="btn btn-primary checkout-btn">
+                    <Link href="/login" className="btn btn-primary checkout-btn" prefetch={false}>
                         Place Order <i className="bi bi-arrow-right"></i>
                     </Link>
                 )}

@@ -148,7 +148,7 @@ export default function Cart() {
                       No items found in cart to checkout
                     </div>
                     <div className='cart-continue-shopping'>
-                      <Link href={'/'} className='btn btn-primary'>Continue Shopping</Link>
+                      <Link href={'/'} className='btn btn-primary' prefetch={false}>Continue Shopping</Link>
                     </div>
                   </div>
                 ) : (
@@ -308,11 +308,11 @@ export default function Cart() {
               </button>
 
               {token ? (
-                <Link href="/address" className="btn btn-primary process-to-checkout">
+                <Link href="/address" className="btn btn-primary process-to-checkout" prefetch={false}>
                   Proceed to Checkout <i className="bi bi-arrow-right"></i>
                 </Link>
               ) : (
-                <Link href="/login" className="btn btn-primary">
+                <Link href="/login" className="btn btn-primary" prefetch={false}>
                   Proceed to Checkout <i className="bi bi-arrow-right"></i>
                 </Link>
               )}

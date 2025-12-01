@@ -30,22 +30,22 @@ export const AboutStore = ({}: AboutStoreProps) => {
                   <div className="accordion-body home-accordion-body">
                     <div className="d-flex flex-col">
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           Returns &amp; Exchange
                         </Link>
                       </div>
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           Shipping Policy
                         </Link>
                       </div>
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           FAQ
                         </Link>
                       </div>
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           Terms &amp; Conditions
                         </Link>
                       </div>
@@ -64,12 +64,12 @@ export const AboutStore = ({}: AboutStoreProps) => {
                   <div className="accordion-body home-accordion-body">
                     <div className="d-flex flex-col">
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           About US
                         </Link>
                       </div>
                       <div className="p-2 text-sm">
-                        <Link href="#" className="">
+                        <Link href="#" className="" prefetch={false}>
                           Privacy Policy
                         </Link>
                       </div>
@@ -98,17 +98,17 @@ export const AboutStore = ({}: AboutStoreProps) => {
                         </p>
                         <div className="d-flex p-4 justify-around bg-white">
                           <div className="w-8">
-                            <Link href="#" target="_blank" aria-label="Follow Bella Passi on Facebook">
+                            <Link href="#" target="_blank" aria-label="Follow Bella Passi on Facebook" prefetch={false}>
                               <Image width={40} height={40} src="/img/v1/social/fb.png" alt="Follow Bella Passi on Facebook" loading="lazy"/>
                             </Link>
                           </div>
                           <div className="w-8">
-                            <Link href="#" target="_blank" aria-label="Follow Bella Passi on Instagram">
+                            <Link href="#" target="_blank" aria-label="Follow Bella Passi on Instagram" prefetch={false}>
                               <Image width={40} height={40} src="/img/v1/social/instagram.jpeg" alt="Follow Bella Passi on Instagram" loading="lazy"/>
                             </Link>
                           </div>
                           <div className="w-8">
-                            <Link href="#" target="_blank" aria-label="Join Bella Passi to get offers">
+                            <Link href="#" target="_blank" aria-label="Join Bella Passi to get offers" prefetch={false}>
                               <Image width={40} height={40} src="/img/v1/social/telegram-512.webp" alt="Join Bella Passi to get offers" loading="lazy"/>
                             </Link>
                           </div>

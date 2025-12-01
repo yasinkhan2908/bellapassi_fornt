@@ -168,9 +168,9 @@ export default function Login() {
                   )}
                   <div className="w-full flex-wrap text-gray-400 text-sm mt-2 mb-4"> 
                     By continuing, I agree to the
-                    <Link href="/terms" className="text-sss-primary-500 font-semibold mx-1">Terms of Use</Link>
+                    <Link href="/terms" className="text-sss-primary-500 font-semibold mx-1" prefetch={false}>Terms of Use</Link>
                     &amp;
-                    <Link href="/policy" className="text-sss-primary-500 font-semibold mx-1">Privacy Policy</Link>
+                    <Link href="/policy" className="text-sss-primary-500 font-semibold mx-1" prefetch={false}>Privacy Policy</Link>
                   </div>
                   <div>
                     <button 

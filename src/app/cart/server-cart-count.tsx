@@ -8,7 +8,7 @@ export async function ServerCartCount() {
 
   return (
     
-    <Link href="/cart" className="header-action-btn">
+    <Link href="/cart" className="header-action-btn" prefetch={false}>
         <i className="bi bi-cart3"></i>
         <span className="badge">{count}</span>
     </Link>

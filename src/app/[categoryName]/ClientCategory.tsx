@@ -83,7 +83,7 @@ export default function ClientCategory({
               href="#"
               className="filter-btn"
               data-bs-toggle="offcanvas"
-              data-bs-target="#filtersidebar"
+              data-bs-target="#filtersidebar" prefetch={false}
             >
               <i className="bi bi-list"></i> Filter
             </Link>
@@ -202,7 +202,7 @@ export default function ClientCategory({
                     <div className="product">
                       <Link
                         href={`/product/${product.slug}-${product.id}`}
-                        className="w-100"
+                        className="w-100" prefetch={false}
                       >
                         <Image
                           width={575}
@@ -220,7 +220,7 @@ export default function ClientCategory({
 
                     <Link
                       href={`/product/${product.slug}-${product.id}`}
-                      className="w-100"
+                      className="w-100" prefetch={false}
                     >
                       <div className="product-name-dtl">
                         <div className="title p-3 pb-1">

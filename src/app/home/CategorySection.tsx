@@ -15,7 +15,7 @@ export const CategorySection = ({ categories }: CategorySectionProps) => {
         <div className="max-w-3xl mx-auto my-8 mt-4">
           <div className="d-flex flat-title flex-row justify-content-between align-items-center px-0 wow fadeInUp mb-5">
               <h3 className="title">Season Collection</h3>
-              <Link href="shop-collection-sub.html" className="tf-btn btn-line">View all categories<i className="bi bi-arrow-right pl-2"></i></Link>
+              <Link href="shop-collection-sub.html" className="tf-btn btn-line" prefetch={false}>View all<i className="bi bi-arrow-right pl-2"></i></Link>
           </div>
           <Swiper
             breakpoints={{
@@ -34,7 +34,7 @@ export const CategorySection = ({ categories }: CategorySectionProps) => {
           >
             {categories.map((category, index) => (
               <SwiperSlide  key={category.id} className="text-center">
-                <Link href={category.seo}>
+                <Link href={category.seo} prefetch={false}>
                   <Image src={category.image} height={175} width={175} alt="Slide 1" loading="lazy" />
                   <div className="text-center category-title">{category.name}</div>
                   <div className="text-center category-subtitle">0 items</div>
