@@ -10,6 +10,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { getSessionId } from '@/lib/session';
+import { 
+  fetchCart, 
+  updateCartItem, 
+  removeFromCart 
+} from '../../lib/slices/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'; // Use typed hooks
+import { AppDispatch, RootState } from '@/lib/store';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 interface OrderDetail {
   name: string;
@@ -19,11 +28,24 @@ interface OrderDetail {
 //
 export default function Thanks() {
     const [orderDetail, setOrderDetail] = useState<any>({});
-
+    const { items, total, loading, error } = useAppSelector(state => state.cart); // Use typed selector
     const session = useSession();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
-    console.log("order id",id);
+    
+    const dispatch = useAppDispatch(); // Use typed dispatch
+    //console.log("order id",id);
+
+    const sessionId = getSessionId();
+    //console.log("login Token", session?.data);
+    var token = '';
+    if(session?.data?.user?.token)
+    {
+      token = session?.data?.user?.token;
+    }
+    else{
+      token = '';
+    }
         // ✅ Fixed useEffect hook
     useEffect(() => {
         const fetchAddress = async () => {
@@ -46,6 +68,29 @@ export default function Thanks() {
     
         if (id) fetchAddress();
         }, [id]);
+
+    useEffect(() => {
+        const loadCartData = async () => {
+          //if (!token) return;
+          
+          try {
+            console.log(sessionId);
+            console.log(token);
+              const result = await dispatch(
+                fetchCart({
+                  session_id: sessionId,
+                  token: token,
+                })
+              );
+            
+            console.log('Cart loaded successfully:', result);
+          } catch (err) {
+            console.error('Failed to load cart:', err);
+          }
+        };
+    
+        loadCartData();
+      }, [dispatch, sessionId, token]);
   return (
     <div className="d-flex h-screen mt-20 justify-center">
       <div>
@@ -72,4 +117,5 @@ export default function Thanks() {
     </div>
   );
 }
+
 
