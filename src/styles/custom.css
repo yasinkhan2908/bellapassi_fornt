@@ -1709,8 +1709,16 @@ ease;
 .cart-product-name{
     margin-bottom: 10px !important;
 }
+.cart-size-show{
+    border: 1px solid #cfcfcf;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
+    .form-select-sm{
+
+    }
     .confirm-order {
         width: 95%;
     }
