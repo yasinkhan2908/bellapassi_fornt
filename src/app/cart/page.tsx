@@ -178,7 +178,7 @@ export default function Cart() {
                           quantity: number;
                         }) => (
                       <div key={item.id}  className="card p-3 mt-3 shadow-sm">
-                        <div className="row align-items-center">
+                        <div className="row align-items-center0">
                           <div className="col-md-2 col-4">
                               <Image height={575} width={862}  src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid rounded"/>
                           </div>
