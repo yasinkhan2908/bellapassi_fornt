@@ -1708,6 +1708,7 @@ ease;
     width: 45px;
     border: 1px solid #cfcfcf;
     height: 31px;
+    border-radius: 0 !important;
 }
 .cart-product-name{
     margin-bottom: 10px !important;
