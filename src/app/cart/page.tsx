@@ -195,7 +195,7 @@ export default function Cart() {
                             <div className="d-flex gap-3">
                                 <div>
                                     <label className="form-label small mb-1 w-100">Size</label>
-                                    <span className='cart-size-show'>{item.size}</span>
+                                    <div className='cart-size-show'>{item.size}</div>
                                 </div>
 
                                 <div>
