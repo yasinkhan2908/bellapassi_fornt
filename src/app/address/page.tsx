@@ -59,8 +59,8 @@ export default function Address() {
       }
 
       try {
-        setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/default-shipping-address`, {
+        //setLoading(true);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/default-shipping-address/${sessionId}`, {
           headers: { 
             Authorization: `Bearer ${token}`,
           },
@@ -88,9 +88,31 @@ export default function Address() {
     return (
       <div className="index-page">
         <main className="main">
-          <div className="page-title light-background">
-            <div className="container d-lg-flex justify-content-between align-items-center">
-              <h1 className="mb-2 mb-lg-0">Address</h1>
+          <div className="d-flex justify-content-center mb-4 step-header">
+            <div className="step-item ">
+              <span className="step-number">1</span>
+              <span className="step-label">Cart</span>
+            </div>
+
+            <div className="step-line"></div>
+
+            <div className="step-item active">
+              <span className="step-number">2</span>
+              <span className="step-label">Address</span>
+            </div>
+
+            <div className="step-line"></div>
+
+            <div className="step-item">
+              <span className="step-number">3</span>
+              <span className="step-label">Payment</span>
+            </div>
+
+            <div className="step-line"></div>
+
+            <div className="step-item">
+              <span className="step-number">4</span>
+              <span className="step-label">Summary</span>
             </div>
           </div>
           <div className="container text-center py-5">
@@ -106,15 +128,31 @@ export default function Address() {
   return (
     <div className="index-page">
       <main className="main">
-        <div className="page-title light-background">
-          <div className="container d-lg-flex justify-content-between align-items-center">
-            <h1 className="mb-2 mb-lg-0">Address</h1>
-            <nav className="breadcrumbs">
-              <ol>
-                <li><a href="/">Home</a></li>
-                <li className="current">Address</li>
-              </ol>
-            </nav>
+        <div className="d-flex justify-content-center mb-4 step-header">
+          <div className="step-item ">
+            <span className="step-number">1</span>
+            <span className="step-label">Cart</span>
+          </div>
+
+          <div className="step-line"></div>
+
+          <div className="step-item active">
+            <span className="step-number">2</span>
+            <span className="step-label">Address</span>
+          </div>
+
+          <div className="step-line"></div>
+
+          <div className="step-item">
+            <span className="step-number">3</span>
+            <span className="step-label">Payment</span>
+          </div>
+
+          <div className="step-line"></div>
+
+          <div className="step-item">
+            <span className="step-number">4</span>
+            <span className="step-label">Summary</span>
           </div>
         </div>
         
@@ -225,12 +263,20 @@ export default function Address() {
                                         <span>Subtotal</span>
                                         <span>₹ {total.toFixed(2)}</span>
                                     </div>
+                                    <div className="order-subtotal d-flex justify-content-between">
+                                        <span>Tax</span>
+                                        <span>₹ 0.00</span>
+                                    </div>
+                                    <div className="order-subtotal d-flex justify-content-between">
+                                        <span>Discount</span>
+                                        <span>₹ 0.00</span>
+                                    </div>
                                     <div className="order-total d-flex justify-content-between">
                                         <span>Total</span>
                                         <span>₹ {total.toFixed(2)}</span>
                                     </div>
                                 </div>
-                                <div className="cart">
+                                {/* <div className="cart">
                                     <div className="cart-summary">
                                         <div className="checkout-button">
                                             <Link href="/checkout" className="btn btn-accent text-white w-100">
@@ -244,7 +290,7 @@ export default function Address() {
                                             </Link>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="secure-checkout">
                                     <div className="secure-checkout-header">
                                         <i className="bi bi-shield-lock"></i>
@@ -265,6 +311,26 @@ export default function Address() {
               </div>
             </div>
         </section>
+
+        {items.length > 0 && (
+            <div className="add-to-cart-detail mt-1 text-center">
+              <div className="detail-cart-btn">
+                <button className="btn btn-primary buy-now-btn" type="button">
+                  ₹ {total.toFixed(2)}
+                </button>
+  
+                {token ? (
+                  <Link href="/checkout" className="btn btn-primary process-to-checkout">
+                    Proceed to Checkout <i className="bi bi-arrow-right"></i>
+                  </Link>
+                ) : (
+                  <Link href="/login" className="btn btn-primary">
+                    Proceed to Checkout <i className="bi bi-arrow-right"></i>
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
       </main>
     </div>    
   );

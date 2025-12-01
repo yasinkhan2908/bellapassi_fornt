@@ -48,10 +48,10 @@ export default async function RootLayout({ children }: { children: ReactNode  })
               <NextTopLoader color="#29d" height={3} />
               <Navbar />
 
-              <main className="container py-4">
+              
                 <TopLoader />   {/* enable top loading bar */}
                 {children}
-              </main>
+              
               <Toaster position="top-right" reverseOrder={false} />
               <Footer />
             </Suspense>

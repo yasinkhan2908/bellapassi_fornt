@@ -27,7 +27,7 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 import { useAppDispatch } from "../../../lib/hooks";
 import { increment, decrement } from '@/lib/slices/counterSlice';
-import { addToCart } from '@/lib/slices/cartSlice';
+import { addToCart, fetchCart } from '@/lib/slices/cartSlice';
 import { getSessionId } from "@/lib/session";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -64,7 +64,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const images                          = productdetail.productimages;
     const [size, setSize]                 = useState();
     const [isLoading, setIsLoading] = useState(false);
-    
+    const [inCart, setInCart] = useState(false);
 
     //add to cart data
     const productId  = productdetail.id;
@@ -104,8 +104,18 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             ).unwrap();  // waits for API success
 
             toast.success("Added to cart");
-            router.refresh();
+            router.refresh(); 
+
+            const result = await dispatch(
+                            fetchCart({
+                                session_id: sessionId,
+                                token: session?.data?.user?.token,
+                            })
+                        ).unwrap();
+
             setIsLoading(false);
+            setInCart(true);  
+
         // } catch (error) {
         //     toast.error("Something went wrong");
         // } finally {
@@ -122,6 +132,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
     };
 
+    const handleSizeClick = (value: SetStateAction<undefined>) => {
+        setSize(value);
+        setInCart(false);  
+    };
 
     //console.log("product quantity",quantity);
 
@@ -274,7 +288,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                         <div
                                         key={attr.id}
                                         className={`size-option ${size === attr.size ? "active" : ""}`}
-                                        onClick={() => setSize(attr.size)}
+                                        onClick={() => handleSizeClick(attr.size)}
                                         >
                                         {attr.size}
                                         </div>
@@ -400,7 +414,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         </main>
         <div className="add-to-cart-detail mt-1 text-center">
             <div className="detail-cart-btn">
-                <button className="btn btn-primary" type="button" onClick={() => handleAddToCart()}>
+                {/* <button className="btn btn-primary" type="button" onClick={() => handleAddToCart()} disabled={isLoading}>
                     <i className="bi bi-cart mr-2"></i>
                     {isLoading ? (
                         <>
@@ -408,7 +422,25 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                         </>
                       ) : 'Add to Cart'}
                     
-                </button>
+                </button> */}
+                {inCart ? (
+                    <button 
+                        className="btn btn-primary" 
+                        onClick={() => router.push("/cart")}
+                    >
+                       <i className="bi bi-cart mr-2"></i> Go to Cart
+                    </button>
+                    ) : (
+                    <button className="btn btn-primary" type="button" onClick={() => handleAddToCart()} disabled={isLoading}>
+                    <i className="bi bi-cart mr-2"></i>
+                        {isLoading ? (
+                            <>
+                            Processing...
+                            </>
+                        ) : 'Add to Cart'}
+                        
+                    </button>
+                    )}
                 {/* <button className="btn btn-primary buy-now-btn" type="button">
                     <i className="bi bi-cart mr-2"></i>Buy Now
                 </button>
