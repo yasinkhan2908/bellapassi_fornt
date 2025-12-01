@@ -14,6 +14,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'; // Use typed hooks
 import { getSessionId } from '@/lib/session';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function Cart() {
   const router = useRouter();
@@ -107,6 +109,21 @@ export default function Cart() {
     <>
     <div className="index-page">
         <main className="main">
+          
+          {items.length === 0 ? (
+            <div className='w-100 empty-cart text-center'>
+              <div className='cart-icon'>
+                <i className='bi bi-cart'></i>
+              </div>
+              <div className='empty-cart-text'>
+                No items found in cart to checkout
+              </div>
+              <div className='cart-continue-shopping'>
+                <Link href={'/'} className='btn btn-primary' prefetch={false}>Continue Shopping</Link>
+              </div>
+            </div>
+          ) : (
+            <>
           <section id="cart" className="cart section">
             <div className="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
               <div className="row g-4">
@@ -139,40 +156,14 @@ export default function Cart() {
                 </div>
 
 
-                {items.length === 0 ? (
-                  <div className='w-100 empty-cart text-center'>
-                    <div className='cart-icon'>
-                      <i className='bi bi-cart'></i>
-                    </div>
-                    <div className='empty-cart-text'>
-                      No items found in cart to checkout
-                    </div>
-                    <div className='cart-continue-shopping'>
-                      <Link href={'/'} className='btn btn-primary' prefetch={false}>Continue Shopping</Link>
-                    </div>
-                  </div>
-                ) : (
-                  <>
                     <div className="col-lg-8 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                      <div className="cart-items">
-                        <div className="cart-header d-none d-lg-block">
-                          <div className="row align-items-center gy-4">
-                            <div className="col-lg-6">
-                              <h5>Product</h5>
-                            </div>
-                            <div className="col-lg-2 text-center">
-                              <h5>Price</h5>
-                            </div>
-                            <div className="col-lg-2 text-center">
-                              <h5>Quantity</h5>
-                            </div>
-                            <div className="col-lg-2 text-center">
-                              <h5>Total</h5>
-                            </div>
-                          </div>
-                        </div>
-                        {items.map((item: {
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4 className="fw-bold">Shopping cart <span className="text-muted">({items.length} Items)</span></h4>
+                    </div>
+                    {items.map((item: {
                           product: {
+                            mrp: ReactNode;
+                            discount: ReactNode;
                             product_image: { image: string | StaticImport; };
                             product_name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined;
                             price: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined;
@@ -181,103 +172,103 @@ export default function Cart() {
                           id: any;
                           quantity: number;
                         }) => (
-                          <div key={item.id} className="cart-item aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                            <div className="row align-items-center gy-4">
-                              <div className="col-lg-6 col-12 mb-3 mb-lg-0">
-                                <div className="product-info d-flex align-items-center">
-                                  <div className="product-image">
-                                    <Image height={40} width={40} src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid" loading="lazy" />
-                                  </div>
-                                  <div className="product-details">
-                                    <h6 className="product-title">{item.product.product_name}</h6>
-                                    <div className="product-meta">
-                                      <span className="product-size">Size: {item.size}</span>
+                      <div key={item.id}  className="card p-3 mt-3 shadow-sm">
+                        <div className="row align-items-center">
+                          <div className="col-md-2 col-4">
+                              <Image height={575} width={862}  src={item?.product?.product_image?.image ?? ''} alt={item.product.product_name as string} className="img-fluid rounded"/>
+                          </div>
+
+                          <div className="col-md-6 col-8">
+                            <h5 className="mb-1 fw-semibold">{item.product.product_name}</h5>
+                            <div className="d-flex align-items-center mb-1">
+                                <span className="fs-5 fw-bold text-dark">₹ {item.product.price}</span>
+                                <span className="text-decoration-line-through text-muted ms-2">₹ {item.product.mrp}</span>
+                                <span className="badge bg-danger text-white ms-2">{item.product.discount}% off</span>
+                            </div>
+                            
+
+                            <div className="d-flex gap-3">
+                                <div>
+                                    <label className="form-label small mb-1">Size</label>
+                                    <select className="form-select form-select-sm">
+                                        <option>{item.size}</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="form-label small mb-1 w-100">Qty</label>
+                                    <div className="quantity-selector">
+                                      <button
+                                        className="quantity-btn decrease"
+                                        onClick={() => handleQuantityChange(item.id, Number(item.quantity) - Number(1))}
+                                        disabled={item.quantity <= 1}
+                                      >
+                                        <i className="bi bi-dash"></i>
+                                      </button>
+                                      <input
+                                        type="number"
+                                        className="quantity-input"
+                                        value={item.quantity}
+                                        min="1"
+                                        max="10"
+                                        readOnly />
+                                      <button
+                                        className="quantity-btn increase"
+                                        onClick={() => handleQuantityChange(item.id, Number(item.quantity) + Number(1))}
+                                      >
+                                        <i className="bi bi-plus"></i>
+                                      </button>
                                     </div>
-                                    <button
-                                      className="remove-item btn btn-danger"
-                                      type="button"
-                                      onClick={() => handleRemoveItem(item.id, sessionId, token)}
-                                    >
-                                      <i className="bi bi-trash"></i> Remove
-                                    </button>
-                                  </div>
                                 </div>
-                              </div>
-                              <div className="col-12 col-lg-2 text-center">
-                                <div className="price-tag">
-                                  <span className="current-price">₹ {item.product.price}</span>
-                                </div>
-                              </div>
-                              <div className="col-12 col-lg-2 text-center">
-                                <div className="quantity-selector">
-                                  <button
-                                    className="quantity-btn decrease"
-                                    onClick={() => handleQuantityChange(item.id, Number(item.quantity) - Number(1))}
-                                    disabled={item.quantity <= 1}
-                                  >
-                                    <i className="bi bi-dash"></i>
-                                  </button>
-                                  <input
-                                    type="number"
-                                    className="quantity-input"
-                                    value={item.quantity}
-                                    min="1"
-                                    max="10"
-                                    readOnly />
-                                  <button
-                                    className="quantity-btn increase"
-                                    onClick={() => handleQuantityChange(item.id, Number(item.quantity) + Number(1))}
-                                  >
-                                    <i className="bi bi-plus"></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <div className="col-12 col-lg-2 text-center mt-3 mt-lg-0">
-                                <div className="item-total mt-4">
-                                  <span>₹ {(item.quantity * Number(item.product.price)).toFixed(2)}</span>
-                                </div>
-                              </div>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                      <div className="cart-actions">
-                        <div className="row g-3">
-                          <div className="col-lg-6 col-md-6">
-                            <div className="coupon-form">
-                              <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Coupon code" />
-                                <button className="btn btn-accent" type="button">Apply</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 text-md-end">
-                            <button className="btn btn-outline-danger">
-                              <i className="bi bi-trash"></i> Clear
-                            </button>
+                          <div className="col-md-4 text-end mt-3 mt-md-0">
+                              <span className="cart-product-remove" onClick={() => handleRemoveItem(item.id, sessionId, token)}>
+                                <FontAwesomeIcon icon={faXmark} className="text-red-500 text-2xl ms-4"/>
+                              </span>
                           </div>
                         </div>
                       </div>
+                    ))}  
+                      
                     </div>
 
                     <div className="col-lg-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                      <div className="cart-summary">
-                        <h4 className="summary-title">Order Summary</h4>
-                        <div className="summary-item">
-                          <span className="summary-label">Subtotal</span>
-                          <span className="summary-value">₹ {total.toFixed(2)}</span>
+                      <h4 className="summary-title mb-4">Order Summary</h4>
+                      <div className="cart-summary mb-3">                        
+                        <div className="cart-detail">
+                          <div className="summary-item">
+                            <div className="w-100">
+                              <div className="coupons-base-header">Coupons</div>
+                              <div className="coupons-base-content">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" className="coupons-base-couponIcon"><g fill="none" fill-rule="evenodd" transform="rotate(45 6.086 5.293)"><path stroke="#000" d="M17.5 10V1a1 1 0 0 0-1-1H5.495a1 1 0 0 0-.737.323l-4.136 4.5a1 1 0 0 0 0 1.354l4.136 4.5a1 1 0 0 0 .737.323H16.5a1 1 0 0 0 1-1z"></path><circle cx="5.35" cy="5.35" r="1.35" fill="#000" fill-rule="nonzero"></circle></g></svg>
+                                <div className="coupons-base-label ">Apply Coupons</div>
+                                <button font-size="body3" font-weight="bold" role="button" className="css-15k6cs5">
+                                  <div className="css-xjhrni">APPLY</div>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="summary-item">
-                          <span className="summary-label">Tax</span>
-                          <span className="summary-value">₹ 0.00</span>
-                        </div>
-                        <div className="summary-item discount">
-                          <span className="summary-label">Discount</span>
-                          <span className="summary-value">₹ 0.00</span>
-                        </div>
-                        <div className="summary-total">
-                          <span className="summary-label">Total</span>
-                          <span className="summary-value">₹ {total.toFixed(2)}</span>
+                      </div>
+                      <div className="cart-summary mt-2">                        
+                        <div className="cart-detail">
+                          <div className="summary-item">
+                            <span className="summary-label">Subtotal</span>
+                            <span className="summary-value">₹ {total.toFixed(2)}</span>
+                          </div>
+                          <div className="summary-item">
+                            <span className="summary-label">Tax</span>
+                            <span className="summary-value">₹ 0.00</span>
+                          </div>
+                          <div className="summary-item discount">
+                            <span className="summary-label">Discount</span>
+                            <span className="summary-value">₹ 0.00</span>
+                          </div>
+                          <div className="summary-total">
+                            <span className="summary-label">Total</span>
+                            <span className="summary-value">₹ {total.toFixed(2)}</span>
+                          </div>
                         </div>
                         
                           
@@ -294,12 +285,14 @@ export default function Cart() {
                         </div>
                       </div>
                     </div>
-                  </>
-                )}
+                  
               </div>
             </div>
           </section>
+          </>
+          )}
         </main>
+        
         {items.length > 0 && (
           <div className="add-to-cart-detail mt-1 text-center">
             <div className="detail-cart-btn">

@@ -17,6 +17,8 @@ export interface CartItem {
     id: number;
     product_name: string;
     price: string | number;
+    mrp: string | number;
+    discount: string | number;
     product_image: {
       image: string;
     };

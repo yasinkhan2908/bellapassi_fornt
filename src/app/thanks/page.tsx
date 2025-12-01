@@ -12,9 +12,7 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { getSessionId } from '@/lib/session';
 import { 
-  fetchCart, 
-  updateCartItem, 
-  removeFromCart 
+  fetchCart
 } from '../../lib/slices/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'; // Use typed hooks
 import { AppDispatch, RootState } from '@/lib/store';

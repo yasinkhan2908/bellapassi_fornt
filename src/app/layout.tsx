@@ -12,7 +12,7 @@ import '../styles/assets/vendor/swiper/swiper-bundle.min.css';
 import "../styles/color.css";
 import "../styles/custom.css";
 import "../styles/main.css";
-
+import "./fontawesome";
 
 import BootstrapClient from "@/components/BootstrapClient"; //bootstrap bundle js load
 
