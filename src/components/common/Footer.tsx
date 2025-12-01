@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+
 export default function Footer() {
   const session = useSession();
   const token = session?.data?.user.token ?? null;

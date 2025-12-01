@@ -1706,6 +1706,9 @@ ease;
     width: 45px;
     text-align: center;
 }
+.cart-product-name{
+    margin-bottom: 10px !important;
+}
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
     .confirm-order {

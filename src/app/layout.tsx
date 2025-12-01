@@ -13,6 +13,7 @@ import "../styles/color.css";
 import "../styles/custom.css";
 import "../styles/main.css";
 import "./fontawesome";
+import { headers } from "next/headers";
 
 import BootstrapClient from "@/components/BootstrapClient"; //bootstrap bundle js load
 
@@ -29,16 +30,23 @@ import Providers from "./providers";
 import ReduxProvider from '@/components/ReduxProvider';
 import { useSelector } from "react-redux";
 
-
 export const metadata = {
   title: 'Bella Passi - Online Fashion | Best Fashion Deals In India',
   description: 'Affordable fashion deals for all seasons and styles',
 };
 
 export default async function RootLayout({ children }: { children: ReactNode  }) {
+  const h = await headers();
+  const pathname = h.get("x-pathname") || "/";
+
+  const bodyClass =
+    pathname === "/" ? "home"
+      : pathname.replace("/", "").replace(/\//g, "-");
+
+      console.log("BODY CLASS:", bodyClass);
   return (
     <html lang="en">
-      <body>
+      <body className={bodyClass}>
         <ReduxProvider>
           <Providers>
             <Suspense fallback={null}>

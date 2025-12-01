@@ -107,7 +107,12 @@ export default function Cart() {
 
   return (    
     <>
-    <div className="index-page">
+    <style jsx>{`
+  footer {
+    display: none !important;
+  }
+`}</style>
+    <div className="index-page cart-page">
         <main className="main">
           
           {items.length === 0 ? (
@@ -179,7 +184,7 @@ export default function Cart() {
                           </div>
 
                           <div className="col-md-6 col-8">
-                            <h5 className="mb-1 fw-semibold">{item.product.product_name}</h5>
+                            <div className="mb-1 fw-semibold cart-product-name">{item.product.product_name}</div>
                             <div className="d-flex align-items-center mb-1">
                                 <span className="fs-5 fw-bold text-dark">₹ {item.product.price}</span>
                                 <span className="text-decoration-line-through text-muted ms-2">₹ {item.product.mrp}</span>
