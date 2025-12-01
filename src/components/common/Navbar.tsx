@@ -49,7 +49,7 @@ export default function Navbar() {
     //
     useEffect(() => {
         const loadCartData = async () => {
-          if (!token) return;
+          //if (!token) return;
           
           try {
             const result = await dispatch(
