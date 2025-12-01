@@ -1695,6 +1695,7 @@ ease;
     align-items: center;
     transition: background-color .3s;
     display: flex;
+    background-color: #ff3f6cb3 !important;
 }
 .quantity-selector {
     border-radius: .375rem;
@@ -1703,8 +1704,10 @@ ease;
     overflow: hidden;
 }
 .quantity-input{
-    width: 45px;
     text-align: center;
+    width: 45px;
+    border: 1px solid #cfcfcf;
+    height: 31px;
 }
 .cart-product-name{
     margin-bottom: 10px !important;
