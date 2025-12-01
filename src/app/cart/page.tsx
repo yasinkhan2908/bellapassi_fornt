@@ -312,7 +312,7 @@ export default function Cart() {
                   Proceed to Checkout <i className="bi bi-arrow-right"></i>
                 </Link>
               ) : (
-                <Link href="/login" className="btn btn-primary" prefetch={false}>
+                <Link href="/login" className="btn btn-primary" prefetch={false} style={{ marginBottom: 10 }}>
                   Proceed to Checkout <i className="bi bi-arrow-right"></i>
                 </Link>
               )}
