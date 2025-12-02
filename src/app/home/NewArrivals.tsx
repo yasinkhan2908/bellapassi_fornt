@@ -120,6 +120,13 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
                                         }}
                                         />
                                     </Link>
+                                    
+                                    <div className="rating-box">
+                                        <span className="rating">4.5</span>
+                                        <i className="bi bi-star-fill star-icon"></i>
+                                        <span className="divider">|</span>
+                                        <span className="count">20</span>
+                                    </div>
                                     {/* <ProductQuickView product={product} /> */}
                                     </div>
 
