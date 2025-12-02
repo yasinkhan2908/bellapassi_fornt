@@ -65,6 +65,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const [size, setSize]                 = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [inCart, setInCart] = useState(false);
+    
 
     //add to cart data
     const productId  = productdetail.id;
@@ -296,7 +297,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                 </div>
                             </div>
 
-                            <div className="product-quantity mb-4">
+                            {/* <div className="product-quantity mb-4">
                                 <h6 className="option-title">Quantity:</h6>
                                 <div className="quantity-selector">
                                 <button className="quantity-btn decrease" onClick={decreaseQty}>
@@ -307,7 +308,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                     <i className="bi bi-plus"></i>
                                 </button>
                                 </div>
-                            </div>
+                            </div> */}
 
                 
                             {/* <div className="detail-cart-btn d-flex gap-2">

@@ -5,6 +5,8 @@ import Image from "next/image";
 // import FilterSidebar from "../components/filter/FilterSidebar";
 import ProductQuickView from "../product/ProductQuickView";
 
+const truncate = (text: string, max: number) => 
+  text.length > max ? text.slice(0, max) + "..." : text;
 export default function ClientCategory({
   categoryName,
   products,
@@ -229,7 +231,7 @@ export default function ClientCategory({
                     >
                       <div className="product-name-dtl">
                         <div className="title p-3 pb-1">
-                          {product.product_name}
+                          {truncate(product.product_name, 25)}
                         </div>
                         <div className="d-flex py-1 price p-3 pt-0">
                           <p className="mr-2 font-semibold mb-0">

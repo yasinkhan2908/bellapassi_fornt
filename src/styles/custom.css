@@ -1801,6 +1801,9 @@ ease;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
+    .cart-product-name{
+        font-size: 14px;
+    }
     .container .product-item .rating-box{
         left: 3px;
     }
