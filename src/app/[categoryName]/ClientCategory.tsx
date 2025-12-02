@@ -196,8 +196,7 @@ export default function ClientCategory({
               return (
                 <div
                   key={product.id}
-                  className="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3"
-                >
+                  className="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3 col-6">
                   <div className="w-100 product-sec">
                     <div className="product">
                       <Link
