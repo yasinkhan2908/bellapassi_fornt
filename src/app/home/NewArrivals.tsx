@@ -80,7 +80,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
                 <p className="text-center mt-2 p-0">Shop the Latest Styles: Stay ahead of the curve with our newest arrivals</p>
             </div>
             <div className="new-arrivel-products">
-                <div className="row">
+                <div className="row gx-sm-3 gx-0">
                     {products.map((product) => {
                             // 🎨 Generate a random color for each product image
                             // 🎨 Define your 8 light colors
@@ -100,7 +100,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
                             return (
                                 <div
                                 key={product.id}
-                                className="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3"
+                                className="col-lg-3 col-sm-6 col-6 px-product-item product-item my-3"
                                 >
                                 <div className="w-100 product-sec">
                                     <div className="product">

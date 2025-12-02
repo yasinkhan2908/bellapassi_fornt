@@ -1720,6 +1720,12 @@ ease;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
+    .container .product-item .price {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-weight: 600;
+        padding: 0 5px !important;
+    }
     .confirm-order {
         width: 95%;
     }
@@ -1791,6 +1797,11 @@ ease;
     .container .product-item .title {
         font-size: 0.95rem;
         letter-spacing: normal;
+        padding: 5px 5px !important;
+    }
+    .px-product-item{
+        padding-left: 5px !important;
+        padding-right: 5px !important;
     }
     .container .product-item .product {
         width: 100%;

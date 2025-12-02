@@ -177,7 +177,7 @@ export default function ClientCategory({
           </div>
 
           {/* Product Grid */}
-          <div className="row">
+          <div className="row gx-sm-3 gx-0">
             {allProducts.map((product) => {
               // const lightColors = [
               //   "#f9c0c847",
@@ -196,7 +196,7 @@ export default function ClientCategory({
               return (
                 <div
                   key={product.id}
-                  className="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3 col-6">
+                  className="col-lg-3 col-sm-6 col-6 px-product-item product-item my-3">
                   <div className="w-100 product-sec">
                     <div className="product">
                       <Link
