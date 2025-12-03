@@ -31,7 +31,7 @@ export const addToCart = createAsyncThunk(
                             Authorization: `Bearer ${payload.token}`,
                         }
                       );
-        console.log("add to cart : ",response);
+        //console.log("add to cart : ",response);
         localStorage.setItem('cart_items',response.data.totalCount);  
         // let items = response.data; 
         //toast.success('Product successfully add on cart!');
@@ -68,7 +68,7 @@ export const fetchCart = createAsyncThunk<
   }
 >('cart/fetchCart', async (payload, { rejectWithValue }) => {
   try {
-    console.log("payload session_id = ",payload.session_id);
+    //console.log("payload session_id = ",payload.session_id);
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/cart-data`, {
       headers: {
           Authorization: `Bearer ${payload.token}`,
@@ -79,7 +79,7 @@ export const fetchCart = createAsyncThunk<
         session_id: payload.session_id
       }
     });
-    console.log("fetch response",response.data);
+    //console.log("fetch response",response.data);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -134,7 +134,7 @@ export const removeFromCart = createAsyncThunk(
         session_id: payload.session_id,
         Authorization: `Bearer ${payload.token}`,
       });
-      console.log("totalCount : ",response.data.totalCount);
+      //console.log("totalCount : ",response.data.totalCount);
       localStorage.setItem('cart_items',response.data.totalCount);  
       return response.data;
     } catch (error: any) {

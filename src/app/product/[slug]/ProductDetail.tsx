@@ -31,6 +31,8 @@ import { addToCart, fetchCart } from '@/lib/slices/cartSlice';
 import { getSessionId } from "@/lib/session";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import * as bootstrap from "bootstrap";
 
 interface ImageGalleryProps {
   images: {
@@ -65,7 +67,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const [size, setSize]                 = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [inCart, setInCart] = useState(false);
-    
+    const [showSizeModal, setShowSizeModal] = useState(false);
 
     //add to cart data
     const productId  = productdetail.id;
@@ -86,43 +88,50 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     //console.log("sessionId",sessionId);
     const handleAddToCart = async () => {
         if (!size) {
-            toast.error('Please select a size!');
+            const modalElement = document.getElementById("sizeModal");
+            if (modalElement) {
+                // get existing instance or create it once
+                const modal = bootstrap.Modal.getInstance(modalElement)
+                            || new bootstrap.Modal(modalElement);
+                modal.show();
+            }
             return;
         }
 
         setIsLoading(true);
 
-        // try {
-            await dispatch(
-                addToCart({
-                    product_id: productdetail.id,
-                    category_id: productdetail.category_id,
-                    size: size,
-                    quantity: quantity,
-                    session_id: sessionId,
-                    token: session?.data?.user?.token,
-                })
-            ).unwrap();  // waits for API success
+        await dispatch(
+            addToCart({
+                product_id: productdetail.id,
+                category_id: productdetail.category_id,
+                size: size,
+                quantity: quantity,
+                session_id: sessionId,
+                token: session?.data?.user?.token,
+            })
+        ).unwrap();
 
-            toast.success("Added to cart");
-            router.refresh(); 
+        // <-- hide after success
+        const modalElement = document.getElementById("sizeModal");
+        if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
+        }
 
-            const result = await dispatch(
-                            fetchCart({
-                                session_id: sessionId,
-                                token: session?.data?.user?.token,
-                            })
-                        ).unwrap();
+        toast.success("Added to cart");
+        router.refresh();
 
-            setIsLoading(false);
-            setInCart(true);  
+        await dispatch(
+            fetchCart({
+                session_id: sessionId,
+                token: session?.data?.user?.token,
+            })
+        ).unwrap();
 
-        // } catch (error) {
-        //     toast.error("Something went wrong");
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        setIsLoading(false);
+        setInCart(true);
     };
+
 
 
     const increaseQty = () => {
@@ -136,6 +145,16 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const handleSizeClick = (value: SetStateAction<undefined>) => {
         setSize(value);
         setInCart(false);  
+    };
+
+    
+
+    const handleBlankSizeClick = (value: SetStateAction<undefined>) => {
+        setSize(value);
+        //setInCart(false);
+        setTimeout(() => {
+            handleAddToCart();
+        }, 1000);
     };
 
     //console.log("product quantity",quantity);
@@ -296,6 +315,49 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                     ))}
                                 </div>
                             </div>
+
+                            
+                                <div className="modal fade" id="sizeModal" aria-hidden="true">
+                                    <div className="modal-dialog modal-dialog-centered">
+                                        <div className="modal-content">
+
+                                        <div className="modal-header">
+                                            {/* <h5 className="modal-title">Select Size</h5> */}
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <div className="modal-body">
+                                            <p>Please select a size before adding the product to your cart.</p>
+
+                                            <div className="size-options">
+                                                {productdetail.attributes?.map((attr: any) => (
+                                                    <div
+                                                    key={attr.id}
+                                                    className={`size-option ${size === attr.size ? "active" : ""}`}
+                                                    onClick={() => handleBlankSizeClick(attr.size)}
+                                                    >
+                                                    {attr.size}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="modal-footer">
+                                            <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            data-bs-dismiss="modal"
+                                            >
+                                            OK
+                                            </button>
+                                        </div> */}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+
 
                             {/* <div className="product-quantity mb-4">
                                 <h6 className="option-title">Quantity:</h6>

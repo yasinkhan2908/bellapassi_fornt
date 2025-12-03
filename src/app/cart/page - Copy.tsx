@@ -94,7 +94,7 @@ export default function Cart() {
             })
           ).unwrap();
         
-        console.log('Cart loaded successfully:', result);
+        //console.log('Cart loaded successfully:', result);
       } catch (err) {
         console.error('Failed to load cart:', err);
       }

@@ -72,8 +72,8 @@ export default function Thanks() {
           //if (!token) return;
           
           try {
-            console.log(sessionId);
-            console.log(token);
+            // console.log(sessionId);
+            // console.log(token);
               const result = await dispatch(
                 fetchCart({
                   session_id: sessionId,
@@ -81,7 +81,7 @@ export default function Thanks() {
                 })
               );
             
-            console.log('Cart loaded successfully:', result);
+            //console.log('Cart loaded successfully:', result);
           } catch (err) {
             console.error('Failed to load cart:', err);
           }

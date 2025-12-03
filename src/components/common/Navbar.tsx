@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef  } from "react";
 import { useSession } from "next-auth/react";
 import type { RootState } from "../../lib/store";
 import { useSelector } from "react-redux";
@@ -12,6 +12,9 @@ import {
   removeFromCart 
 } from '../../lib/slices/cartSlice';
 import { getSessionId } from '@/lib/session';
+import { usePathname } from "next/navigation";
+
+
 export default function Navbar() {
     const dispatch = useAppDispatch(); // Use typed dispatch
     
@@ -35,9 +38,12 @@ export default function Navbar() {
     const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
     const { items, total, loading, error } = useAppSelector(state => state.cart); // Use typed selector
     const cartCount = items.length;
+
+    const offcanvasRef = useRef<HTMLDivElement>(null);
+    
     //
     const sessionId = getSessionId();
-    console.log("sessionId", sessionId);
+    //console.log("sessionId", sessionId);
     var token = '';
     if(session?.data?.user?.token)
     {
@@ -103,16 +109,40 @@ export default function Navbar() {
         //setMainCategory(data.main_category);
         //console.log(data.data.categories);
         setSelectedCategory(data.categories);
+        // Keep the offcanvas open after clicking
+        if (offcanvasRef.current) {
+            const offcanvas = (window as any).bootstrap?.Offcanvas.getInstance(offcanvasRef.current);
+            // Don't hide it - keep it open
+        }
     };
 
     const closeSidebar = () => {
-        const sidebar = document.getElementsByClassName("leftsidebar");
-        if (!sidebar)
-        {
+        // Get the offcanvas element
+        const sidebar = document.getElementById('sidebar');
+        
+        if (!sidebar) {
+            console.error('Sidebar element not found');
             return;
         }
-        const offcanvas = (window as any).bootstrap?.Offcanvas.getInstance(sidebar);
-        offcanvas?.hide();
+        
+        // Use Bootstrap's API to hide the offcanvas
+        const offcanvas = (window as any).bootstrap?.Offcanvas?.getInstance(sidebar);
+        
+        if (offcanvas) {
+            offcanvas.hide();
+        } else {
+            // Fallback: manually hide it if Bootstrap instance not found
+            sidebar.classList.remove('show');
+            document.body.classList.remove('offcanvas-backdrop');
+            // const backdrop = document.querySelector('.offcanvas-backdrop');
+            // if (backdrop) {
+            //     backdrop.remove();
+            // }
+            setTimeout(() => {
+                const backdrop = document.querySelector(".offcanvas-backdrop");
+                if (backdrop) backdrop.remove();
+            }, 50);
+        }
     };
 
   return (
@@ -124,7 +154,7 @@ export default function Navbar() {
                     <Link href="#" className="logo d-flex align-items-center left-list-icon"  data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" prefetch={false}>
                         <i className="bi bi-list"></i>
                     </Link>
-                    <div className="offcanvas offcanvas-start leftsidebar " id="sidebar" aria-labelledby="sidebarLabel">
+                    <div  className="offcanvas offcanvas-start leftsidebar " id="sidebar" aria-labelledby="sidebarLabel">
                         <div className="left-sidebar-category">
                             <ul className="nav nav-tabs " id="myTab" role="tablist">
                                 {maincategorys.map((category, index) => (
@@ -199,17 +229,17 @@ export default function Navbar() {
                         <div className="h-6 bg-gray-100"></div>
                         <div className="d-flex p-4 justify-around bg-white">
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Follow on Facebook" prefetch={false}>
+                                <Link href="#" onClick={closeSidebar}  target="_blank" aria-label="Follow on Facebook" prefetch={false}>
                                     <Image width={32} height={32} src="/img/fb.png" className="img-fluid" alt="Follow Bella Passi on Facebook" loading="lazy"/>
                                 </Link>
                             </div>
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Follow on Instagram" prefetch={false}>
+                                <Link href="#" onClick={closeSidebar}  target="_blank" aria-label="Follow on Instagram" prefetch={false}>
                                     <Image width={32} height={32} src="/img/instagram.jpeg" className="img-fluid" alt="Follow Bella Passi on Instagram" loading="lazy"/>
                                 </Link>
                             </div>
                             <div className="w-8">
-                                <Link href="#" target="_blank" aria-label="Join Bella Passi to get offers" prefetch={false}>
+                                <Link href="#" onClick={closeSidebar}  target="_blank" aria-label="Join Bella Passi to get offers" prefetch={false}>
                                     <Image width={32} height={32} src="/img/telegram-512.webp" alt="" className="img-fluid"  aria-label="Join to get offers" loading="lazy"/>
                                 </Link>
                             </div>
@@ -221,10 +251,10 @@ export default function Navbar() {
                             <div className="h-6 bg-gray-100 leftside-sigh">
                                 <div className="d-flex justify-around text-sss-primary-500">
                                     <div className="underline-offset-4">
-                                        <Link href="/login" className="" prefetch={false}> Sign In</Link>
+                                        <Link href="/login" onClick={closeSidebar} className="" prefetch={false}> Sign In</Link>
                                     </div>
                                     <div className="underline-offset-4">
-                                        <Link href="/login" className="" prefetch={false}> Login</Link>
+                                        <Link href="/login" onClick={closeSidebar} className="" prefetch={false}> Login</Link>
                                     </div>
                                 </div>
                             </div> 
@@ -232,7 +262,7 @@ export default function Navbar() {
                             <div className="h-6 bg-gray-100 leftside-sigh">
                                 <div className="d-flex justify-around text-sss-primary-500">
                                     <div className="underline-offset-4">
-                                        <Link href="/user/dashboard" className="" prefetch={false}> My Account</Link>
+                                        <Link href="/user/dashboard" onClick={closeSidebar} className="" prefetch={false}> My Account</Link>
                                     </div>
                                 </div>
                             </div> 
@@ -244,21 +274,21 @@ export default function Navbar() {
                             <div className="d-flex flex-row py-2.5">
                                 <div>
                                     {token? (
-                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                        <Link href="/user/dashboard" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-house-door"></i>
                                         </Link>
                                     ) : (
-                                        <Link href="/login" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                        <Link href="/login" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-house-door"></i>
                                         </Link>
                                     )}
                                 </div>
                                 {token? (
-                                    <Link href="/user/dashboard" prefetch={false}>
+                                    <Link href="/user/dashboard" onClick={closeSidebar} prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Account</p>
                                     </Link>
                                 ) : (
-                                    <Link href="/login" prefetch={false}>
+                                    <Link href="/login" onClick={closeSidebar} prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Account</p>
                                     </Link>
                                 )}
@@ -266,11 +296,11 @@ export default function Navbar() {
                             <div className="d-flex flex-row py-2.5">
                                 <div>
                                     {token? (
-                                        <Link href="/user/dashboard" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                        <Link href="/user/dashboard" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-cart"></i>
                                         </Link>
                                     ) : (
-                                        <Link href="/login" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                        <Link href="/login" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                             <i className="bi bi-cart"></i>
                                         </Link>
                                     )}
@@ -280,11 +310,11 @@ export default function Navbar() {
                                 </div>
 
                                 {token? (
-                                    <Link href="/user/dashboard" prefetch={false}>
+                                    <Link href="/user/dashboard" onClick={closeSidebar} prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Orders</p>
                                     </Link>
                                 ) : (
-                                    <Link href="/login" prefetch={false}>
+                                    <Link href="/login" onClick={closeSidebar} prefetch={false}>
                                         <p className="font-semibold px-2 text-sm  p-0 m-0">My Orders</p>
                                     </Link>
                                 )}
@@ -292,44 +322,44 @@ export default function Navbar() {
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                    <Link href="#" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-envelope"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="" prefetch={false}>
+                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Support</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                    <Link href="#" className="inline-block no-underline hover:text-black" onClick={closeSidebar} prefetch={false}>
                                     <i className="bi bi-award"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="" prefetch={false}>
+                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Coupon</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                    <Link href="#" className="inline-block no-underline hover:text-black" onClick={closeSidebar} prefetch={false}>
                                     <i className="bi bi-fire"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="" prefetch={false}>
+                                <Link href="#" onClick={closeSidebar} className="" prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">My Refunds</p>
                                 </Link>
                             </div>
                             
                             <div className="d-flex flex-row py-2.5">
                                 <div>
-                                    <Link href="#" className="inline-block no-underline hover:text-black" prefetch={false}>
+                                    <Link href="#" onClick={closeSidebar} className="inline-block no-underline hover:text-black" prefetch={false}>
                                     <i className="bi bi-credit-card"></i>
                                     </Link>
                                 </div>
-                                <Link href="#" className="" prefetch={false}>
+                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                     <p className="font-semibold px-2 text-sm  p-0 m-0">Contact Details</p>
                                 </Link>
                             </div>
@@ -346,22 +376,22 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Returns &amp; Exchange
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Shipping Policy
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     FAQ
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Terms &amp; Conditions
                                                 </Link>
                                             </div>
@@ -380,17 +410,17 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     About US
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Our Stores
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href="#" className="" prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Privacy Policy
                                                 </Link>
                                             </div>
@@ -400,7 +430,7 @@ export default function Navbar() {
                             </div>
                         </div>
                     </div>
-                        <Link href="/" className="logo d-flex align-items-center" prefetch={false}>
+                        <Link href="/" className="logo d-flex align-items-center" onClick={closeSidebar} prefetch={false}>
                             <Image src="/img/logo7.webp" width={195} height={25} alt="logo" loading="lazy" unoptimized/>
                         </Link>
 
@@ -421,23 +451,23 @@ export default function Navbar() {
                                 <i className="bi bi-house-door"></i>
                             </Link> */}
                             {token? (
-                                <Link href="/user/dashboard" className="header-action-btn" prefetch={false}>
+                                <Link href="/user/dashboard" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
                                     <i className="bi bi-person"></i>
                                 </Link>
                             ) : (
-                                <Link href="/login" className="header-action-btn" prefetch={false}>
+                                <Link href="/login" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
                                     <i className="bi bi-person"></i>
                                 </Link>
                             )}
                                     
                                 
 
-                            <Link href="/contact" className="header-action-btn d-none d-md-block" prefetch={false}>
+                            <Link href="/contact" className="header-action-btn d-none d-md-block" onClick={closeSidebar} prefetch={false}>
                                 <i className="bi bi-heart"></i>
                                 <span className="badge">0</span>
                             </Link>
 
-                            <Link href="/cart" className="header-action-btn" prefetch={false}>
+                            <Link href="/cart" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
                                 <i className="bi bi-cart3"></i>
                                 <span className="badge">{cartCount}</span>
                             </Link>
@@ -463,3 +493,4 @@ export default function Navbar() {
     </header>
   );
 }
+

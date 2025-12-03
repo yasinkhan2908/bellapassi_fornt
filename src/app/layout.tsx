@@ -13,6 +13,9 @@ import "../styles/color.css";
 import "../styles/custom.css";
 import "../styles/main.css";
 import "./fontawesome";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "select2/dist/css/select2.min.css";
+
 import { headers } from "next/headers";
 
 import BootstrapClient from "@/components/BootstrapClient"; //bootstrap bundle js load

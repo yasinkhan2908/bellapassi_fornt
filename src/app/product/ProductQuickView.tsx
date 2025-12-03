@@ -1,12 +1,22 @@
 "use client";
 
-import { useState, useRef, Key, JSXElementConstructor, ReactElement, ReactNode, ReactPortal } from "react";
+import { useState, useRef, Key, JSXElementConstructor, ReactElement, ReactNode, ReactPortal, SetStateAction } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, FreeMode, Zoom } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
+import { useAppDispatch } from "../../lib/hooks";
+import { increment, decrement } from '@/lib/slices/counterSlice';
+import { addToCart, fetchCart } from '@/lib/slices/cartSlice';
+import { getSessionId } from "@/lib/session";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import * as bootstrap from "bootstrap";
+import toast from "react-hot-toast";
 
 type Product = {
   [x: string]: any;
@@ -28,14 +38,91 @@ export default function ProductQuickView({ product }: ProductCardProps) {
     //console.log("quick view products",product.attributes);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [quantity, setQuantity]         = useState(1);
+    const dispatch                        = useAppDispatch();
+    const router = useRouter();
+    const session = useSession();
+    const data = session?.data?.user.token ?? null;
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [inCart, setInCart] = useState(false);
 
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
         const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
         const [isZoomed, setIsZoomed] = useState(false);
         const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
         const mainImageRef = useRef<HTMLDivElement>(null);
-    
+        const [size, setSize]                 = useState();
+
+
+        //add to cart data
+    const productId  = product.id;
+    let categoryId   = '';
+    if (product.sub_sub_sub_category_id) {
+        categoryId = product.sub_sub_sub_category_id;
+    }
+    else if (product.sub_sub_category_id) {
+        categoryId = product.sub_sub_category_id;
+    }
+    else if (product.sub_category_id) {
+        categoryId = product.sub_category_id;
+    }
+    else {
+        categoryId = product.category_id;
+    }
+    const sessionId = getSessionId();
+    //console.log("sessionId",sessionId);
+    const handleAddToCart = async () => {
+        if (!size) {
+            const modalElement = document.getElementById("sizeModal");
+            if (modalElement) {
+                // get existing instance or create it once
+                const modal = bootstrap.Modal.getInstance(modalElement)
+                            || new bootstrap.Modal(modalElement);
+                modal.show();
+            }
+            return;
+        }
+
+        setIsLoading(true);
+
+        await dispatch(
+            addToCart({
+                product_id: product.id,
+                category_id: product.category_id,
+                size: size,
+                quantity: quantity,
+                session_id: sessionId,
+                token: session?.data?.user?.token,
+            })
+        ).unwrap();
+
+        // <-- hide after success
+        const modalElement = document.getElementById("sizeModal");
+        if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
+        }
+
+        toast.success("Added to cart");
+        router.refresh();
+
+        await dispatch(
+            fetchCart({
+                session_id: sessionId,
+                token: session?.data?.user?.token,
+            })
+        ).unwrap();
+
+        setIsLoading(false);
+        setInCart(true);
+    };
+
+    const handleSizeClick = (value: SetStateAction<undefined>) => {
+        setSize(value);
+        setInCart(false);  
+    };
+
         // const images = [
         //     {
         //         id: '3',
@@ -224,13 +311,19 @@ export default function ProductQuickView({ product }: ProductCardProps) {
                         <div className="mb-4">
                             <h6 className="mb-2">Size</h6>
                             <div className="size-options">
-                                {product.attributes?.map((attr: { id: Key | null | undefined; size: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
-                                    <div key={attr.id} className="size-option" data-size="{attr.size}">{attr.size}</div>
-                               ))}
+                                {product.attributes?.map((attr: any) => (
+                                    <div
+                                    key={attr.id}
+                                    className={`size-option ${size === attr.size ? "active" : ""}`}
+                                    onClick={() => handleSizeClick(attr.size)}
+                                    >
+                                    {attr.size}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
-                        <div className="product-quantity mb-4">
+                        {/* <div className="product-quantity mb-4">
                             <h6 className="option-title">Quantity:</h6>
                             <div className="quantity-selector">
                             <button className="quantity-btn decrease">
@@ -241,13 +334,29 @@ export default function ProductQuickView({ product }: ProductCardProps) {
                                 <i className="bi bi-plus"></i>
                             </button>
                             </div>
-                        </div>
+                        </div> */}
 
             
                         <div className="detail-cart-btn d-flex gap-2">
-                            <button className="btn btn-primary" type="button">
-                                <i className="bi bi-cart mr-2"></i>Add to Cart
-                            </button>
+                            
+                            {inCart ? (
+                                <button 
+                                    className="btn btn-primary" 
+                                    onClick={() => router.push("/cart")}
+                                >
+                                <i className="bi bi-cart mr-2"></i> Go to Cart
+                                </button>
+                                ) : (
+                                <button className="btn btn-primary" type="button" onClick={() => handleAddToCart()} disabled={isLoading}>
+                                <i className="bi bi-cart mr-2"></i>
+                                    {isLoading ? (
+                                        <>
+                                        Processing...
+                                        </>
+                                    ) : 'Add to Cart'}
+                                    
+                                </button>
+                                )}
                             {/* <button className="btn btn-primary buy-now-btn" type="button">
                                 <i className="bi bi-cart mr-2"></i>Buy Now
                             </button>

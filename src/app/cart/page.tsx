@@ -96,7 +96,7 @@ export default function Cart() {
             })
           ).unwrap();
         
-        console.log('Cart loaded successfully:', result);
+        //console.log('Cart loaded successfully:', result);
       } catch (err) {
         console.error('Failed to load cart:', err);
       }
@@ -208,13 +208,14 @@ export default function Cart() {
                                       >
                                         <i className="bi bi-dash"></i>
                                       </button>
-                                      <input
+                                      {/* <input
                                         type="number"
                                         className="quantity-input"
                                         value={item.quantity}
                                         min="1"
                                         max="10"
-                                        readOnly />
+                                        readOnly /> */}
+                                        <div className='item-quantity'>{item.quantity}</div>
                                       <button
                                         className="quantity-btn increase"
                                         onClick={() => handleQuantityChange(item.id, Number(item.quantity) + Number(1))}

@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation'; // ✅ Added useRouter
 import { useSession } from "next-auth/react";
 const libraries: ('places')[] = ['places'];
-import "select2/dist/css/select2.min.css";
+
+import useSelect2 from "@/hooks/useSelect2";
 
 
 interface FormData {
@@ -55,6 +56,8 @@ export default function AddAddressForm() {
   const [Cities, setCities] = useState<CityType[]>([]);
   
   const selectRef = useRef<HTMLSelectElement>(null);
+  
+  useSelect2(".countrySelect");
 
 
   const [formData, setFormData] = useState<FormData>({
@@ -245,14 +248,6 @@ export default function AddAddressForm() {
   };
 
    useEffect(() => {
-      (async () => {
-        const $ = (await import("jquery")).default;
-        await import("select2");
-
-        if (selectRef.current) {
-          $(selectRef.current).select2();
-        }
-      })();
       const fetchStates = async () => {
         try {
           setLoading(true);
@@ -415,7 +410,7 @@ export default function AddAddressForm() {
                                                 <option value={state.id}>{state.name}</option>
                                               ))}
                                             </select> */}
-                                            <select className={`form-control ${errors.state ? 'is-invalid' : ''}`} name="state" value={formData.state} onChange={handleChange}
+                                            <select className={`form-control countrySelect ${errors.state ? 'is-invalid' : ''}`} name="state" value={formData.state} onChange={handleChange}
                                             >
                                               <option value="">Select State</option>
                                               {States.map((state) => (
