@@ -1878,13 +1878,26 @@ ease;
     background-color: #188c31  !important;
     box-shadow: 0 0 0 3px #188c31  !important;
 }
-.custom-sidebar{
+/* .custom-sidebar{
     display: none;
 }
 .custom-sidebar.show{
-    display: block;                 /* always block — NOT hidden */
-    transform: translateX(-100%);   /* hidden to the left */
-    transition: transform 0.3s ease-in-out;
+    display: block;                 
+     transform: translateX(0);
+    opacity: 1;
+} */
+.custom-sidebar {
+    display: block;        /* always block */
+    opacity: 0;            /* start invisible */
+    transition: opacity 0.5s ease;  /* fade speed */
+    height: 0;
+    width: 0;
+}
+
+.custom-sidebar.show {
+    opacity: 1;            /* fade to visible */
+    height: auto;
+    width: auto;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
