@@ -364,7 +364,7 @@ export default function Navbar() {
                                 ))}
                             </div>
                             
-                            <div className="accordion" id="accordionExample">
+                            <div className="accordion sidebar-accordion" id="accordionExample">
                             <div className="accordion-item">
                                 <h2 className="accordion-header bg-gray-100" id="headingSideOne">
                                     <span className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne">

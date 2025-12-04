@@ -1888,6 +1888,9 @@ ease;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
+    .sidebar-accordion{
+        margin-bottom: 55px;
+    }
     .cart-product-name{
         font-size: 14px;
     }
