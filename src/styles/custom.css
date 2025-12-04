@@ -1878,6 +1878,14 @@ ease;
     background-color: #188c31  !important;
     box-shadow: 0 0 0 3px #188c31  !important;
 }
+.custom-sidebar{
+    display: none;
+}
+.custom-sidebar.show{
+    display: block;                 /* always block — NOT hidden */
+    transform: translateX(-100%);   /* hidden to the left */
+    transition: transform 0.3s ease-in-out;
+}
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
     .cart-product-name{

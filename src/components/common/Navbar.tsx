@@ -185,21 +185,7 @@ export default function Navbar() {
                         )}
                         
                         {/* Custom Sidebar */}
-                        <div 
-                            ref={sidebarRef}
-                            className={`custom-sidebar ${showSidebar ? 'show' : ''} ${isClosing ? 'closing' : ''}`}
-                            id="sidebar"
-                            aria-labelledby="sidebarLabel"
-                        >
-                            {/* <div className="sidebar-header">
-                                <button 
-                                    className="sidebar-close-btn"
-                                    onClick={closeSidebar}
-                                    aria-label="Close sidebar"
-                                >
-                                    <i className="bi bi-x-lg"></i>
-                                </button>
-                            </div> */}
+                        <div ref={sidebarRef} className={`custom-sidebar ${showSidebar ? 'show' : ''} ${isClosing ? 'closing' : ''}`} id="sidebar" aria-labelledby="sidebarLabel">
                             
                             <div className="left-sidebar-category">
                                 <ul className="nav nav-tabs " id="myTab" role="tablist">
