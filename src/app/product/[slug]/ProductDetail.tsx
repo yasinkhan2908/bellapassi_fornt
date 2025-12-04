@@ -65,6 +65,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const productdetail                   = product.data.productdetails;
     const images                          = productdetail.productimages;
     const [size, setSize]                 = useState();
+    const [sizePopup, setSizePopup]       = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [inCart, setInCart] = useState(false);
     const [showSizeModal, setShowSizeModal] = useState(false);
@@ -152,7 +153,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
     const handleBlankSizeClick = (value: SetStateAction<undefined>) => {
         setSize(value);
-
+        setSizePopup(true);
         console.log("selected size:", value);   // This is correct
 
         setTimeout(() => {
@@ -163,6 +164,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
     useEffect(() => {
         if (size === undefined) return;
+        if (!sizePopup) return;
         console.log("Updated size:", size);
         // Show loader
         setLoading(true);

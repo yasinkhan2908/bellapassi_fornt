@@ -77,179 +77,114 @@ export default function OrderDetail({ order }: OrderDetailProps) {
   
   return (
     <div className="index-page">
-      <main className="main">
-        <section id="product-details" className="product-details section">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12 col-md-12 col-12">
-                <div className="mb-5">
-                  <h3 className="mb-0">Order Details</h3>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="row mb-6">
-                <div className="col-12">
-                  <div className="progress-container">
-                    <ul className="progress-steps">
-                      <li className={statusStep >= 1 ? 'active' : ''}>Order Placed</li>
-                      <li className={statusStep >= 2 ? 'active' : ''}>Packed</li>
-                      <li className={statusStep >= 3 ? 'active' : ''}>Shipped</li>
-                      <li className={statusStep >= 4 ? 'active' : ''}>Delivered</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="row">
-                <div className="col-lg-7 col-xxl-9 col-12">
-                  <div className="card">
-                    <div className="card-header">
-                      <div className="d-flex justify-content-between">
-                        <div>
-                          <h4 className="mb-1">Order ID: {order.orderNumber}</h4>
-                          <div className="d-flex align-items-center">
-                            <small>Order Date: {formatDate(order.orderDate)}</small> 
-                            <span className={`badge ${order.paymentStatus === 'paid' ? 'badge-success-soft' : 'badge-danger-soft'} ms-2`}>
-                              {order.paymentStatus.charAt(0).toUpperCase() + order.paymentStatus.slice(1)}
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <button className="btn btn-primary">Invoice</button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="card-body">
-                      <div className="table-responsive table-card">
-                        <table className="table text-nowrap mb-0 table-centered">
-                          <thead className="table-light">
-                            <tr>
-                              <th scope="col">Products</th>
-                              <th scope="col">Items</th>
-                              <th scope="col">Amounts</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {order.items.map((item) => (
-                              <tr key={item.id}>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    {item.image && (
-                                      <div className="me-3">
-                                        <Image 
-                                          src={item.image} 
-                                          alt={item.productName}
-                                          width={60}
-                                          height={60}
-                                          className="rounded"
-                                        />
-                                      </div>
-                                    )}
-                                    <div className="ms-3">
-                                      <h5 className="mb-0">
-                                        <span className="text-inherit">{item.productName}</span>
-                                      </h5>
-                                      <small>SKU: {item.sku}</small>
+        <main className="main">
+            <div className="container">
+                <div className="row">
+                    <div className="col-xs-12">
+                        <div className="card invoice">
+                            <div className="card-body">
+                                <div className="invoice-title">
+                                    <div className="row">
+                                        <div className="col-xs-12">
+                                            <h2>
+                                            <span className="small">order #1082</span></h2>
+                                        </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td>{item.quantity}</td>
-                                <td>${item.total.toFixed(2)}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                                </div>
+                                <hr/>
+                                <div className="row">
+                                    <div className="col-xs-6">
+                                        <address>
+                                            <strong>Billed To:</strong><br/>
+                                            Twitter, Inc.<br/>
+                                            795 Folsom Ave, Suite 600<br/>
+                                            San Francisco, CA 94107<br/>
+                                            <abbr title="Phone">P:</abbr> (123) 456-7890
+                                        </address>
+                                    </div>
+                                    <div className="col-xs-6 text-right">
+                                        <address>
+                                            <strong>Shipped To:</strong><br/>
+                                            Elaine Hernandez<br/>
+                                            P. Sherman 42,<br/>
+                                            Wallaby Way, Sidney<br/>
+                                            <abbr title="Phone">P:</abbr> (123) 345-6789
+                                        </address>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-6">
+                                        <address>
+                                            <strong>Payment Method:</strong><br/>
+                                            Visa ending **** 1234<br/>
+                                            h.elaine@gmail.com<br/>
+                                        </address>
+                                    </div>
+                                    <div className="col-xs-6 text-right">
+                                        <address>
+                                            <strong>Order Date:</strong><br/>
+                                            17/06/14
+                                        </address>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <h3>ORDER SUMMARY</h3>
+                                        <table className="table table-striped">
+                                            <thead>
+                                                <tr className="line">
+                                                    <td><strong>#</strong></td>
+                                                    <td className="text-center"><strong>PROJECT</strong></td>
+                                                    <td className="text-center"><strong>HRS</strong></td>
+                                                    <td className="text-right"><strong>RATE</strong></td>
+                                                    <td className="text-right"><strong>SUBTOTAL</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td><strong>Template Design</strong><br/>A website template is a pre-designed webpage, or set of webpages, that anyone can modify with their own content and images to setup a website.</td>
+                                                    <td className="text-center">15</td>
+                                                    <td className="text-center">$75</td>
+                                                    <td className="text-right">$1,125.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td><strong>Template Development</strong><br/>Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network).</td>
+                                                    <td className="text-center">15</td>
+                                                    <td className="text-center">$75</td>
+                                                    <td className="text-right">$1,125.00</td>
+                                                </tr>
+                                                <tr className="line">
+                                                    <td>3</td>
+                                                    <td><strong>Testing</strong><br/>Take measures to check the quality, performance, or reliability of (something), especially before putting it into widespread use or practice.</td>
+                                                    <td className="text-center">2</td>
+                                                    <td className="text-center">$75</td>
+                                                    <td className="text-right">$150.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td className="text-right"><strong>Taxes</strong></td>
+                                                    <td className="text-right"><strong>N/A</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td className="text-right"><strong>Total</strong></td>
+                                                    <td className="text-right"><strong>$2,400.00</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>									
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                
-                <div className="col-lg-5 col-xxl-3 col-12">
-                  <div className="card mb-4 mt-4 mt-lg-0">
-                    <div className="card-header">
-                      <h4 className="mb-0">Order Summary</h4>
-                    </div>
-                    <div className="table-responsive">
-                      <table className="table table-centered mb-0">
-                        <thead className="table-light">
-                          <tr>
-                            <th scope="col">Descriptions</th>
-                            <th scope="col">Amounts</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Sub Total:</td>
-                            <td>${order.subtotal.toFixed(2)}</td>
-                          </tr>
-                          {order.discount > 0 && (
-                            <tr>
-                              <td>Discount:</td>
-                              <td>-${order.discount.toFixed(2)}</td>
-                            </tr>
-                          )}
-                          <tr>
-                            <td>Shipping Charge:</td>
-                            <td>${order.shippingCharge.toFixed(2)}</td>
-                          </tr>
-                          <tr>
-                            <td>Tax:</td>
-                            <td>${order.tax.toFixed(2)}</td>
-                          </tr>
-                          <tr>
-                            <td>Total Amount:</td>
-                            <td>${order.totalAmount.toFixed(2)}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  
-                  <div className="card">
-                    <div className="card-header">
-                      <h4 className="mb-0">Payment Details</h4>
-                    </div>
-                    <div className="card-body">
-                      <div>
-                        <ul className="list-unstyled mb-0">
-                          {order.transactionId && (
-                            <li className="d-flex justify-content-between mb-2">
-                              <span>Transactions:</span> 
-                              <span className="text-dark">{order.transactionId}</span>
-                            </li>
-                          )}
-                          <li className="d-flex justify-content-between mb-2">
-                            <span>Payment Method:</span> 
-                            <span className="text-dark">{order.paymentMethod}</span>
-                          </li>
-                          {order.cardHolderName && (
-                            <li className="d-flex justify-content-between mb-2">
-                              <span>Card Holder Name:</span> 
-                              <span className="text-dark">{order.cardHolderName}</span>
-                            </li>
-                          )}
-                          {order.cardLastFour && (
-                            <li className="d-flex justify-content-between mb-2">
-                              <span>Card Number:</span> 
-                              <span className="text-dark">xxxx xxxx xxxx {order.cardLastFour}</span>
-                            </li>
-                          )}
-                          <li className="d-flex justify-content-between">
-                            <span>Total Amount:</span>
-                            <span className="text-dark">${order.totalAmount.toFixed(2)}</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-        </section>
       </main>
     </div>
   );
