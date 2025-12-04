@@ -165,12 +165,15 @@ export default function Dashboard() {
                                                         </div>
 
                                                         <div className="order-footer">
-                                                            <Link
-                                                                href={`/user/order-detail/${order.id}`}
+                                                            <button
+                                                                type="button"
                                                                 className="btn-details"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#details1"
+                                                                aria-expanded="false"
                                                             >
                                                                 View Details
-                                                            </Link>
+                                                            </button>
 
                                                             <Link href="#" className="btn btn-danger order-cancled text-white">
                                                                 Cancel Order
