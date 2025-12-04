@@ -158,6 +158,8 @@ export default function Navbar() {
         }
     };
 
+    
+
     return (
         <header id="header" className="header sticky-top">
             <div className="main-header"> 

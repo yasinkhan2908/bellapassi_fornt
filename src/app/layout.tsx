@@ -32,6 +32,8 @@ import DynamicSession from "./DynamicSession";
 import Providers from "./providers";
 import ReduxProvider from '@/components/ReduxProvider';
 import { useSelector } from "react-redux";
+import BootstrapCleanup from "../components/common/BootstrapCleanup";
+
 
 export const metadata = {
   title: 'Bella Passi - Online Fashion | Best Fashion Deals In India',
@@ -61,6 +63,7 @@ export default async function RootLayout({ children }: { children: ReactNode  })
 
               
                 <TopLoader />   {/* enable top loading bar */}
+                <BootstrapCleanup />
                 {children}
               
               <Toaster position="top-right" reverseOrder={false} />
