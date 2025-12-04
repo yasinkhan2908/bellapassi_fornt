@@ -68,7 +68,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [inCart, setInCart] = useState(false);
     const [showSizeModal, setShowSizeModal] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     //add to cart data
     const productId  = productdetail.id;
     let categoryId   = '';
@@ -129,6 +129,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         ).unwrap();
 
         setIsLoading(false);
+        setLoading(false);
         setInCart(true);
     };
 
@@ -151,11 +152,22 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
     const handleBlankSizeClick = (value: SetStateAction<undefined>) => {
         setSize(value);
-        //setInCart(false);
+
+        console.log("selected size:", value);   // This is correct
+
         setTimeout(() => {
-            handleAddToCart();
-        }, 1000);
+            console.log("process add to cart:", value);
+            //handleAddToCart();
+        }, 500);
     };
+
+    useEffect(() => {
+        if (size === undefined) return;
+        console.log("Updated size:", size);
+        // Show loader
+        setLoading(true);
+        handleAddToCart();
+    }, [size]);
 
     //console.log("product quantity",quantity);
 
@@ -339,6 +351,15 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                                                     {attr.size}
                                                     </div>
                                                 ))}
+                                                
+                                                {loading && (
+                                                    <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center" style={{zIndex:99999999999999999999999999}}>
+                                                        <div className="spinner-grow text-primary" role="status">
+                                                        <span className="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                             </div>
                                         </div>
 
