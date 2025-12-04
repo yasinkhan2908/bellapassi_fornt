@@ -1985,7 +1985,7 @@ ease;
     }
     .swiper-slide img {
         height: 150px;
-        width: 145px;
+        width: auto;
         border-radius: 50% !important;
     }
     
