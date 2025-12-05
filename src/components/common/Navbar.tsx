@@ -163,7 +163,7 @@ export default function Navbar() {
 
 
     const handleFocus = () => {
-        router.push('/search'); // Redirect to your search page
+        router.push(`/search?q=`);
     };
  
     const handleSubmit = (e: React.FormEvent) => {
