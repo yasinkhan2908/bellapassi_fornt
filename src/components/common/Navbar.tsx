@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { 
@@ -12,10 +13,12 @@ import {
 import { getSessionId } from '@/lib/session';
 
 export default function Navbar() {
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const session = useSession();
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     const [isClosing, setIsClosing] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState('');
     
     interface MainCategory {
         id: number;
@@ -158,6 +161,25 @@ export default function Navbar() {
         }
     };
 
+
+    const handleFocus = () => {
+        router.push('/search'); // Redirect to your search page
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
+
+    const handleChange = (e: { target: { value: any; }; }) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        console.log('Current value:', value);
+        // You can perform other actions here
+        router.push(`/search?q=${encodeURIComponent(value.trim())}`);
+    };
     
 
     return (
@@ -435,12 +457,14 @@ export default function Navbar() {
                             <Image src="/img/logo7.webp" width={195} height={25} alt="logo" loading="lazy" unoptimized/>
                         </Link>
 
-                        <form className="search-form desktop-search-form">
-                            <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Search for products"/>
+                            <form className="search-form desktop-search-form"  onSubmit={handleSubmit}>
+                                <div className="input-group">
+                                    <input type="text" className="form-control" placeholder="Search for products" onFocus={handleFocus}
+          value={searchQuery}
+          onChange={handleChange}/>
 
-                            </div>
-                        </form>
+                                </div>
+                            </form>
 
                         <div className="header-actions d-flex align-items-center justify-content-end">
 
