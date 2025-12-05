@@ -165,7 +165,7 @@ export default function Navbar() {
     const handleFocus = () => {
         router.push('/search'); // Redirect to your search page
     };
-
+ 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {

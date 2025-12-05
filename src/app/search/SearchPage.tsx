@@ -96,8 +96,31 @@ export default function SearchPage({
   // }, [handleScroll]);
 
   
+  const fetchProducts = async () => {
+    if (!query) return;
+    const nextPage = page + 1;
+    
+    try {
+      const productsResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/search-products/${query}`,
+        { cache: 'no-store' }
+      );
+      
+      
+      
+      const json = await productsResponse.json();
+      console.log("search products : ",json);
+      const products = json.data?.products?.data || [];
+
+      setAllProducts(products);
+    } catch (err) {
+      console.error("Error loading more products:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    //setProducts(initialProducts);
+    fetchProducts();
   });
 
   const truncateText = (text: string, maxLength: number) => {

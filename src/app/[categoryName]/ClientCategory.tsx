@@ -295,8 +295,8 @@ export default function ClientCategory({
                     <div className="range-slider">
                       <div className="slider-track"></div>
                       <div className="slider-progress" ></div>
-                      <input type="range" className="min-range" min="0" max="1000" value="0" step="10"/>
-                      <input type="range" className="max-range" min="0" max="1000" value="500" step="10"/>
+                      <input type="range" className="min-range" min="0" max="1000" step="10"/>
+                      <input type="range" className="max-range" min="0" max="1000" step="10"/>
                     </div>
 
                     <div className="price-inputs mt-3">
@@ -304,13 +304,13 @@ export default function ClientCategory({
                         <div className="col-6">
                           <div className="input-group input-group-sm">
                             <span className="input-group-text">$</span>
-                            <input type="number" className="form-control min-price-input" placeholder="Min" min="0" max="1000" value="0" step="10" />
+                            <input type="number" className="form-control min-price-input" placeholder="Min" min="0" max="1000" step="10" />
                           </div>
                         </div>
                         <div className="col-6">
                           <div className="input-group input-group-sm">
                             <span className="input-group-text">$</span>
-                            <input type="number" className="form-control max-price-input" placeholder="Max" min="0" max="1000" value="500" step="10" />
+                            <input type="number" className="form-control max-price-input" placeholder="Max" min="0" max="1000" step="10" />
                           </div>
                         </div>
                       </div>

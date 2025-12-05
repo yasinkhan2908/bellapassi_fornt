@@ -30,7 +30,7 @@ export default async function SearchListPage({ params, searchParams }: CategoryP
   const json = await productsResponse.json();
   //console.log("search products : ",json);
   const products = json.data?.products?.data || [];
-  // console.log("search products : ",products);
+ // console.log("search products : ",products);
   const bgColor = json.data?.bg_color || ['#f9c0c847', '#e2faf9'];
   
   return (
