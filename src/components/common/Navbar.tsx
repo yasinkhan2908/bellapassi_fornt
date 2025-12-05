@@ -503,7 +503,20 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            
+            <div className="collapse" id="mobileSearch">
+                <div className="container">
+                    <form className="search-form" onSubmit={handleSubmit}>
+                        <div className="input-group">
+                            <input type="text" className="form-control" placeholder="Search for products" onFocus={handleFocus}
+          value={searchQuery}
+          onChange={handleChange}/>
+                            <button className="btn" type="submit">
+                                <i className="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             {/* Add CSS styles for the custom sidebar */}
             <style jsx global>{`
                 .custom-sidebar {
