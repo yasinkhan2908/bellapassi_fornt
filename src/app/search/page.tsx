@@ -15,7 +15,10 @@ export default async function SearchListPage({ params, searchParams }: CategoryP
   
   // Get query string parameters
   const query = searchParamsObj.q as string || 'all';
-  
+  // Only call API if >= 3 chars
+  if (query !== 'all' && query.length < 3) {
+    const products = []; // or return empty result
+  }
   // console.log('query data : ',query);
   // console.log(`${process.env.API_URL}/api/user/search-products/${query}`);
   const productsResponse = await fetch(

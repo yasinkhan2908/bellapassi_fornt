@@ -1,9 +1,12 @@
 "use client";
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect, Key, ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import FilterSidebar from "../components/filter/FilterSidebar";
 import ProductQuickView from "../product/ProductQuickView";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilter, faSort, faXmark } from '@fortawesome/free-solid-svg-icons'
+import FilterModal from "./FilterModal";
+import SortingModal from "./SortingModal"; // You'll need to create this
 
 const truncate = (text: string, max: number) => 
   text.length > max ? text.slice(0, max) + "..." : text;
@@ -24,12 +27,32 @@ export default function ClientCategory({
 }) {
   const CatName = categoryName.replace(/-/g, " ");
   const [showFilterSidebar, setShowFilterSidebar] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false); // Add this
+  const [showSortingModal, setShowSortingModal] = useState(false); // Add this
 
   const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialPage < lastPage);
   const [loading, setLoading] = useState(false);
   const [allProducts, setAllProducts] = useState(products);
+  const [selectedSort, setSelectedSort] = useState("popularity");
   //console.log("bgColor",bgColor);
+
+  // Add sort handler
+  const handleSortSelect = (sort: string) => {
+    setSelectedSort(sort);
+    // Here you would typically fetch sorted products
+    console.log("Sorting by:", sort);
+  };
+
+  // Add close modal handlers
+  const handleCloseFilterModal = () => {
+    setShowFilterModal(false);
+  };
+
+  const handleCloseSortingModal = () => {
+    setShowSortingModal(false);
+  };
+
   // 👇 Load more products when user scrolls near bottom
   useEffect(() => {
     const handleScroll = async () => {
@@ -62,7 +85,7 @@ export default function ClientCategory({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [categoryName, page, hasMore, loading]);
-  //console.log("page CateDatas",CateDatas);
+  console.log("page CateDatas",CateDatas);
   return (
     <div className="index-page">
       <main className="main">
@@ -79,217 +102,54 @@ export default function ClientCategory({
         </div>
 
         <div className="container">
-          {/* Filters + Sort */}
-          {/* <div className="d-flex flat-title flex-row justify-content-between align-items-center px-0 wow fadeInUp mb-5">
-            <Link
-              href="#"
-              className="filter-btn"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#filtersidebar" prefetch={false}
-            >
-              <i className="bi bi-list"></i> Filter
-            </Link>
-            <select className="sort-by-btn tf-btn btn-line">
-              <option value="">Sort By</option>
-              <option value="a-z">Alphabetically, A-Z</option>
-              <option value="z-a">Alphabetically, Z-A</option>
-              <option value="price-low-high">Price, low to high</option>
-              <option value="price-high-low">Price, high to low</option>
-            </select>
-          </div>
-          <div className="offcanvas offcanvas-start leftsidebar filtersidebar" id="filtersidebar" aria-labelledby="sidebarLabel">
-            <div className="filtter-apply text-center">
-              <button className="">Apply</button>
-            </div>
-            <div className="filter-option p-2">
-              <div className="accordion" id="accordionExample">
-                {CateDatas.map((cat) => (
-                  <div className="accordion-item" key={cat.id}>
-                    <h2 className="accordion-header bg-gray-100" id={`heading${cat.id}`}>
-                      <span
-                        className="accordion-button collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#collapse${cat.id}`}
-                        aria-controls={`collapse${cat.id}`}
-                      >
-                        {cat.single_data.name}
-                      </span>
-                    </h2>
-                    <div
-                      id={`collapse${cat.id}`}
-                      className="accordion-collapse collapse"
-                      aria-labelledby={`heading${cat.id}`}
-                      data-bs-parent="#accordionExample"
-                    >
-                      <div className="accordion-body">
-                        <div className="filter-body">
-                          <ul>
-                            {cat.single_data.field_option.map((options: { id: Key | null | undefined; }) => (
-                              <li key={options.id}>{options.id}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-
-                <div className="accordion-item">
-                    <h2 className="accordion-header bg-gray-100" id="headingSideTwo">
-                        <span className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-controls="collapseTwo">
-                            Color
-                        </span>
-                    </h2>
-                    <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingSideTwo" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="filter-body">
-                              <ul>
-                                <li>White</li>
-                                <li>Black</li>
-                                <li>Blue</li>
-                                <li>Red</li>
-                                <li>Yellow</li>
-                                <li>Green</li>
-                              </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="accordion-item">
-                    <h2 className="accordion-header bg-gray-100" id="headingSideThree">
-                        <span className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-controls="collapseThree">
-                            Toe Shape
-                        </span>
-                    </h2>
-                    <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingSideThree" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                            <div className="filter-body">
-                              <ul>
-                                <li>Rounde Toe</li>
-                                <li>Narrow square</li>
-                              </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
-          
-          {/* Product Grid */}
           <div className="row gx-sm-3 gx-0">
-            <div className="col-lg-3 sidebar">
+            <div className="col-lg-3 sidebar product-filter-sidebar">
 
               <div className="widgets-container">
 
                 
-                <div className="brand-filter-widget widget-item">
+                  <div className="brand-filter-widget widget-item">
+                    {CateDatas.map((cat, index) => {
+                      const isLast = index === CateDatas.length - 1;
 
-                  <h3 className="widget-title">Filter by Brand</h3>
+                      return (
+                        <div key={cat.id} className={isLast ? "" : "pb-5"}>
+                          <span className="widget-title">{cat.single_data.name}</span>
 
-                  <div className="brand-filter-content">
-                    
-
-                    <div className="brand-list">
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand1"/>
-                          <label className="form-check-label" htmlFor="brand1">
-                            Nike
-                            <span className="brand-count">(24)</span>
-                          </label>
+                          <div className="brand-filter-content">
+                            <div className="brand-list">
+                              {cat.single_data.field_option.map((options: {
+                                [x: string]: ReactNode; id: Key | null | undefined;
+                              }) => (
+                                <div className="brand-item" key={options.id}>
+                                  <div className="form-check">
+                                    <input
+                                      className="form-check-input"
+                                      type="checkbox"
+                                      id={`brand-${options.id}`}
+                                    />
+                                    <label className="form-check-label" htmlFor={`brand-${options.id}`}>
+                                      {options.value}
+                                    </label>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      );
+                    })}
 
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand2"/>
-                          <label className="form-check-label" htmlFor="brand2">
-                            Adidas
-                            <span className="brand-count">(18)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand3"/>
-                          <label className="form-check-label" htmlFor="brand3">
-                            Puma
-                            <span className="brand-count">(12)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand4"/>
-                          <label className="form-check-label" htmlFor="brand4">
-                            Reebok
-                            <span className="brand-count">(9)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand5"/>
-                          <label className="form-check-label" htmlFor="brand5">
-                            Under Armour
-                            <span className="brand-count">(7)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand6"/>
-                          <label className="form-check-label" htmlFor="brand6">
-                            New Balance
-                            <span className="brand-count">(6)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand7"/>
-                          <label className="form-check-label" htmlFor="brand7">
-                            Converse
-                            <span className="brand-count">(5)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand8"/>
-                          <label className="form-check-label" htmlFor="brand8">
-                            Vans
-                            <span className="brand-count">(4)</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="brand-actions">
-                      <button className="btn btn-sm btn-outline-primary">Apply Filter</button>
-                      <button className="btn btn-sm btn-link">Clear All</button>
-                    </div>
-                  </div>
-
-                </div>  
-                
+                  </div>  
+               
                 <div className="pricing-range-widget widget-item">
 
                   <h3 className="widget-title">Price Range</h3>
 
                   <div className="price-range-container">
                     <div className="current-range mb-3">
-                      <span className="min-price">$0</span>
-                      <span className="max-price float-end">$500</span>
+                      <span className="min-price">₹ 0</span>
+                      <span className="max-price float-end">₹ 500</span>
                     </div>
 
                     <div className="range-slider">
@@ -299,127 +159,10 @@ export default function ClientCategory({
                       <input type="range" className="max-range" min="0" max="1000" step="10"/>
                     </div>
 
-                    <div className="price-inputs mt-3">
-                      <div className="row g-2">
-                        <div className="col-6">
-                          <div className="input-group input-group-sm">
-                            <span className="input-group-text">$</span>
-                            <input type="number" className="form-control min-price-input" placeholder="Min" min="0" max="1000" step="10" />
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="input-group input-group-sm">
-                            <span className="input-group-text">$</span>
-                            <input type="number" className="form-control max-price-input" placeholder="Max" min="0" max="1000" step="10" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="filter-actions mt-3">
-                      <button type="button" className="btn btn-sm btn-primary w-100" >Apply Filter</button>
-                    </div>
                   </div>
 
                 </div>
                 
-                
-                <div className="brand-filter-widget widget-item">
-
-                  <h3 className="widget-title">Filter by Brand</h3>
-
-                  <div className="brand-filter-content">
-                    
-
-                    <div className="brand-list">
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand1"/>
-                          <label className="form-check-label" htmlFor="brand1">
-                            Nike
-                            <span className="brand-count">(24)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand2"/>
-                          <label className="form-check-label" htmlFor="brand2">
-                            Adidas
-                            <span className="brand-count">(18)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand3"/>
-                          <label className="form-check-label" htmlFor="brand3">
-                            Puma
-                            <span className="brand-count">(12)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand4"/>
-                          <label className="form-check-label" htmlFor="brand4">
-                            Reebok
-                            <span className="brand-count">(9)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand5"/>
-                          <label className="form-check-label" htmlFor="brand5">
-                            Under Armour
-                            <span className="brand-count">(7)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand6"/>
-                          <label className="form-check-label" htmlFor="brand6">
-                            New Balance
-                            <span className="brand-count">(6)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand7"/>
-                          <label className="form-check-label" htmlFor="brand7">
-                            Converse
-                            <span className="brand-count">(5)</span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="brand-item">
-                        <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="brand8"/>
-                          <label className="form-check-label" htmlFor="brand8">
-                            Vans
-                            <span className="brand-count">(4)</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="brand-actions">
-                      <button className="btn btn-sm btn-outline-primary">Apply Filter</button>
-                      <button className="btn btn-sm btn-link">Clear All</button>
-                    </div>
-                  </div>
-
-                </div>  
               </div>
 
             </div>
@@ -430,72 +173,7 @@ export default function ClientCategory({
                   <div className="container aos-init aos-animate" data-aos="fade-up">
 
                     <div className="filter-container mb-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                      {/* <div className="row g-3">
-                        <div className="col-12 col-md-6 col-lg-4">
-                          <div className="filter-item search-form">
-                            <label htmlFor="productSearch" className="form-label">Search Products</label>
-                            <div className="input-group">
-                              <input type="text" className="form-control" id="productSearch" placeholder="Search for products..." aria-label="Search for products" />
-                              <button className="btn search-btn" type="button">
-                                <i className="bi bi-search"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-12 col-md-6 col-lg-2">
-                          <div className="filter-item">
-                            <label htmlFor="priceRange" className="form-label">Price Range</label>
-                            <select className="form-select" id="priceRange" >
-                              <option selected>All Prices</option>
-                              <option>Under $25</option>
-                              <option>$25 to $50</option>
-                              <option>$50 to $100</option>
-                              <option>$100 to $200</option>
-                              <option>$200 &amp; Above</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="col-12 col-md-6 col-lg-2">
-                          <div className="filter-item">
-                            <label htmlFor="sortBy" className="form-label">Sort By</label>
-                            <select className="form-select" id="sortBy">
-                              <option selected>Featured</option>
-                              <option>Price: Low to High</option>
-                              <option>Price: High to Low</option>
-                              <option>Customer Rating</option>
-                              <option>Newest Arrivals</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="col-12 col-md-6 col-lg-4">
-                          <div className="filter-item">
-                            <label className="form-label">View</label>
-                            <div className="d-flex align-items-center">
-                              <div className="view-options me-3">
-                                <button type="button" className="btn view-btn active" data-view="grid" aria-label="Grid view">
-                                  <i className="bi bi-grid-3x3-gap-fill"></i>
-                                </button>
-                                <button type="button" className="btn view-btn" data-view="list" aria-label="List view">
-                                  <i className="bi bi-list-ul"></i>
-                                </button>
-                              </div>
-                              <div className="items-per-page">
-                                <select className="form-select" id="itemsPerPage" aria-label="Items per page">
-                                  <option value="12">12 per page</option>
-                                  <option value="24">24 per page</option>
-                                  <option value="48">48 per page</option>
-                                  <option value="96">96 per page</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
-
-                      <div className="row mt-3">
+                      <div className="row mt-0">
                         <div className="col-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
                           <div className="active-filters">
                             <span className="active-filter-label">Active Filters:</span>
@@ -504,7 +182,7 @@ export default function ClientCategory({
                                 Electronics <button className="filter-remove"><i className="bi bi-x"></i></button>
                               </span>
                               <span className="filter-tag">
-                                $50 to $100 <button className="filter-remove"><i className="bi bi-x"></i></button>
+                                ₹ 50 to ₹ 100 <button className="filter-remove"><i className="bi bi-x"></i></button>
                               </span>
                               <button className="clear-all-btn">Clear All</button>
                             </div>
@@ -585,26 +263,59 @@ export default function ClientCategory({
                   );
                 })}
                 </div>
-                
+                {loading && (
+                  <div className="text-center py-4">
+                    <div className="flex justify-center items-center h-screen">
+                      <Image src="/img/spinner.gif" alt="Loading..." width={80} height={80} />
+                    </div>
+                  </div>
+                )}
+
+                {!hasMore && (
+                  <div className="text-center py-4 text-muted">
+                    <p>No more products available</p>
+                  </div>
+                )}
               </div>
           </div>
 
-          {loading && (
-            <div className="text-center py-4">
-              <div className="flex justify-center items-center h-screen">
-                <Image src="/img/spinner.gif" alt="Loading..." width={80} height={80} />
-              </div>
-            </div>
-          )}
-
-          {!hasMore && (
-            <div className="text-center py-4 text-muted">
-              <p>No more products available</p>
-            </div>
-          )}
+          
         </div>
       </main>
+      {/* Add the modals at the end of your JSX */}
+      <FilterModal 
+        isOpen={showFilterModal}
+        onClose={handleCloseFilterModal}
+        CateDatas={CateDatas}
+        bgColor={bgColor}
+      />
 
+      <SortingModal 
+        isOpen={showSortingModal}
+        onClose={handleCloseSortingModal}
+        selectedSort={selectedSort}
+        onSelectSort={handleSortSelect}
+      />
+
+      {/* Update mobile filter buttons */}
+      <div className="d-flex mobile-filter">
+        <div className="product-section col-6 mt-1 filter-sorting">
+          <div 
+            className="w-100"
+            onClick={() => setShowSortingModal(true)}
+          >
+            <span><FontAwesomeIcon icon={faSort} className="mr-2" /> Sorting</span>
+          </div>
+        </div>
+        <div className="product-section col-6 mt-1">
+          <span 
+            className="w-100"
+            onClick={() => setShowFilterModal(true)}
+          >
+            <span><FontAwesomeIcon icon={faFilter} className="mr-2" /> Filter</span>
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

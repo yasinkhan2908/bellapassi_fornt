@@ -176,9 +176,13 @@ export default function Navbar() {
     const handleChange = (e: { target: { value: any; }; }) => {
         const value = e.target.value;
         setSearchQuery(value);
-        console.log('Current value:', value);
+        
         // You can perform other actions here
-        router.push(`/search?q=${encodeURIComponent(value.trim())}`);
+        if (value.trim().length > 3) {
+            console.log('Current value:', value);
+            router.push(`/search?q=${encodeURIComponent(value.trim())}`);
+        }
+        
     };
     
 
