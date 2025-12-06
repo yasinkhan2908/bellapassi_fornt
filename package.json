@@ -23,7 +23,7 @@
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "nanoid": "^5.1.6",
-    "next": "16.0.4",
+    "next": "^16.0.7",
     "next-auth": "^4.24.13",
     "nextjs-toploader": "^3.9.17",
     "nprogress": "^0.2.0",
