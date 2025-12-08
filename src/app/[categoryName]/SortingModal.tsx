@@ -1,7 +1,9 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'next/navigation';
 
+// Define the interface properly
 interface SortingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -10,11 +12,9 @@ interface SortingModalProps {
 }
 
 const sortingOptions = [
-  { value: "popularity", label: "Popularity" },
-  { value: "price_low", label: "Price: Low to High" },
-  { value: "price_high", label: "Price: High to Low" },
+  { value: "price_asc", label: "Price: Low to High" },
+  { value: "price_desc", label: "Price: High to Low" },
   { value: "newest", label: "Newest First" },
-  { value: "rating", label: "Customer Rating" },
 ];
 
 export default function SortingModal({ 
@@ -23,7 +23,26 @@ export default function SortingModal({
   selectedSort, 
   onSelectSort 
 }: SortingModalProps) {
+  const router = useRouter();
+  
   if (!isOpen) return null;
+
+  const handleSortSelect = (sortValue: string) => {
+    // Get current URL from window.location
+    const currentUrl = new URL(window.location.href);
+    
+    // Update or set the sort parameter
+    currentUrl.searchParams.set('sort', sortValue);
+    
+    // Construct the new URL
+    const newUrl = `${currentUrl.pathname}?${currentUrl.searchParams.toString()}`;
+    
+    // Update the URL
+    router.push(newUrl, { scroll: false });
+    
+    // Call the callback functions
+    onClose();
+  };
 
   return (
     <div className="sorting-modal-overlay">
@@ -44,10 +63,7 @@ export default function SortingModal({
             <div 
               key={option.value}
               className={`sorting-option ${selectedSort === option.value ? 'selected' : ''}`}
-              onClick={() => {
-                onSelectSort(option.value);
-                onClose();
-              }}
+              onClick={() => handleSortSelect(option.value)}
             >
               <span className="sorting-option-label">{option.label}</span>
               {selectedSort === option.value && (

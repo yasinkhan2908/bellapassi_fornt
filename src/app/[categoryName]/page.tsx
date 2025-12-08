@@ -91,9 +91,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
  
   //console.log("category fields",catDetailJson);
   const CateData = Array.isArray(catDetailJson) ? catDetailJson : catDetailJson.data.category_field;
+  //console.log("category fields",catDetailJson);
+  const CateSize = Array.isArray(catDetailJson) ? catDetailJson : catDetailJson.data.category_size;
   // since you already extracted the data in the line above
   const CateDatas = CateData.data || CateData;
-  //console.log("category name",categoryName);
+  
+  const CateSizes = CateSize.data || CateSize;
+  //console.log("category size",CateSizes);
   //
   const res = await fetch(`${process.env.API_URL}/api/user/category-products/${categoryName}`, {
     cache: 'no-store',
@@ -102,12 +106,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const product = Array.isArray(json) ? json : json.data.products;
   // since you already extracted the data in the line above
   const products = product.data || product;
-  console.log("category products",products);
+  //console.log("category products",products);
   
   return (
     <>
       <ClientBootstrap />
-      <ClientCategory CateDatas={CateDatas} categoryName={categoryName} products={products} initialPage={product.current_page}
+      <ClientCategory CateSizes={CateSizes} CateDatas={CateDatas} categoryName={categoryName} products={products} initialPage={product.current_page}
       lastPage={product.last_page} bgColor={json.data.bg_color} />
     </>
   );

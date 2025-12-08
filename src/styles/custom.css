@@ -1991,6 +1991,19 @@ ease;
 .mobile-filter{
     display: none !important; 
 }
+.no-filter-item{
+    padding: 0;
+    margin: 0;
+    line-height: 32px;
+}
+.selected-sub-cat-filter{
+    cursor: pointer;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+.selected-sub-cat-filter i{
+    margin-right: 6px;
+}
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
 
