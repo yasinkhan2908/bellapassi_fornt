@@ -105,118 +105,6 @@ export default function FilterModal({
     };
   }, []);
 
-  if (!isOpen) return null;
-
-  const handleCategoryClick = (category: any) => {
-    if (category.id === 'price-filter') {
-      setSelectedCategory(category);
-      setSelectedSubCategory('price_range');
-    } else {
-      setSelectedCategory(category);
-      setSelectedSubCategory(category.single_data.field_option);
-    }
-  };
-
-  const handleSubCategoryClick = (subcat: any, categoryName: string) => {
-    const filterKey = `${categoryName.replace(/\s+/g, '_')}`;
-    const filterValue = subcat.value || subcat.id || subcat.name;
-    
-    const newActiveFilters = new Map(activeFilters);
-    const existingValues = newActiveFilters.get(filterKey) || new Set<string>();
-    const newValues = new Set(existingValues);
-    
-    // Toggle filter value - add if not present, remove if already present
-    if (newValues.has(filterValue)) {
-      newValues.delete(filterValue);
-    } else {
-      newValues.add(filterValue);
-    }
-    
-    // Update or remove the filter key
-    if (newValues.size > 0) {
-      newActiveFilters.set(filterKey, newValues);
-    } else {
-      newActiveFilters.delete(filterKey);
-    }
-    
-    setActiveFilters(newActiveFilters);
-    updateURLWithFilters(newActiveFilters);
-  };
-
-  const handlePriceInputChange = (type: 'min' | 'max', value: string) => {
-    // Allow only numbers and decimal points
-    const numericValue = value.replace(/[^\d.]/g, '');
-    
-    const newPriceRange = {
-      ...priceRange,
-      [type]: numericValue
-    };
-    
-    setPriceRange(newPriceRange);
-    
-    // Also update temp range for slider if valid number
-    const numValue = parseFloat(numericValue);
-    if (!isNaN(numValue)) {
-      const clampedValue = Math.max(minPriceRange, Math.min(maxPriceRange, numValue));
-      setTempPriceRange(prev => ({
-        ...prev,
-        [type]: clampedValue
-      }));
-    }
-    
-    // Clear error when user starts typing
-    if (priceError) setPriceError('');
-    
-    // If the other field has a value, validate the range
-    if ((type === 'min' && priceRange.max.trim()) || (type === 'max' && priceRange.min.trim())) {
-      validatePriceRangeWithValues(newPriceRange.min, newPriceRange.max);
-    }
-  };
-
-  const validatePriceRangeWithValues = (min: string, max: string): boolean => {
-    const minNum = parseFloat(min);
-    const maxNum = parseFloat(max);
-    
-    // Both empty is valid (no price filter)
-    if (!min && !max) return true;
-    
-    // Validate numeric values
-    if (min && isNaN(minNum)) {
-      setPriceError('Minimum price must be a number');
-      return false;
-    }
-    
-    if (max && isNaN(maxNum)) {
-      setPriceError('Maximum price must be a number');
-      return false;
-    }
-    
-    // Validate min <= max if both are provided
-    if (min && max && minNum > maxNum) {
-      setPriceError('Minimum price cannot be greater than maximum price');
-      return false;
-    }
-    
-    // Validate within range
-    if ((min && minNum < minPriceRange) || (max && maxNum > maxPriceRange)) {
-      setPriceError(`Price must be between $${minPriceRange} and $${maxPriceRange}`);
-      return false;
-    }
-    
-    // Validate non-negative prices
-    if ((min && minNum < 0) || (max && maxNum < 0)) {
-      setPriceError('Price cannot be negative');
-      return false;
-    }
-    
-    setPriceError('');
-    return true;
-  };
-
-  const validatePriceRange = (): boolean => {
-    return validatePriceRangeWithValues(priceRange.min, priceRange.max);
-  };
-
   // Use useCallback for event handlers to prevent unnecessary re-renders
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isPriceDragging || !sliderRef.current) return;
@@ -252,8 +140,6 @@ export default function FilterModal({
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!isPriceDragging || !sliderRef.current || !e.touches[0]) return;
-    
-    // No need for preventDefault here as it causes the passive event warning
     
     const slider = sliderRef.current;
     const rect = slider.getBoundingClientRect();
@@ -441,7 +327,7 @@ export default function FilterModal({
   };
 
   const isFilterActive = (categoryName: string, subcatValue: string) => {
-    const filterKey = `${categoryName.replace(/\s+/g, '_')}`;
+    const filterKey = `${categoryName}`;
     const filterValues = activeFilters.get(filterKey);
     return filterValues ? filterValues.has(subcatValue) : false;
   };
@@ -554,6 +440,119 @@ export default function FilterModal({
       }
     }, 50);
   };
+
+  const handlePriceInputChange = (type: 'min' | 'max', value: string) => {
+    // Allow only numbers and decimal points
+    const numericValue = value.replace(/[^\d.]/g, '');
+    
+    const newPriceRange = {
+      ...priceRange,
+      [type]: numericValue
+    };
+    
+    setPriceRange(newPriceRange);
+    
+    // Also update temp range for slider if valid number
+    const numValue = parseFloat(numericValue);
+    if (!isNaN(numValue)) {
+      const clampedValue = Math.max(minPriceRange, Math.min(maxPriceRange, numValue));
+      setTempPriceRange(prev => ({
+        ...prev,
+        [type]: clampedValue
+      }));
+    }
+    
+    // Clear error when user starts typing
+    if (priceError) setPriceError('');
+    
+    // If the other field has a value, validate the range
+    if ((type === 'min' && priceRange.max.trim()) || (type === 'max' && priceRange.min.trim())) {
+      validatePriceRangeWithValues(newPriceRange.min, newPriceRange.max);
+    }
+  };
+
+  const validatePriceRangeWithValues = (min: string, max: string): boolean => {
+    const minNum = parseFloat(min);
+    const maxNum = parseFloat(max);
+    
+    // Both empty is valid (no price filter)
+    if (!min && !max) return true;
+    
+    // Validate numeric values
+    if (min && isNaN(minNum)) {
+      setPriceError('Minimum price must be a number');
+      return false;
+    }
+    
+    if (max && isNaN(maxNum)) {
+      setPriceError('Maximum price must be a number');
+      return false;
+    }
+    
+    // Validate min <= max if both are provided
+    if (min && max && minNum > maxNum) {
+      setPriceError('Minimum price cannot be greater than maximum price');
+      return false;
+    }
+    
+    // Validate within range
+    if ((min && minNum < minPriceRange) || (max && maxNum > maxPriceRange)) {
+      setPriceError(`Price must be between $${minPriceRange} and $${maxPriceRange}`);
+      return false;
+    }
+    
+    // Validate non-negative prices
+    if ((min && minNum < 0) || (max && maxNum < 0)) {
+      setPriceError('Price cannot be negative');
+      return false;
+    }
+    
+    setPriceError('');
+    return true;
+  };
+
+  const validatePriceRange = (): boolean => {
+    return validatePriceRangeWithValues(priceRange.min, priceRange.max);
+  };
+
+  const handleCategoryClick = (category: any) => {
+    if (category.id === 'price-filter') {
+      setSelectedCategory(category);
+      setSelectedSubCategory('price_range');
+    } else {
+      setSelectedCategory(category);
+      setSelectedSubCategory(category.single_data.field_option);
+    }
+  };
+
+  const handleSubCategoryClick = (subcat: any, categoryName: string) => {
+    const filterKey = `${categoryName}`;
+    const filterValue = subcat.value || subcat.id || subcat.name;
+    
+    const newActiveFilters = new Map(activeFilters);
+    const existingValues = newActiveFilters.get(filterKey) || new Set<string>();
+    const newValues = new Set(existingValues);
+    
+    // Toggle filter value - add if not present, remove if already present
+    if (newValues.has(filterValue)) {
+      newValues.delete(filterValue);
+    } else {
+      newValues.add(filterValue);
+    }
+    
+    // Update or remove the filter key
+    if (newValues.size > 0) {
+      newActiveFilters.set(filterKey, newValues);
+    } else {
+      newActiveFilters.delete(filterKey);
+    }
+    
+    setActiveFilters(newActiveFilters);
+    updateURLWithFilters(newActiveFilters);
+  };
+
+  // Don't put early return before hooks
+  if (!isOpen) return null;
 
   return (
     <div className="filter-modal-overlay">
