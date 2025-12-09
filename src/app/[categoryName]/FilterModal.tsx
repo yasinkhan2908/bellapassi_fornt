@@ -19,7 +19,7 @@ export default function FilterModal({
   onClose, 
   CateDatas, 
   minPriceRange = 0, 
-  maxPriceRange = 1000 
+  maxPriceRange = 10000
 }: FilterModalProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -41,6 +41,7 @@ export default function FilterModal({
     max: maxPriceRange
   });
   const [priceError, setPriceError] = useState<string>('');
+  const [activeSlider, setActiveSlider] = useState<'min' | 'max' | null>(null);
   
   // Initialize active filters and price range from URL on component mount
   useEffect(() => {
@@ -53,13 +54,13 @@ export default function FilterModal({
       let tempMax = maxPriceRange;
       
       params.forEach((value, key) => {
-        if (key === 'min_price') {
+        if (key === 'minprice') {
           minPrice = value;
           const minValue = parseFloat(value);
           if (!isNaN(minValue)) {
             tempMin = Math.max(minPriceRange, Math.min(maxPriceRange, minValue));
           }
-        } else if (key === 'max_price') {
+        } else if (key === 'maxprice') {
           maxPrice = value;
           const maxValue = parseFloat(value);
           if (!isNaN(maxValue)) {
@@ -99,7 +100,7 @@ export default function FilterModal({
     
     // Remove all existing filter parameters except price
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'min_price' && key !== 'max_price') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
         params.delete(key);
       }
     });
@@ -112,18 +113,18 @@ export default function FilterModal({
       }
     });
     
-    // Update or remove min_price parameter
+    // Update or remove minprice parameter
     if (priceRange.min.trim()) {
-      params.set('min_price', priceRange.min);
+      params.set('minprice', priceRange.min);
     } else {
-      params.delete('min_price');
+      params.delete('minprice');
     }
     
-    // Update or remove max_price parameter
+    // Update or remove maxprice parameter
     if (priceRange.max.trim()) {
-      params.set('max_price', priceRange.max);
+      params.set('maxprice', priceRange.max);
     } else {
-      params.delete('max_price');
+      params.delete('maxprice');
     }
     
     const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
@@ -140,7 +141,7 @@ export default function FilterModal({
     
     // Remove all existing filter parameters except non-price filters
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'min_price' && key !== 'max_price') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
         params.delete(key);
       }
     });
@@ -154,8 +155,8 @@ export default function FilterModal({
     });
     
     // Remove price params
-    params.delete('min_price');
-    params.delete('max_price');
+    params.delete('minprice');
+    params.delete('maxprice');
     
     const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
     router.push(newUrl, { scroll: false });
@@ -166,7 +167,7 @@ export default function FilterModal({
     
     // Remove all existing filter parameters (except price)
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'min_price' && key !== 'max_price') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
         params.delete(key);
       }
     });
@@ -252,7 +253,7 @@ export default function FilterModal({
     
     // Remove all existing filter parameters
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') || key === 'min_price' || key === 'max_price') {
+      if (key.startsWith('') || key === 'minprice' || key === 'maxprice') {
         params.delete(key);
       }
     });
@@ -267,10 +268,10 @@ export default function FilterModal({
     
     // Add price filters if they exist
     if (priceRange.min.trim()) {
-      params.set('min_price', priceRange.min);
+      params.set('minprice', priceRange.min);
     }
     if (priceRange.max.trim()) {
-      params.set('max_price', priceRange.max);
+      params.set('maxprice', priceRange.max);
     }
     
     const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
@@ -345,26 +346,43 @@ export default function FilterModal({
     }
   };
 
+  // FIXED: Better slider change handler
   const handleSliderChange = (type: 'min' | 'max', value: number) => {
+    console.log("Slider change:", type, value);
+    
     setSliderValues(prev => {
       let newMin = prev.min;
       let newMax = prev.max;
       
       if (type === 'min') {
-        newMin = Math.min(value, prev.max - 1);
+        // Ensure min doesn't exceed max
+        newMin = Math.min(value, prev.max);
+        // Clamp to range
         newMin = Math.max(minPriceRange, newMin);
-        setPriceRange(p => ({ ...p, min: newMin.toString() }));
       } else {
-        newMax = Math.max(value, prev.min + 1);
+        // Ensure max doesn't go below min
+        newMax = Math.max(value, prev.min);
+        // Clamp to range
         newMax = Math.min(maxPriceRange, newMax);
-        setPriceRange(p => ({ ...p, max: newMax.toString() }));
       }
+      
+      // Update priceRange state
+      setPriceRange(p => ({
+        ...p,
+        min: type === 'min' ? newMin.toString() : p.min,
+        max: type === 'max' ? newMax.toString() : p.max
+      }));
       
       return { min: newMin, max: newMax };
     });
   };
 
+  const handleSliderStart = (type: 'min' | 'max') => {
+    setActiveSlider(type);
+  };
+
   const handleSliderEnd = () => {
+    setActiveSlider(null);
     // Apply filter when user stops dragging
     if (validatePriceRange()) {
       applyPriceFilter();
@@ -532,24 +550,24 @@ export default function FilterModal({
                         <div className="mb-4">
                           <h6 className="mb-3">Select Price Range</h6>
                           
-                          {/* Price Range Slider - SIMPLIFIED VERSION */}
+                          {/* Price Range Slider - IMPROVED VERSION */}
                           <div className="mb-4">
                             <div className="d-flex justify-content-between mb-2">
                               <div className="price-range-label">
                                 <small className="text-muted">Range:</small>
                                 <div className="fw-bold">
-                                  ${sliderValues.min.toFixed(2)} - ${sliderValues.max.toFixed(2)}
+                                  ₹ {sliderValues.min.toFixed(2)} - ₹ {sliderValues.max.toFixed(2)}
                                 </div>
                               </div>
-                              <div className="price-range-minmax">
+                              <div className="price-range-minmax d-none">
                                 <small className="text-muted">
-                                  ${minPriceRange.toFixed(2)} - ${maxPriceRange.toFixed(2)}
+                                  ₹ {minPriceRange.toFixed(2)} - ₹ {maxPriceRange.toFixed(2)}
                                 </small>
                               </div>
                             </div>
                             
-                            {/* Dual Range Slider Container */}
-                            <div className="price-slider-container position-relative py-3">
+                            {/* Dual Range Slider Container - FIXED VERSION */}
+                            <div className="price-slider-container position-relative py-3" style={{ height: '40px' }}>
                               {/* Slider Track Background */}
                               <div 
                                 className="position-absolute bg-light rounded-pill"
@@ -557,7 +575,7 @@ export default function FilterModal({
                                   top: '50%',
                                   left: '0',
                                   right: '0',
-                                  height: '4px',
+                                  height: '6px',
                                   transform: 'translateY(-50%)'
                                 }}
                               />
@@ -567,83 +585,91 @@ export default function FilterModal({
                                 className="position-absolute bg-primary rounded-pill"
                                 style={{
                                   top: '50%',
-                                  height: '4px',
+                                  height: '6px',
                                   transform: 'translateY(-50%)',
                                   ...getTrackFillPosition()
                                 }}
                               />
                               
-                              {/* Min Price Slider */}
-                              <input
-                                type="range"
-                                min={minPriceRange}
-                                max={maxPriceRange}
-                                value={sliderValues.min}
-                                onChange={(e) => handleSliderChange('min', parseInt(e.target.value))}
-                                onMouseUp={handleSliderEnd}
-                                onTouchEnd={handleSliderEnd}
-                                className="position-absolute w-100"
-                                style={{
-                                  top: '50%',
-                                  left: '0',
-                                  transform: 'translateY(-50%)',
-                                  opacity: 0,
-                                  zIndex: 3,
-                                  height: '20px',
-                                  cursor: 'pointer'
-                                }}
-                              />
+                              {/* Min Price Slider - FIXED: Better positioning */}
+                              <div className="position-relative" style={{ height: '100%' }}>
+                                <input
+                                  type="range"
+                                  min={minPriceRange}
+                                  max={maxPriceRange}
+                                  value={sliderValues.min}
+                                  onChange={(e) => handleSliderChange('min', parseInt(e.target.value))}
+                                  onMouseDown={() => handleSliderStart('min')}
+                                  onMouseUp={handleSliderEnd}
+                                  onTouchStart={() => handleSliderStart('min')}
+                                  onTouchEnd={handleSliderEnd}
+                                  className="position-absolute"
+                                  style={{
+                                    width: '100%',
+                                    height: '40px',
+                                    opacity: 0,
+                                    cursor: 'pointer',
+                                    zIndex: activeSlider === 'min' ? 5 : 3,
+                                    top: 0,
+                                    left: 0
+                                  }}
+                                />
+                                
+                                {/* Min Thumb Visual */}
+                                <div
+                                  className="position-absolute bg-white border border-primary rounded-circle shadow-sm"
+                                  style={{
+                                    top: '50%',
+                                    left: `${((sliderValues.min - minPriceRange) / (maxPriceRange - minPriceRange)) * 100}%`,
+                                    width: '24px',
+                                    height: '24px',
+                                    transform: 'translate(-50%, -50%)',
+                                    cursor: 'grab',
+                                    zIndex: 4,
+                                    pointerEvents: 'none'
+                                  }}
+                                />
+                              </div>
                               
-                              {/* Max Price Slider */}
-                              <input
-                                type="range"
-                                min={minPriceRange}
-                                max={maxPriceRange}
-                                value={sliderValues.max}
-                                onChange={(e) => handleSliderChange('max', parseInt(e.target.value))}
-                                onMouseUp={handleSliderEnd}
-                                onTouchEnd={handleSliderEnd}
-                                className="position-absolute w-100"
-                                style={{
-                                  top: '50%',
-                                  left: '0',
-                                  transform: 'translateY(-50%)',
-                                  opacity: 0,
-                                  zIndex: 4,
-                                  height: '20px',
-                                  cursor: 'pointer'
-                                }}
-                              />
-                              
-                              {/* Min Thumb Visual */}
-                              <div
-                                className="position-absolute bg-white border border-primary rounded-circle shadow-sm"
-                                style={{
-                                  top: '50%',
-                                  left: `${((sliderValues.min - minPriceRange) / (maxPriceRange - minPriceRange)) * 100}%`,
-                                  width: '20px',
-                                  height: '20px',
-                                  transform: 'translate(-50%, -50%)',
-                                  cursor: 'grab',
-                                  zIndex: 2,
-                                  pointerEvents: 'none'
-                                }}
-                              />
-                              
-                              {/* Max Thumb Visual */}
-                              <div
-                                className="position-absolute bg-white border border-primary rounded-circle shadow-sm"
-                                style={{
-                                  top: '50%',
-                                  left: `${((sliderValues.max - minPriceRange) / (maxPriceRange - minPriceRange)) * 100}%`,
-                                  width: '20px',
-                                  height: '20px',
-                                  transform: 'translate(-50%, -50%)',
-                                  cursor: 'grab',
-                                  zIndex: 2,
-                                  pointerEvents: 'none'
-                                }}
-                              />
+                              {/* Max Price Slider - FIXED: Better positioning */}
+                              <div className="position-relative" style={{ height: '100%' }}>
+                                <input
+                                  type="range"
+                                  min={minPriceRange}
+                                  max={maxPriceRange}
+                                  value={sliderValues.max}
+                                  onChange={(e) => handleSliderChange('max', parseInt(e.target.value))}
+                                  onMouseDown={() => handleSliderStart('max')}
+                                  onMouseUp={handleSliderEnd}
+                                  onTouchStart={() => handleSliderStart('max')}
+                                  onTouchEnd={handleSliderEnd}
+                                  className="position-absolute"
+                                  style={{
+                                    width: '100%',
+                                    height: '40px',
+                                    opacity: 0,
+                                    cursor: 'pointer',
+                                    zIndex: activeSlider === 'max' ? 5 : 3,
+                                    top: 0,
+                                    left: 0
+                                  }}
+                                />
+                                
+                                {/* Max Thumb Visual */}
+                                <div
+                                  className="position-absolute bg-white border border-primary rounded-circle shadow-sm"
+                                  style={{
+                                    top: '50%',
+                                    left: `${((sliderValues.max - minPriceRange) / (maxPriceRange - minPriceRange)) * 100}%`,
+                                    width: '24px',
+                                    height: '24px',
+                                    transform: 'translate(-50%, -50%)',
+                                    cursor: 'grab',
+                                    zIndex: 4,
+                                    pointerEvents: 'none'
+                                  }}
+                                />
+                              </div>
                             </div>
                             
                             {/* Slider Value Display */}
@@ -654,7 +680,7 @@ export default function FilterModal({
                           </div>
                           
                           {/* Manual Input Fields */}
-                          <div className="row g-3 mb-3">
+                          <div className="row g-3 mb-3 mobile-min-max-input-price">
                             <div className="col-6">
                               <label htmlFor="minPrice" className="form-label text-muted small">
                                 Minimum Price ($)
@@ -706,7 +732,7 @@ export default function FilterModal({
                             </div>
                           )}
                           
-                          <div className="d-flex gap-2 mt-3">
+                          <div className="d-flex gap-2 mt-3  d-none">
                             <button
                               type="button"
                               className="btn btn-outline-primary btn-sm"
@@ -728,7 +754,7 @@ export default function FilterModal({
                           </div>
                           
                           {/* Quick price suggestions */}
-                          <div className="mt-4 pt-3 border-top">
+                          <div className="mt-4 pt-3 border-top mobile-quick-filter-price">
                             <p className="small text-muted mb-2">Quick Filters:</p>
                             <div className="d-flex flex-wrap gap-2">
                               {[
@@ -884,7 +910,7 @@ export default function FilterModal({
                   </>
                 ) : (
                   <div className="d-flex justify-content-center align-items-center h-100">
-                    <p className="text-muted">Select a filter from the left</p>
+                    <div className="text-muted">Select a filter from the left</div>
                   </div>
                 )}
               </div>
