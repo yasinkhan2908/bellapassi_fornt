@@ -480,13 +480,13 @@ export default function ClientCategory({
                 </div>
                 <div className="brand-filter-content">
                   <div className="brand-list">
-                    <div className="d-flex brand-item">
+                    <div className="brand-item">
                       
                       {CateSizes.map((size: { size: string; id: Key | null | undefined; }) => {
                         const sizeValue = size.size ?? "";
                         
                         return (
-                          <div className="brand-item mr-2" key={size.id}>
+                          <div className="brand-item mr-2 mb-2" key={size.id}>
                             <div className="form-check">
                               <input
                                 className="form-check-input"

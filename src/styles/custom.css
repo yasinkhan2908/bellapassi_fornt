@@ -2004,6 +2004,19 @@ ease;
 .selected-sub-cat-filter i{
     margin-right: 6px;
 }
+.modal-header .btn-close
+{
+    background-color: #fff !important;
+}
+.filter-model-left li.active{
+    cursor: pointer;
+    background-color: rgb(255, 63, 108) !important;
+    border-color: rgb(255, 63, 108) !important;
+}
+
+.filter-model-left li.active div{
+    color: #fff !important;
+}
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
 
