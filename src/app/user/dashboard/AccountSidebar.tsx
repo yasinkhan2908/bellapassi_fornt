@@ -25,7 +25,7 @@ export const AccountSidebar = ({}: AccountSidebarProps) => {
         signOut({ redirect: true, callbackUrl: "/" }); // Redirect after logout
     };
     return (
-        <div className="profile-menu collapse d-lg-block" id="profileMenu">
+        <div className="profile-menu collapse d-lg-block mobile-hide-profile-sidebar" id="profileMenu">
             <div className="user-info aos-init aos-animate" data-aos="fade-right">
                 <div className="user-avatar">
                     <Image 

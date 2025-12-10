@@ -1372,6 +1372,7 @@ button{
 }
 .header .main-header .header-actions .header-action-btn .badge{
     top: 1px !important;
+    right: 0px !important;
 }
 .add-to-cart-detail {
     background: #fff;
@@ -1523,7 +1524,7 @@ ease;
     border: 1px solid red !important;
 }
 .account .profile-menu{
-    display: block !important;
+    /* display: block !important; */
 }
 .empty-cart{
     padding: 10rem 0;
@@ -2079,7 +2080,15 @@ ease;
 }
 /* Medium devices (≥768px) */
 @media (max-width: 768px) {
-
+    .account .content-area {
+        padding: 0 !important;
+    }
+    .account .content-area .orders-grid .order-card{
+        width: 100%;
+    }
+    .mobile-hide-profile-sidebar{
+        display: none !important;
+    }
 
     /* Filter Modal Styles */
     .filter-modal-overlay {
@@ -2295,7 +2304,7 @@ ease;
         padding-bottom: 10px !important;
     }
     .account .profile-menu{
-        display: block !important;
+        /* display: block !important; */
     }
     .opt-verify{
         width: 100% !important;

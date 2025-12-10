@@ -11,6 +11,7 @@ import {
   removeFromCart 
 } from '../../lib/slices/cartSlice';
 import { getSessionId } from '@/lib/session';
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
     const router = useRouter();
@@ -185,7 +186,9 @@ export default function Navbar() {
         
     };
     
-
+    const handleLogout = () => {
+        signOut({ redirect: true, callbackUrl: "/" }); // Redirect after logout
+    };
     return (
         <header id="header" className="header sticky-top">
             <div className="main-header"> 
@@ -480,9 +483,44 @@ export default function Navbar() {
                                 <i className="bi bi-house-door"></i>
                             </Link> */}
                             {token? (
-                                <Link href="/user/dashboard" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
-                                    <i className="bi bi-person"></i>
-                                </Link>
+                                <>
+                                    {/* <Link href="/user/dashboard" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
+                                        <i className="bi bi-person"></i>
+                                    </Link> */}
+                                    <div className="dropdown account-dropdown">
+                                        <button className="header-action-btn" data-bs-toggle="dropdown"  aria-expanded="true">
+                                            <i className="bi bi-person"></i>
+                                        </button>
+                                        <div className="dropdown-menu" data-popper-placement="bottom-start">
+                                            <div className="dropdown-header">
+                                                <h6>Welcome to <span className="sitename">Bella Passi</span></h6>
+                                                <p className="mb-0">Access account &amp; manage orders</p>
+                                            </div>
+                                            <div className="dropdown-body">
+                                                <Link className="dropdown-item d-flex align-items-center" href="/user/account-setting/">
+                                                    <i className="bi bi-person-circle me-2"></i>
+                                                    <span>My Profile</span>
+                                                </Link>
+                                                <Link className="dropdown-item d-flex align-items-center" href="/user/dashboard/">
+                                                    <i className="bi bi-bag-check me-2"></i>
+                                                    <span>My Orders</span>
+                                                </Link>
+                                                <Link className="dropdown-item d-flex align-items-center" href="/user/my-address/">
+                                                    <i className="bi bi-house me-2"></i>
+                                                    <span>My Address</span>
+                                                </Link>
+                                                <Link className="dropdown-item d-flex align-items-center" href="#">
+                                                    <i className="bi bi-heart me-2"></i>
+                                                    <span>My Wishlist</span>
+                                                </Link>
+                                                <Link className="dropdown-item d-flex align-items-center" onClick={handleLogout} href="#">
+                                                    <i className="bi bi-box-arrow-left me-2"></i>
+                                                    <span>Logout</span>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
                             ) : (
                                 <Link href="/login" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
                                     <i className="bi bi-person"></i>
@@ -523,6 +561,10 @@ export default function Navbar() {
             </div>
             {/* Add CSS styles for the custom sidebar */}
             <style jsx global>{`
+                .header-action-btn{
+                    background-color: #fff !important;
+                    color:#000 !important;
+                }
                 .custom-sidebar {
                     position: fixed;
                     top: 0;
