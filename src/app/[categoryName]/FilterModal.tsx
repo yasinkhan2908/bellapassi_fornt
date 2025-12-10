@@ -762,7 +762,7 @@ export default function FilterModal({
                         <div className="d-flex align-items-center justify-content-between">
                           <div className="d-flex align-items-center">
                             {cat.id === 'price-filter' && (
-                              <span className='text-white mr-2'>₹</span>
+                              <span className='price-sign-text-color mr-2'>₹</span>
                             )}
                             {cat.id === 'size-filter' && (
                               <FontAwesomeIcon icon={faRuler} className="me-2" />

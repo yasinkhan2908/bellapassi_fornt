@@ -2020,7 +2020,9 @@ ease;
 .mobile-min-max-input-price,.mobile-quick-filter-price{
     display: none;
 }
-
+.filter-model-left li.active .price-sign-text-color{
+    color: #fff !important;
+}
 
 /* Add these styles to your global CSS file */
 
