@@ -78,7 +78,7 @@ export default function ClientCategory({
   const [hasMore, setHasMore] = useState(initialPage < lastPage);
   const [loading, setLoading] = useState(false);
   const [allProducts, setAllProducts] = useState<Product[]>(products);
-  const [selectedSort, setSelectedSort] = useState("newest");
+  const [selectedSort, setSelectedSort] = useState("");
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [isUpdatingFilters, setIsUpdatingFilters] = useState(false);
   
@@ -481,7 +481,7 @@ export default function ClientCategory({
                 <div className="brand-filter-content">
                   <div className="brand-list">
                     <div className="brand-item">
-                      
+                       
                       {CateSizes.map((size: { size: string; id: Key | null | undefined; }) => {
                         const sizeValue = size.size ?? "";
                         
@@ -739,11 +739,12 @@ export default function ClientCategory({
 
       {/* Filter and Sorting Modals */}
       <FilterModal 
-        isOpen={showFilterModal}
-        onClose={handleCloseFilterModal}
-        CateDatas={CateDatas}
-        bgColor={bgColor}
-      />
+  isOpen={showFilterModal}
+  onClose={handleCloseFilterModal}
+  CateDatas={CateDatas}
+  CateSizes={CateSizes as unknown as { size: string; id: Key | null | undefined; }[]}
+  bgColor={bgColor}
+/>
 
       <SortingModal 
         isOpen={showSortingModal}

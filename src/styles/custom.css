@@ -2258,6 +2258,9 @@ ease;
         text-align: center;
         padding: 20px 0;
     }
+    .open-mobile-filter{
+        padding: 0 !important;
+    }
     .filter-sorting{
         border-right: 1px solid #000;
     }

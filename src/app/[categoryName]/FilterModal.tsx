@@ -1,13 +1,14 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faDollarSign } from '@fortawesome/free-solid-svg-icons'
-import { ReactNode, useState, useEffect, useRef, useCallback } from 'react';
+import { faXmark, faRupeeSign, faRuler } from '@fortawesome/free-solid-svg-icons'
+import { ReactNode, useState, useEffect, useRef, useCallback, Key } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
   CateDatas: any[];
+  CateSizes: any[];
   bgColor?: any[];
   selectedFilters?: any[];
   minPriceRange?: number;
@@ -18,6 +19,7 @@ export default function FilterModal({
   isOpen, 
   onClose, 
   CateDatas, 
+  CateSizes,
   minPriceRange = 0, 
   maxPriceRange = 10000
 }: FilterModalProps) {
@@ -25,7 +27,13 @@ export default function FilterModal({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   
-  const [selectedCategory, setSelectedCategory] = useState<any>(CateDatas[0] || null);
+  // Add ref for right sidebar scrolling
+  const rightSidebarRef = useRef<HTMLDivElement>(null);
+  
+  const modalOverlayRef = useRef<HTMLDivElement>(null);
+  
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedSize, setSelectedSize] = useState<any>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>(null);
   
   // Store filters as Map<filterKey, Set<values>>
@@ -43,7 +51,38 @@ export default function FilterModal({
   const [priceError, setPriceError] = useState<string>('');
   const [activeSlider, setActiveSlider] = useState<'min' | 'max' | null>(null);
   
-  // Initialize active filters and price range from URL on component mount
+  // Size filter state
+  const [selectedSizes, setSelectedSizes] = useState<Set<string>>(new Set());
+  const [isUpdatingFilters, setIsUpdatingFilters] = useState(false);
+
+  // Extract available sizes from CateSizes
+  const availableSizes = CateSizes
+    .map(item => item.size ?? "")
+    .filter(size => size.trim() !== "");
+  
+  // Create size category object
+  const sizeCategory = {
+    id: 'size-filter',
+    single_data: {
+      name: 'Size',
+      field_option: availableSizes
+    }
+  };
+
+  // Create categories with price and size
+  const categoriesWithPriceAndSize = [
+    ...CateDatas,
+    {
+      id: 'price-filter',
+      single_data: {
+        name: 'Price',
+        field_option: 'price_range'
+      }
+    },
+    sizeCategory
+  ];
+
+  // Initialize active filters, price range, and sizes from URL on component mount
   useEffect(() => {
     if (searchParams) {
       const params = new URLSearchParams(searchParams.toString());
@@ -52,6 +91,7 @@ export default function FilterModal({
       let maxPrice = '';
       let tempMin = minPriceRange;
       let tempMax = maxPriceRange;
+      const sizesSet = new Set<string>();
       
       params.forEach((value, key) => {
         if (key === 'minprice') {
@@ -66,8 +106,12 @@ export default function FilterModal({
           if (!isNaN(maxValue)) {
             tempMax = Math.max(minPriceRange, Math.min(maxPriceRange, maxValue));
           }
+        } else if (key === 'size' || key === 'sizes') {
+          // Handle size filter
+          const sizeValues = value.split(',').filter(v => v.trim() !== '');
+          sizeValues.forEach(size => sizesSet.add(size));
         } else if (key.startsWith('')) {
-          // Split comma-separated values
+          // Split comma-separated values for other filters
           const values = value.split(',').filter(v => v.trim() !== '');
           if (values.length > 0) {
             filtersMap.set(key, new Set(values));
@@ -76,31 +120,159 @@ export default function FilterModal({
       });
       
       setActiveFilters(filtersMap);
+      setSelectedSizes(sizesSet);
       setPriceRange({ min: minPrice, max: maxPrice });
       setSliderValues({ min: tempMin, max: tempMax });
     }
   }, [searchParams, minPriceRange, maxPriceRange]);
 
-  // Add price as a category option
-  const categoriesWithPrice = [
-    ...CateDatas,
-    {
-      id: 'price-filter',
-      single_data: {
-        name: 'Price',
-        field_option: 'price_range'
+  // Initialize selected category when modal opens or when categories data changes
+  useEffect(() => {
+    if (categoriesWithPriceAndSize.length > 0 && !selectedCategory && isOpen) {
+      // Select the first category by default
+      const firstCategory = categoriesWithPriceAndSize[0];
+      setSelectedCategory(firstCategory);
+      
+      // Set the appropriate subcategory based on the category type
+      if (firstCategory.id === 'price-filter') {
+        setSelectedSubCategory('price_range');
+      } else if (firstCategory.id === 'size-filter') {
+        setSelectedSubCategory('size_options');
+      } else if (firstCategory.single_data?.field_option) {
+        // Check if field_option is an array
+        const fieldOption = firstCategory.single_data.field_option;
+        if (Array.isArray(fieldOption)) {
+          setSelectedSubCategory(fieldOption);
+        } else {
+          setSelectedSubCategory(null);
+        }
+      } else {
+        setSelectedSubCategory(null);
+      }
+      
+      // Scroll to top when first category is selected
+      setTimeout(() => {
+        if (rightSidebarRef.current) {
+          rightSidebarRef.current.scrollTop = 0;
+        }
+      }, 50);
+    }
+  }, [categoriesWithPriceAndSize, selectedCategory, isOpen]);
+
+  // Also reset when modal opens
+  useEffect(() => {
+    if (isOpen && categoriesWithPriceAndSize.length > 0) {
+      // Reset to first category when modal opens
+      const firstCategory = categoriesWithPriceAndSize[0];
+      setSelectedCategory(firstCategory);
+      
+      if (firstCategory.id === 'price-filter') {
+        setSelectedSubCategory('price_range');
+      } else if (firstCategory.id === 'size-filter') {
+        setSelectedSubCategory('size_options');
+      } else if (firstCategory.single_data?.field_option && Array.isArray(firstCategory.single_data.field_option)) {
+        setSelectedSubCategory(firstCategory.single_data.field_option);
+      } else {
+        setSelectedSubCategory(null);
+      }
+      
+      // Scroll to top when modal opens
+      setTimeout(() => {
+        if (rightSidebarRef.current) {
+          rightSidebarRef.current.scrollTop = 0;
+        }
+      }, 100);
+    }
+  }, [isOpen]);
+
+  // UPDATED: Fixed handleCategoryClick with proper scrolling
+  const handleCategoryClick = (category: any) => {
+    console.log('Category clicked:', category.single_data?.name);
+    
+    if (category.id === 'price-filter') {
+      setSelectedCategory(category);
+      setSelectedSubCategory('price_range');
+    } else if (category.id === 'size-filter') {
+      setSelectedCategory(category);
+      setSelectedSubCategory('size_options');
+    } else {
+      setSelectedCategory(category);
+      // Check if field_option is an array
+      if (category.single_data?.field_option && Array.isArray(category.single_data.field_option)) {
+        setSelectedSubCategory(category.single_data.field_option);
+      } else {
+        setSelectedSubCategory(null);
       }
     }
-  ];
+    
+  };
+
+  useEffect(() => {
+    modalOverlayRef.current?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [selectedCategory, selectedSubCategory]);
+
+  // Rest of your functions remain the same...
+  const applySizeFilter = () => {
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    
+    // Remove existing size parameters
+    params.delete('size');
+    params.delete('sizes');
+    
+    // Add selected sizes if any
+    if (selectedSizes.size > 0) {
+      const sizesArray = Array.from(selectedSizes);
+      params.set('size', sizesArray.join(','));
+    }
+    
+    // Add current active filters with comma-separated values
+    activeFilters.forEach((values, key) => {
+      if (values.size > 0) {
+        const valuesArray = Array.from(values);
+        params.set(key, valuesArray.join(','));
+      }
+    });
+    
+    // Update price filters
+    if (priceRange.min.trim()) {
+      params.set('minprice', priceRange.min);
+    } else {
+      params.delete('minprice');
+    }
+    
+    if (priceRange.max.trim()) {
+      params.set('maxprice', priceRange.max);
+    } else {
+      params.delete('maxprice');
+    }
+    
+    const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+    router.push(newUrl, { scroll: false });
+  };
+
+  const clearSizeFilter = () => {
+    setSelectedSizes(new Set());
+    
+    // Update URL
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    params.delete('size');
+    params.delete('sizes');
+    
+    const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+    router.push(newUrl, { scroll: false });
+  };
 
   const applyPriceFilter = () => {
     if (!validatePriceRange()) return;
     
     const params = new URLSearchParams(searchParams?.toString() || '');
     
-    // Remove all existing filter parameters except price
+    // Remove all existing filter parameters except size
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice' && key !== 'size' && key !== 'sizes') {
         params.delete(key);
       }
     });
@@ -112,6 +284,12 @@ export default function FilterModal({
         params.set(key, valuesArray.join(','));
       }
     });
+    
+    // Add size filter if selected
+    if (selectedSizes.size > 0) {
+      const sizesArray = Array.from(selectedSizes);
+      params.set('size', sizesArray.join(','));
+    }
     
     // Update or remove minprice parameter
     if (priceRange.min.trim()) {
@@ -141,7 +319,7 @@ export default function FilterModal({
     
     // Remove all existing filter parameters except non-price filters
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice' && key !== 'size' && key !== 'sizes') {
         params.delete(key);
       }
     });
@@ -154,6 +332,12 @@ export default function FilterModal({
       }
     });
     
+    // Add size filter if selected
+    if (selectedSizes.size > 0) {
+      const sizesArray = Array.from(selectedSizes);
+      params.set('size', sizesArray.join(','));
+    }
+    
     // Remove price params
     params.delete('minprice');
     params.delete('maxprice');
@@ -165,9 +349,9 @@ export default function FilterModal({
   const updateURLWithFilters = (filters: Map<string, Set<string>>) => {
     const params = new URLSearchParams(searchParams?.toString() || '');
     
-    // Remove all existing filter parameters (except price)
+    // Remove all existing filter parameters (except price and size)
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice') {
+      if (key.startsWith('') && key !== 'minprice' && key !== 'maxprice' && key !== 'size' && key !== 'sizes') {
         params.delete(key);
       }
     });
@@ -175,11 +359,19 @@ export default function FilterModal({
     // Add current active filters with comma-separated values
     filters.forEach((values, key) => {
       if (values.size > 0) {
-        // Convert Set to comma-separated string
         const valuesArray = Array.from(values);
         params.set(key, valuesArray.join(','));
       }
     });
+    
+    // Add size filter if selected
+    if (selectedSizes.size > 0) {
+      const sizesArray = Array.from(selectedSizes);
+      params.set('size', sizesArray.join(','));
+    } else {
+      params.delete('size');
+      params.delete('sizes');
+    }
     
     // Update URL
     const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
@@ -188,7 +380,8 @@ export default function FilterModal({
 
   const clearAllFilters = () => {
     setActiveFilters(new Map());
-    setSelectedCategory(categoriesWithPrice[0] || null);
+    setSelectedSizes(new Set());
+    setSelectedCategory(categoriesWithPriceAndSize[0] || null);
     setSelectedSubCategory(null);
     setPriceRange({ min: '', max: '' });
     setSliderValues({ min: minPriceRange, max: maxPriceRange });
@@ -244,16 +437,21 @@ export default function FilterModal({
       count += 1;
     }
     
+    // Add size filters to count if they exist
+    if (selectedSizes.size > 0) {
+      count += 1;
+    }
+    
     return count;
   };
 
   const applyFilters = () => {
-    // Apply all filters including price
+    // Apply all filters including price and size
     const params = new URLSearchParams(searchParams?.toString() || '');
     
     // Remove all existing filter parameters
     Array.from(params.keys()).forEach(key => {
-      if (key.startsWith('') || key === 'minprice' || key === 'maxprice') {
+      if (key.startsWith('') || key === 'minprice' || key === 'maxprice' || key === 'size' || key === 'sizes') {
         params.delete(key);
       }
     });
@@ -265,6 +463,12 @@ export default function FilterModal({
         params.set(key, valuesArray.join(','));
       }
     });
+    
+    // Add size filter if selected
+    if (selectedSizes.size > 0) {
+      const sizesArray = Array.from(selectedSizes);
+      params.set('size', sizesArray.join(','));
+    }
     
     // Add price filters if they exist
     if (priceRange.min.trim()) {
@@ -280,6 +484,7 @@ export default function FilterModal({
     console.log('Applied filters:', {
       category: selectedCategory?.single_data?.name,
       priceRange: priceRange,
+      sizes: Array.from(selectedSizes),
       activeFilters: Object.fromEntries(Array.from(activeFilters.entries()).map(([key, values]) => [key, Array.from(values)]))
     });
     onClose();
@@ -288,7 +493,44 @@ export default function FilterModal({
   // Check if price filter is currently active
   const isPriceFilterActive = priceRange.min.trim() !== '' || priceRange.max.trim() !== '';
 
-  // Handle quick filter selection
+  // Check if size filter is currently active
+  const isSizeFilterActive = selectedSizes.size > 0;
+
+  // Handle size selection from checkbox
+  const handleSizeChange = (sizeValue: string) => {
+    setIsUpdatingFilters(true);
+    
+    const newSelectedSizes = new Set(selectedSizes);
+    
+    if (newSelectedSizes.has(sizeValue)) {
+      newSelectedSizes.delete(sizeValue);
+    } else {
+      newSelectedSizes.add(sizeValue);
+    }
+    
+    setSelectedSizes(newSelectedSizes);
+    
+    // Apply filter immediately when size is selected/deselected
+    setTimeout(() => {
+      const params = new URLSearchParams(searchParams?.toString() || '');
+      
+      // Update size parameter
+      if (newSelectedSizes.size > 0) {
+        const sizesArray = Array.from(newSelectedSizes);
+        params.set('size', sizesArray.join(','));
+      } else {
+        params.delete('size');
+        params.delete('sizes');
+      }
+      
+      const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+      router.push(newUrl, { scroll: false });
+      
+      setIsUpdatingFilters(false);
+    }, 50);
+  };
+
+  // Handle quick filter selection for price
   const handleQuickFilterSelect = (min: string, max: string) => {
     const newPriceRange = {
       min: min,
@@ -415,7 +657,7 @@ export default function FilterModal({
     
     // Validate within range
     if ((min && minNum < minPriceRange) || (max && maxNum > maxPriceRange)) {
-      setPriceError(`Price must be between $${minPriceRange} and $${maxPriceRange}`);
+      setPriceError(`Price must be between ₹${minPriceRange} and ₹${maxPriceRange}`);
       return false;
     }
     
@@ -433,19 +675,9 @@ export default function FilterModal({
     return validatePriceRangeWithValues(priceRange.min, priceRange.max);
   };
 
-  const handleCategoryClick = (category: any) => {
-    if (category.id === 'price-filter') {
-      setSelectedCategory(category);
-      setSelectedSubCategory('price_range');
-    } else {
-      setSelectedCategory(category);
-      setSelectedSubCategory(category.single_data.field_option);
-    }
-  };
-
   const handleSubCategoryClick = (subcat: any, categoryName: string) => {
     const filterKey = `${categoryName}`;
-    const filterValue = subcat.value || subcat.id || subcat.name;
+    const filterValue = typeof subcat === 'string' ? subcat : (subcat.value || subcat.id || subcat.name);
     
     const newActiveFilters = new Map(activeFilters);
     const existingValues = newActiveFilters.get(filterKey) || new Set<string>();
@@ -495,14 +727,31 @@ export default function FilterModal({
           </span>
         </div>
         
-        <div className="filter-modal-content p-0">
+        <div className="filter-modal-content p-0" ref={modalOverlayRef} style={{ overflowY: "auto", height: "100%" }}>
           <div className="container-fluid p-0" style={{ height: "100%" }}>
             <div className="row g-0">
               {/* LEFT SIDEBAR */}
               <div className="col-5 border-end bg-light" style={{ height: "100vh", overflowY: "auto" }}>
                 <ul className="list-group list-group-flush filter-model-left">
-                  {categoriesWithPrice.map((cat, index) => {
+                  {categoriesWithPriceAndSize.map((cat, index) => {
                     const isSelected = cat.id === selectedCategory?.id;
+                    let badgeCount = 0;
+                    
+                    if (cat.id === 'price-filter' && isPriceFilterActive) {
+                      badgeCount = 1;
+                    } else if (cat.id === 'size-filter' && isSizeFilterActive) {
+                      badgeCount = 1;
+                    } else if (cat.id !== 'price-filter' && cat.id !== 'size-filter') {
+                      // For regular categories
+                      const filterKey = cat.single_data?.name;
+                      if (filterKey) {
+                        const filterValues = activeFilters.get(filterKey);
+                        if (filterValues && filterValues.size > 0) {
+                          badgeCount = filterValues.size;
+                        }
+                      }
+                    }
+                    
                     return (
                       <li 
                         key={cat.id} 
@@ -510,14 +759,19 @@ export default function FilterModal({
                         onClick={() => handleCategoryClick(cat)}
                         style={{ cursor: 'pointer' }}
                       >
-                        <div className="d-flex align-items-center">
-                          {cat.id === 'price-filter' && (
-                            <FontAwesomeIcon icon={faDollarSign} className="me-2" />
-                          )}
-                          {cat.single_data?.name || 'Unnamed Category'}
-                          {cat.id === 'price-filter' && isPriceFilterActive && (
-                            <span className="badge bg-white text-primary rounded-pill ms-2">
-                              1
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center">
+                            {cat.id === 'price-filter' && (
+                              <span className='text-white mr-2'>₹</span>
+                            )}
+                            {cat.id === 'size-filter' && (
+                              <FontAwesomeIcon icon={faRuler} className="me-2" />
+                            )}
+                            {cat.single_data?.name || 'Unnamed Category'}
+                          </div>
+                          {badgeCount > 0 && (
+                            <span className="badge bg-white text-primary rounded-pill">
+                              {badgeCount}
                             </span>
                           )}
                         </div>
@@ -527,8 +781,12 @@ export default function FilterModal({
                 </ul>
               </div>
 
-              {/* RIGHT SIDEBAR CONTENT */}
-              <div className="col-7 p-4" style={{ height: "100vh", overflowY: "auto" }}>
+              {/* RIGHT SIDEBAR CONTENT - ADDED REF HERE */}
+              <div 
+                ref={rightSidebarRef}
+                className="col-7 p-4" 
+                style={{ height: "100vh", overflowY: "auto" }}
+              >
                 {selectedCategory ? (
                   <>
                     {/* Selected Category Title */}
@@ -674,8 +932,8 @@ export default function FilterModal({
                             
                             {/* Slider Value Display */}
                             <div className="d-flex justify-content-between mt-2">
-                              <div className="text-muted small">${minPriceRange.toFixed(2)}</div>
-                              <div className="text-muted small">${maxPriceRange.toFixed(2)}</div>
+                              <div className="text-muted small">₹{minPriceRange.toFixed(2)}</div>
+                              <div className="text-muted small">₹{maxPriceRange.toFixed(2)}</div>
                             </div>
                           </div>
                           
@@ -683,10 +941,10 @@ export default function FilterModal({
                           <div className="row g-3 mb-3 mobile-min-max-input-price">
                             <div className="col-6">
                               <label htmlFor="minPrice" className="form-label text-muted small">
-                                Minimum Price ($)
+                                Minimum Price (₹)
                               </label>
                               <div className="input-group">
-                                <span className="input-group-text bg-light">$</span>
+                                <span className="input-group-text bg-light">₹</span>
                                 <input
                                   type="text"
                                   id="minPrice"
@@ -705,10 +963,10 @@ export default function FilterModal({
                             
                             <div className="col-6">
                               <label htmlFor="maxPrice" className="form-label text-muted small">
-                                Maximum Price ($)
+                                Maximum Price (₹)
                               </label>
                               <div className="input-group">
-                                <span className="input-group-text bg-light">$</span>
+                                <span className="input-group-text bg-light">₹</span>
                                 <input
                                   type="text"
                                   id="maxPrice"
@@ -758,12 +1016,12 @@ export default function FilterModal({
                             <p className="small text-muted mb-2">Quick Filters:</p>
                             <div className="d-flex flex-wrap gap-2">
                               {[
-                                { label: 'Under $25', min: '', max: '25' },
-                                { label: '$25 - $50', min: '25', max: '50' },
-                                { label: '$50 - $100', min: '50', max: '100' },
-                                { label: '$100 - $250', min: '100', max: '250' },
-                                { label: '$250 - $500', min: '250', max: '500' },
-                                { label: 'Over $500', min: '500', max: '' }
+                                { label: 'Under ₹25', min: '', max: '25' },
+                                { label: '₹25 - ₹50', min: '25', max: '50' },
+                                { label: '₹50 - ₹100', min: '50', max: '100' },
+                                { label: '₹100 - ₹250', min: '100', max: '250' },
+                                { label: '₹250 - ₹500', min: '250', max: '500' },
+                                { label: 'Over ₹500', min: '500', max: '' }
                               ].map((range, index) => (
                                 <button
                                   key={index}
@@ -778,13 +1036,87 @@ export default function FilterModal({
                           </div>
                         </div>
                       </div>
+                    ) : selectedCategory.id === 'size-filter' ? (
+                      /* SIZE FILTER CONTENT - USING YOUR CHECKBOX DESIGN */
+                      <div className="mt-4 p-0">
+                        <div className="mb-4">
+                          <h6 className="mb-3">Select Sizes</h6>
+                          
+                          {/* Size Selection Grid with Checkboxes */}
+                          <div className="size-filter-grid mb-4">
+                            <div className="d-flex flex-wrap gap-3">
+                              {CateSizes.map((sizeItem: { size: string; id: Key | null | undefined; }) => {
+                                const sizeValue = sizeItem.size ?? "";
+                                const sizeId = sizeItem.id ?? `size-${sizeValue}`;
+                                const isSelected = selectedSizes.has(sizeValue);
+                                
+                                return (
+                                  <div className="brand-item" key={sizeId}>
+                                    <div className="form-check">
+                                      <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="size-selection"
+                                        id={`size-${sizeId}`}
+                                        value={sizeValue}
+                                        data-filter='size'
+                                        checked={isSelected}
+                                        onChange={() => handleSizeChange(sizeValue)}
+                                        disabled={isUpdatingFilters}
+                                      />
+                                      <label 
+                                        className="form-check-label" 
+                                        htmlFor={`size-${sizeId}`}
+                                      >
+                                        {sizeValue || "Unknown Size"}
+                                      </label>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                          
+                          {/* Size Guide Link (Optional) */}
+                          <div className="mt-4 pt-3 border-top d-none">
+                            <p className="small text-muted mb-2">
+                              Need help with sizing? 
+                              <a href="/size-guide" className="text-primary ms-1" target="_blank" rel="noopener noreferrer">
+                                View our size guide
+                              </a>
+                            </p>
+                          </div>
+                          
+                          {/* Size Filter Actions */}
+                          <div className="d-flex gap-2 mt-3 d-none">
+                            <button
+                              type="button"
+                              className="btn btn-outline-primary btn-sm"
+                              onClick={applySizeFilter}
+                              disabled={selectedSizes.size === 0}
+                            >
+                              Apply Size Filter
+                            </button>
+                            
+                            {isSizeFilterActive && (
+                              <button
+                                type="button"
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={clearSizeFilter}
+                              >
+                                Clear Sizes
+                            </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     ) : (
                       /* REGULAR FILTER CONTENT */
                       selectedSubCategory && Array.isArray(selectedSubCategory) ? (
                         <div className="mt-4 p-0">
                           <ul className="list-group list-group-flush">
                             {selectedSubCategory.map((subcat: any, index: number) => {
-                              const subcatValue = subcat.value || subcat.id || `option_${index}`;
+                              const subcatValue = typeof subcat === 'string' ? subcat : (subcat.value || subcat.id || `option_${index}`);
                               const isActive = isFilterActive(selectedCategory.single_data?.name, subcatValue);
                               
                               return (
@@ -800,7 +1132,7 @@ export default function FilterModal({
                                   <div className="d-flex align-items-center">
                                     <i className={`bi ${isActive ? 'bi-check-square-fill text-primary' : 'bi-square text-muted'} me-2`}></i>
                                     <span className={isActive ? 'fw-bold text-primary' : ''}>
-                                      {subcat.value || `Option ${index + 1}`}
+                                      {typeof subcat === 'string' ? subcat : (subcat.value || `Option ${index + 1}`)}
                                     </span>
                                   </div>
                                   {isActive && (
@@ -844,9 +1176,9 @@ export default function FilterModal({
                               </div>
                               <div className="d-flex flex-wrap gap-2">
                                 <span className="badge bg-primary bg-opacity-10 rounded-pill px-3 py-2 d-flex align-items-center gap-1">
-                                  {priceRange.min ? `$${priceRange.min}` : 'Min'}
+                                  {priceRange.min ? `₹${priceRange.min}` : 'Min'}
                                   {' - '}
-                                  {priceRange.max ? `$${priceRange.max}` : 'Max'}
+                                  {priceRange.max ? `₹${priceRange.max}` : 'Max'}
                                   <button 
                                     type="button"
                                     className="btn-close0 btn-close-sm text-white"
@@ -859,6 +1191,43 @@ export default function FilterModal({
                                     <FontAwesomeIcon icon={faXmark} />
                                   </button>
                                 </span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Size Filter Badge */}
+                          {isSizeFilterActive && (
+                            <div className="mb-2">
+                              <div className="d-flex justify-content-between align-items-center mb-1">
+                                <span className="fw-semibold text-capitalize">Size:</span>
+                                <button 
+                                  type="button"
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={clearSizeFilter}
+                                >
+                                  Clear All
+                                </button>
+                              </div>
+                              <div className="d-flex flex-wrap gap-2">
+                                {Array.from(selectedSizes).map((size, index) => (
+                                  <span 
+                                    key={index}
+                                    className="badge bg-primary bg-opacity-10 rounded-pill px-3 py-2 d-flex align-items-center gap-1"
+                                  >
+                                    {size}
+                                    <button 
+                                      type="button"
+                                      className="btn-close0 btn-close-sm text-white"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleSizeChange(size);
+                                      }}
+                                      aria-label="Remove"
+                                    >
+                                      <FontAwesomeIcon icon={faXmark} />
+                                    </button>
+                                  </span>
+                                ))}
                               </div>
                             </div>
                           )}
@@ -878,7 +1247,7 @@ export default function FilterModal({
                                     onClick={() => removeAllFilterValues(filterKey)}
                                   >
                                     Clear All
-                                  </button>
+                                </button>
                                 </div>
                                 <div className="d-flex flex-wrap gap-2">
                                   {valuesArray.map((value, valueIndex) => (
@@ -910,13 +1279,13 @@ export default function FilterModal({
                   </>
                 ) : (
                   <div className="d-flex justify-content-center align-items-center h-100">
-                    <div className="text-muted">Select a filter from the left</div>
+                    <div className="text-muted">Loading filters...</div>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="d-flex mobile-filter border-top">
+            <div className="d-flex mobile-filter open-mobile-filter border-top">
               <div className="product-section col-6 mt-1 filter-sorting">
                 <div 
                   className="w-100 cursor-pointer p-3 text-center border-end"
