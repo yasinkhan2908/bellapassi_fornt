@@ -338,7 +338,6 @@ export default function Otp() {
                                                 <div className="text-gray-500">OR</div> */}
                                                 <button
                                                     type="button"
-                                                    onClick={handleResendOtp}
                                                     disabled={isSubmitting}
                                                     className="font-bold cursor-pointer text-xl text-blue bg-transparent border-none hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >

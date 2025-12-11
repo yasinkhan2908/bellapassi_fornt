@@ -458,7 +458,7 @@ export default function ClientCategory({
 
   return (
     <div className="index-page">
-      <main className="main">
+      <main className="main flex-1">
         <div className="page-title light-background mb-3">
           <div className="container d-lg-flex justify-content-between align-items-center">
             <h1 className="mb-2 mb-lg-0">{CatName}</h1>
@@ -472,7 +472,7 @@ export default function ClientCategory({
         </div>
 
         <div className="container">
-          <div className="row gx-sm-3 gx-0">
+          <div className="row gx-sm-3 gx-0 mb-5 pb-5">
             <div className="col-lg-3 sidebar product-filter-sidebar">
               <div className="pricing-range-widget widget-item">
                 <div className="flex justify-between items-center mb-2">
@@ -565,88 +565,88 @@ export default function ClientCategory({
             <div className="col-lg-9">
               <div className="row">
                 {(Object.keys(selected).length > 0 || 
-                                selectedSort.length > 0 || 
-                                hasPriceFilter) && (
-                  <div id="category-header" className="category-header section">
-                    <div className="container" data-aos="fade-up">
-                      <div className="filter-container mb-4" data-aos="fade-up" data-aos-delay="100">
-                        <div className="row mt-0">
-                          
-                            <div className="col-12" data-aos="fade-up" data-aos-delay="200">
-                              <div className="active-filters">
-                                <span className="active-filter-label">Active Filters:</span>
-                                <div className="filter-tags">
-                                  {Object.keys(selected).length === 0 && 
-                                  selectedSort === "popularity" && 
-                                  !hasPriceFilter ? (
-                                    <p className="no-filter-item">No filter selected.</p>
-                                  ) : (
-                                    <>
-                                      {/* Display price filter */}
-                                      {hasPriceFilter && (
-                                        <span className="filter-tag">
-                                          {getPriceRangeString()} 
+                              selectedSort.length > 0 || 
+                              hasPriceFilter) && (
+                <div id="category-header" className="category-header section">
+                  <div className="container" data-aos="fade-up">
+                    <div className="filter-container mb-4" data-aos="fade-up" data-aos-delay="100">
+                      <div className="row mt-0">
+                        
+                          <div className="col-12" data-aos="fade-up" data-aos-delay="200">
+                            <div className="active-filters">
+                              <span className="active-filter-label">Active Filters:</span>
+                              <div className="filter-tags">
+                                {Object.keys(selected).length === 0 && 
+                                selectedSort === "popularity" && 
+                                !hasPriceFilter ? (
+                                  <p className="no-filter-item">No filter selected.</p>
+                                ) : (
+                                  <>
+                                    {/* Display price filter */}
+                                    {hasPriceFilter && (
+                                      <span className="filter-tag">
+                                        {getPriceRangeString()} 
+                                        <button 
+                                          className="filter-remove" 
+                                          onClick={clearPriceFilter}
+                                          disabled={isUpdatingFilters}
+                                        >
+                                          <i className="bi bi-x"></i>
+                                        </button>
+                                      </span>
+                                    )}
+                                    
+                                    {/* Display sorting filter */}
+                                    {selectedSort.length > 0 && (
+                                      <span className="filter-tag">
+                                        {selectedSort}
+                                        <button 
+                                          className="filter-remove" 
+                                          onClick={() => removeItem('sort', selectedSort)}
+                                          disabled={isUpdatingFilters}
+                                        >
+                                          <i className="bi bi-x"></i>
+                                        </button>
+                                      </span>
+                                    )}
+                                    
+                                    {/* Display other filters */}
+                                    {Object.entries(selected).flatMap(([group, values]) =>
+                                      values.map(value => (
+                                        <span key={`${group}-${value}`} className="filter-tag">
+                                          {value}
                                           <button 
                                             className="filter-remove" 
-                                            onClick={clearPriceFilter}
+                                            onClick={() => removeItem(group, value)}
                                             disabled={isUpdatingFilters}
                                           >
                                             <i className="bi bi-x"></i>
                                           </button>
                                         </span>
-                                      )}
-                                      
-                                      {/* Display sorting filter */}
-                                      {selectedSort.length > 0 && (
-                                        <span className="filter-tag">
-                                          {selectedSort}
-                                          <button 
-                                            className="filter-remove" 
-                                            onClick={() => removeItem('sort', selectedSort)}
-                                            disabled={isUpdatingFilters}
-                                          >
-                                            <i className="bi bi-x"></i>
-                                          </button>
-                                        </span>
-                                      )}
-                                      
-                                      {/* Display other filters */}
-                                      {Object.entries(selected).flatMap(([group, values]) =>
-                                        values.map(value => (
-                                          <span key={`${group}-${value}`} className="filter-tag">
-                                            {value}
-                                            <button 
-                                              className="filter-remove" 
-                                              onClick={() => removeItem(group, value)}
-                                              disabled={isUpdatingFilters}
-                                            >
-                                              <i className="bi bi-x"></i>
-                                            </button>
-                                          </span>
-                                        ))
-                                      )}
-                                    </>
-                                  )}
-                                  {(Object.keys(selected).length > 0 || 
-                                    selectedSort.length > 0 || 
-                                    hasPriceFilter) && (
-                                    <button 
-                                      className="clear-all-btn" 
-                                      onClick={clearAll}
-                                      disabled={isUpdatingFilters}
-                                    >
-                                      Clear All
-                                    </button>
-                                  )}
-                                </div>
+                                      ))
+                                    )}
+                                  </>
+                                )}
+                                {(Object.keys(selected).length > 0 || 
+                                  selectedSort.length > 0 || 
+                                  hasPriceFilter) && (
+                                  <button 
+                                    className="clear-all-btn" 
+                                    onClick={clearAll}
+                                    disabled={isUpdatingFilters}
+                                  >
+                                    Clear All
+                                  </button>
+                                )}
                               </div>
                             </div>
-                          
-                        </div>
+                          </div>
+                        
                       </div>
                     </div>
-                    </div>
-                  )}
+                  </div>
+                  </div>
+                )}
                 
 
                 {/* Product Grid */}
@@ -704,7 +704,7 @@ export default function ClientCategory({
                     </div>
                   );
                 })}
-              </div>
+              
 
               {loading && (
                 <div className="text-center py-4">
@@ -732,6 +732,7 @@ export default function ClientCategory({
                   </button>
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>

@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 
 import { AccountSidebar } from './AccountSidebar';
+import { MobileAccountSidebar } from './MobileAccountSidebar';
+
 import { useSession } from 'next-auth/react';
 
 //
@@ -98,6 +100,30 @@ export default function Dashboard() {
         <section id="account" className="account section">
             <div className='container'>
                 <div className="row g-4">
+                    <div className="profile-menu mobile-profile-menu d-lg-block" id="profileMenu">            
+                        <div id="tabs" className="d-flex justify-between border-t">
+
+                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1 mobile-active" href="/user/dashboard">
+                                <i className="bi bi-box-seam"></i>
+                                <span className="tab tab-home block text-xs">My Orders</span>
+                            </Link>
+
+                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
+                                <i className="bi bi-heart"></i>
+                                <span className="tab tab-home block text-xs">Wishlist</span>
+                            </Link>
+
+                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/my-address">
+                                <i className="bi bi-geo-alt"></i>
+                                <span className="tab tab-home block text-xs">My Address</span>
+                            </Link>
+
+                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/account-setting">
+                                <i className="bi bi-gear"></i>
+                                <span className="tab tab-home block text-xs">Account Settings</span>
+                            </Link>
+                        </div>
+                    </div>
                     <div className="col-lg-3">
                         <AccountSidebar />
                     </div>

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 const libraries: ('places')[] = ['places'];
 
+import Link from 'next/link';
 import Select, { SingleValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
@@ -332,7 +333,15 @@ export default function EditAddress({ id }: EditAddressProps) {
     
     // Special handling for address field mapping
     const fieldName = name === 'address' ? 'address_line_1' : name;
-    
+    let processedValue = value;
+    if (name === 'mobile') {
+      // Remove non-digit characters
+      processedValue = value.replace(/\D/g, '');
+      // Limit to 10 digits
+      if (processedValue.length > 10) {
+        processedValue = processedValue.slice(0, 10);
+      }
+    }
     setFormData(prev => ({
       ...prev,
       [fieldName]: value
@@ -488,6 +497,31 @@ export default function EditAddress({ id }: EditAddressProps) {
         <section id="account" className="account section">
           <div className='container'>
             <div className="row g-4">
+                      
+              <div className="profile-menu mobile-profile-menu d-lg-block" id="profileMenu">            
+                  <div id="tabs" className="d-flex justify-between border-t">
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/dashboard">
+                          <i className="bi bi-box-seam"></i>
+                          <span className="tab tab-home block text-xs">My Orders</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
+                          <i className="bi bi-heart"></i>
+                          <span className="tab tab-home block text-xs">Wishlist</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1 mobile-active" href="/user/my-address">
+                          <i className="bi bi-geo-alt"></i>
+                          <span className="tab tab-home block text-xs">My Address</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/account-setting">
+                          <i className="bi bi-gear"></i>
+                          <span className="tab tab-home block text-xs">Account Settings</span>
+                      </Link>
+                  </div>
+              </div>
               <div className="col-lg-3">
                 <AccountSidebar />
               </div>
@@ -530,16 +564,17 @@ export default function EditAddress({ id }: EditAddressProps) {
                               </div>
                               
                               <div className="col-md-6">
-                                <label className="form-label">Mobile Number *</label>
+                                <label className="form-label">Phone Number *</label>
                                 <input 
                                   type="tel" 
                                   className={`form-control ${errors.mobile ? 'is-invalid' : ''}`}
                                   name="mobile" 
-                                  placeholder="Enter Mobile Number" 
+                                  maxLength={10}
+                                  placeholder="Enter Phone Number" 
                                   value={formData.mobile} 
                                   onChange={handleInputChange} 
                                   required
-                                />
+                                /> 
                                 {errors.mobile && <div className="invalid-feedback d-block">{errors.mobile}</div>}
                               </div>
                               

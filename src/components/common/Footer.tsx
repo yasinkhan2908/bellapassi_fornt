@@ -8,7 +8,7 @@ export default function Footer() {
   const token = session?.data?.user.token ?? null;
   //console.log("header token : ",token);
   return (
-    <footer className="bottom-sticky text-center bg-white sticky bottom-0 z-30">
+    <footer className="bottom-sticky bottom-fixed text-center bg-white sticky bottom-0 z-30">
       <section id="bottom-navigation" className="block fixed bottom-0 z-10 bg-white shadow w-full xl-max-w-screen-xl">
         <div className="container">
           <div id="tabs" className="d-flex justify-between border-t">

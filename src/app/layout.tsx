@@ -51,7 +51,7 @@ export default async function RootLayout({ children }: { children: ReactNode  })
       console.log("BODY CLASS:", bodyClass);
   return (
     <html lang="en">
-      <body className={bodyClass}>
+      <body className="min-h-screen flex flex-col">
         <ReduxProvider>
           <Providers>
             <Suspense fallback={null}>

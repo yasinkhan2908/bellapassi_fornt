@@ -1,4 +1,4 @@
-// app/user/add-address/AddAddressForm.tsx
+// app/user/add-address/AddAddressForm.tsx (fixed)
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 const libraries: ('places')[] = ['places'];
 
+import Link from 'next/link';
 import Select, { SingleValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
@@ -74,42 +75,55 @@ export default function AddAddressForm() {
     state: '',
     state_name: '',
     postalcode: '',
-    country: '',
+    country: 'India', // Default to India
   });
 
   // Custom validation function
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
+    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
 
+    // Phone validation (simplified - all errors go to errors state)
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10,15}$/.test(formData.phone.replace(/\D/g, ''))) {
-      newErrors.phone = 'Please enter a valid phone number';
+    } else if (!/^\d+$/.test(formData.phone)) {
+      newErrors.phone = 'Phone number should contain only digits';
+    } else if (formData.phone.length !== 10) {
+      newErrors.phone = 'Phone number must be exactly 10 digits';
+    } else if (!/^[6-9]/.test(formData.phone)) {
+      newErrors.phone = 'Please enter a valid Indian mobile number';
     }
 
+    // Address validation
     if (!formData.address.trim()) {
       newErrors.address = 'Address is required';
     }
 
+    // City validation
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
     }
 
+    // State validation
     if (!formData.state.trim()) {
       newErrors.state = 'State is required';
     }
 
+    // Postal code validation
     if (!formData.postalcode.trim()) {
       newErrors.postalcode = 'Postal code is required';
     } else if (!/^\d{4,10}$/.test(formData.postalcode.replace(/\s/g, ''))) {
       newErrors.postalcode = 'Please enter a valid postal code';
     }
 
+    // Update errors state
     setErrors(newErrors);
+    
+    // Return true if no errors
     return Object.keys(newErrors).length === 0;
   };
 
@@ -203,7 +217,9 @@ export default function AddAddressForm() {
       }));
       
       // Clear city error
-      setErrors(prev => ({ ...prev, city: undefined }));
+      if (errors.city) {
+        setErrors(prev => ({ ...prev, city: undefined }));
+      }
       
       // Fetch cities for selected state
       await loadCities(selectedOption.value.toString());
@@ -216,7 +232,9 @@ export default function AddAddressForm() {
     }
     
     // Clear state error
-    setErrors(prev => ({ ...prev, state: undefined }));
+    if (errors.state) {
+      setErrors(prev => ({ ...prev, state: undefined }));
+    }
   };
 
   // Handle city change
@@ -231,7 +249,9 @@ export default function AddAddressForm() {
       }));
       
       // Clear city error
-      setErrors(prev => ({ ...prev, city: undefined }));
+      if (errors.city) {
+        setErrors(prev => ({ ...prev, city: undefined }));
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -244,12 +264,24 @@ export default function AddAddressForm() {
   // Handle other form field changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
+    // For phone field, allow only digits and limit to 10
+    let processedValue = value;
+    if (name === 'phone') {
+      // Remove non-digit characters
+      processedValue = value.replace(/\D/g, '');
+      // Limit to 10 digits
+      if (processedValue.length > 10) {
+        processedValue = processedValue.slice(0, 10);
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
     
-    // Clear error for this field
+    // Clear error for this field when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -258,7 +290,19 @@ export default function AddAddressForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) {
+    // Validate form
+    const isValid = validateForm();
+    
+    if (!isValid) {
+      // Scroll to first error
+      const firstErrorField = Object.keys(errors)[0];
+      if (firstErrorField) {
+        const element = document.querySelector(`[name="${firstErrorField}"]`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+      
       Swal.fire({
         title: 'Validation Error',
         text: 'Please fill in all required fields correctly',
@@ -364,7 +408,31 @@ export default function AddAddressForm() {
         
         <section id="account" className="account section">
           <div className='container'>
-            <div className="row g-4">
+            <div className="row g-4">              
+              <div className="profile-menu mobile-profile-menu d-lg-block" id="profileMenu">            
+                  <div id="tabs" className="d-flex justify-between border-t">
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/dashboard">
+                          <i className="bi bi-box-seam"></i>
+                          <span className="tab tab-home block text-xs">My Orders</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
+                          <i className="bi bi-heart"></i>
+                          <span className="tab tab-home block text-xs">Wishlist</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1 mobile-active" href="/user/my-address">
+                          <i className="bi bi-geo-alt"></i>
+                          <span className="tab tab-home block text-xs">My Address</span>
+                      </Link>
+
+                      <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/account-setting">
+                          <i className="bi bi-gear"></i>
+                          <span className="tab tab-home block text-xs">Account Settings</span>
+                      </Link>
+                  </div>
+              </div>
               <div className="col-lg-3">
                 <AccountSidebar />
               </div>
@@ -405,7 +473,7 @@ export default function AddAddressForm() {
                                   onChange={handleInputChange} 
                                 />
                               </div>
-                              
+                               
                               <div className="col-md-6">
                                 <label className="form-label">Phone Number *</label>
                                 <input 

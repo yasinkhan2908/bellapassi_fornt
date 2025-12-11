@@ -106,8 +106,16 @@ export default function Login() {
 
   // Real-time validation on input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    let value = e.target.value;
     
+
+    // remove non-digits
+    value = value.replace(/\D/g, "");
+
+    // limit to 10 digits
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
     // Only allow digits
     if (value && !/^\d*$/.test(value)) {
       return;
@@ -146,11 +154,11 @@ export default function Login() {
                     +91 |
                   </span>
                   <input 
-                    type="number" 
+                    type="text"
                     name="mobile_number"
-                    placeholder="Mobile Number" 
-                    maxLength={10} 
-                    className={`placeholder-gray-400 text-gray-600 relative bg-white bg-white rounded text-sm mobile-border border-gray-300 outline-none focus:border-gray-600 w-full pl-14 focus:border-sss-primary-500 w-100 login-number ${validationError ? 'mobile-is-invalid' : ''} ${error && !validationError ? 'mobile-is-invalid' : ''}  ` }
+                    placeholder="Mobile Number"
+                    maxLength={10}
+                    className={`placeholder-gray-400 text-gray-600 relative bg-white rounded text-sm mobile-border border-gray-300 outline-none focus:border-gray-600 w-full pl-14 focus:border-sss-primary-500 login-number w-100 ${validationError ? 'mobile-is-invalid' : ''} ${error && !validationError ? 'mobile-is-invalid' : ''}`}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     pattern="[6-9]{1}[0-9]{9}"
