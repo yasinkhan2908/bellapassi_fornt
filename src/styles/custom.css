@@ -1378,7 +1378,7 @@ button{
     background: #fff;
     padding: 12px 0 0 0;
     border: 1px solid #e5e7eb;
-    z-index: 333;
+    z-index: 999999;
     position: fixed;
     bottom: 0;
     width: 100%;

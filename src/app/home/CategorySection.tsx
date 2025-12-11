@@ -37,101 +37,10 @@ export const CategorySection = ({ categories }: CategorySectionProps) => {
                 <Link href={category.seo} prefetch={false}>
                   <Image src={category.image} height={175} width={175} alt="Slide 1" loading="lazy" />
                   <div className="text-center category-title">{category.name}</div>
-                  <div className="text-center category-subtitle">0 items</div>
+                  {/* <div className="text-center category-subtitle">0 items</div> */}
                 </Link>
               </SwiperSlide>
             ))}
-            {/* <SwiperSlide className="text-center">
-              <Link href="/shoes">
-                <Image src="/img/shoes.webp" height={175} width={175} alt="Slide 2" loading="lazy" />
-                <div className="text-center category-title">Shoes</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/clothing">
-                <Image src="/img/clothing.webp" height={175} width={175} alt="Slide 3" loading="lazy" />
-                <div className="text-center category-title">Clothing</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">              
-              <Link href="/boots">
-                <Image src="/img/BootsIcon.webp" height={175} width={175} alt="Slide 4" loading="lazy" />
-                <div className="text-center category-title">Boots</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>    
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/bags">
-                <Image src="/img/BagTopIcon_19Sep.webp" height={175} width={175} alt="Slide 5" loading="lazy" />
-                <div className="text-center category-title">Bags</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/boutique">
-                <Image src="/img/sss-boutique.webp" height={175} width={175} alt="Slide 6" loading="lazy" />
-                <div className="text-center category-title">Boutique</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/hot-trending">
-                <Image src="/img/hotandTrending.webp" height={175} width={175} alt="Slide 7" loading="lazy" />
-                <div className="text-center category-title">Hot & Trending</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/influencer-program">
-                <Image src="/img/sss_influencer_program.webp" height={175} width={175} alt="Slide 8" loading="lazy" />
-                <div className="text-center category-title">Influencer Program</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/grab-and-go">
-                <Image src="/img/GrabandGoIcon_10Mar.webp" height={175} width={175} alt="Slide 9" loading="lazy" />
-                <div className="text-center category-title">Grab and Go</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/accessories">
-                <Image src="/img/accessery.webp" height={175} width={175} alt="Slide 10" loading="lazy" />
-                <div className="text-center category-title">Accessories</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/shop-the-reel">
-                <Image src="/img/shop_the_reel.webp" height={175} width={175} alt="Slide 11" loading="lazy" />
-                <div className="text-center category-title">Shop the Reel</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>
-            <SwiperSlide className="text-center">
-              <Link href="/mens">
-                <Image src="/img/men_shirt_3_for_899_icon_2.webp" height={175} width={175} alt="Slide 12" loading="lazy" />
-                <div className="text-center category-title">Mens</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>  
-            <SwiperSlide className="text-center">
-              <Link href="/descover">
-                <Image src="/img/discover.webp" height={175} width={175} alt="Slide 13" loading="lazy" />
-                <div className="text-center category-title">Discover</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide> 
-            <SwiperSlide className="text-center">
-              <Link href="/upcoming-drops">
-                <Image src="/img/upcoming_drops.webp" height={175} width={175} alt="Slide 14" loading="lazy" />
-                <div className="text-center category-title">Upcoming Drops</div>
-                <div className="text-center category-subtitle">0 items</div>
-              </Link>  
-            </SwiperSlide>  */}
           </Swiper>
         </div>
       </div>
