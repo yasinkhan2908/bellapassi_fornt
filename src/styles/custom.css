@@ -2304,7 +2304,7 @@ input[type=number] {
         position: fixed;
         padding-top: 0;
         padding-bottom: 0;
-        z-index: 999999;
+        z-index: 666;
         bottom: 0;
         background-color: #fff;
         width: 100%;
@@ -2313,8 +2313,15 @@ input[type=number] {
         text-align: center;
         padding: 20px 0;
     }
+    .bottom-fixed {
+        z-index: 666666;
+        width: 100%;
+        display: flex;
+        position: fixed;
+    }
     .open-mobile-filter{
         padding: 0 !important;
+        z-index: 999999 !important;
     }
     .filter-sorting{
         border-right: 1px solid #000;

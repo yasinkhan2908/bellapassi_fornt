@@ -9,6 +9,7 @@ import FilterModal from "./FilterModal";
 import SortingModal from "./SortingModal";
 import PriceRangeWidget from "./PriceRangeWidget";
 import { useRouter, useSearchParams } from "next/navigation";
+import "../../styles/footer.css";
 
 const truncate = (text: string, max: number) => 
   text.length > max ? text.slice(0, max) + "..." : text;

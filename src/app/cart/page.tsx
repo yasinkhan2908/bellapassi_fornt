@@ -131,7 +131,7 @@ export default function Cart() {
             <>
           <section id="cart" className="cart section">
             <div className="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-              <div className="row g-4 mb-5 pb-5">
+              <div className="row g-4">
                 <div className="d-flex justify-content-center mb-4 step-header">
                   <div className="step-item active">
                     <span className="step-number">1</span>
