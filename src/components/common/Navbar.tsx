@@ -484,10 +484,10 @@ export default function Navbar() {
                             </Link> */}
                             {token? (
                                 <>
-                                    {/* <Link href="/user/dashboard" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
+                                    <Link href="/user/dashboard" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
                                         <i className="bi bi-person"></i>
-                                    </Link> */}
-                                    <div className="dropdown account-dropdown">
+                                    </Link>
+                                    {/* <div className="dropdown account-dropdown">
                                         <button className="header-action-btn" data-bs-toggle="dropdown"  aria-expanded="true">
                                             <i className="bi bi-person"></i>
                                         </button>
@@ -519,7 +519,7 @@ export default function Navbar() {
                                                 </Link>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </>
                             ) : (
                                 <Link href="/login" className="header-action-btn" onClick={closeSidebar} prefetch={false}>
