@@ -732,7 +732,7 @@ cubic-bezier(.4, 0, .2, 1);
   color: #555;
 }
 
-/* .btn-custom {
+.btn-custom {
   background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
   border: none;
   color: white;
@@ -747,38 +747,6 @@ cubic-bezier(.4, 0, .2, 1);
 .btn-custom:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-} */
-
-/* Fix for btn-custom contrast issue */
-.btn-custom {
-  background-color: #0066cc !important;
-  color: #ffffff !important;
-  padding: 12px 24px !important;
-  border-radius: 4px !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-  border: 2px solid #0052a3 !important;
-  transition: all 0.3s ease !important;
-}
-
-.btn-custom:hover {
-  background-color: #0052a3 !important;
-  color: #ffffff !important;
-  text-decoration: none !important;
-}
-
-/* If you need different button variations */
-.btn-custom-light {
-  background-color: #ffffff !important;
-  color: #0066cc !important;
-  border: 2px solid #0066cc !important;
-}
-
-.btn-custom-light:hover {
-  background-color: #f8f9fa !important;
-  color: #0052a3 !important;
 }
 
 .slider-controls {
@@ -1929,8 +1897,8 @@ ease;
 
 .custom-sidebar.show {
     opacity: 1;            /* fade to visible */
-    height: auto;
-    width: auto;
+    /* height: auto;
+    width: auto; */
 }
 .category-header .filter-container {
     background-color: var(--surface-color) !important;
