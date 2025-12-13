@@ -749,28 +749,18 @@ cubic-bezier(.4, 0, .2, 1);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 } */
 
+/* Force sufficient contrast */
 .btn-custom {
-    background-color: #007bff; /* Example blue */
-    color: #ffffff; /* White text */
-    border: 1px solid #0056b3;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-block;
-    font-weight: 600; /* Make text bolder for better readability */
+    color: #ffffff !important;
+    background-color: #007bff !important;
+    border-color: #0056b3 !important;
 }
 
-/* For better contrast, you might need darker colors */
+/* Or if you prefer dark theme */
 .btn-custom {
-    background-color: #0062cc; /* Darker blue */
-    color: #ffffff; /* White text */
-    /* This gives good contrast ratio */
-}
-
-/* Hover state */
-.btn-custom:hover {
-    background-color: #0056b3;
-    color: #ffffff;
+    color: #ffffff !important;
+    background-color: #343a40 !important;
+    border-color: #212529 !important;
 }
 
 .slider-controls {
