@@ -217,7 +217,7 @@ export default function Navbar() {
                         <div ref={sidebarRef} className={`custom-sidebar ${showSidebar ? 'show' : ''} ${isClosing ? 'closing' : ''}`} id="sidebar" aria-labelledby="sidebarLabel">
                             
                             <div className="left-sidebar-category">
-                                <ul className="nav nav-tabs " id="myTab" role="tablist">
+                                <ul className="nav nav-tabs " id="myTab">
                                     {maincategorys.map((category, index) => (
                                         <li key={index} onClick={() => handleClick(category.id)}  className="nav-item" role="presentation">
                                             <span className={`nav-link ${ activeCategoryId === category.id ? "active" : "" }`} id="home-tab">
