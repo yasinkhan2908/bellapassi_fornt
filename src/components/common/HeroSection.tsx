@@ -43,24 +43,7 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
             <div className="content">
               <h2>{slide.heading}</h2>
               <p>{slide.sub_heading}</p>
-              <Link 
-  href={slide.url} 
-  className={`btn-custom ${index === currentSlide && slide.hasDarkBackground ? 'btn-light' : ''}`}
-  prefetch={false}
-  style={{
-    backgroundColor: index === currentSlide && slide.hasDarkBackground ? '#ffffff' : '#0066cc',
-    color: index === currentSlide && slide.hasDarkBackground ? '#000000' : '#ffffff',
-    padding: '12px 24px',
-    borderRadius: '4px',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontWeight: '600',
-    fontSize: '16px',
-    border: `2px solid ${index === currentSlide && slide.hasDarkBackground ? '#ffffff' : '#0052a3'}`
-  }}
->
-  Shop Collection
-</Link>
+              <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link>
             </div>
           </div>
         </div>
