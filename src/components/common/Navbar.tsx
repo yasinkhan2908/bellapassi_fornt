@@ -71,12 +71,12 @@ export default function Navbar() {
         const fetchProfile = async () => {
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/main-category`, {
-                    cache: 'no-store',
-                    next: { revalidate: 3600 }, // Cache for 1 hour
-                    headers: {
-                    'Cache-Control': 'public, max-age=3600'
-                    }
-                });
+                                cache: 'no-store', // ensures fresh data each time
+                                next: { revalidate: 3600 }, // Cache for 1 hour
+                                headers: {
+                                'Cache-Control': 'public, max-age=3600'
+                                }
+                            });
                 const responseData = await res.json();
                 const data = responseData.data;
                 setMainCategory(data.main_category);
