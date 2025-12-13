@@ -124,10 +124,6 @@ export default function Navbar() {
     const handleClick = async (parentId: number) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/get-child-category/${parentId}`, {
             cache: 'no-store',
-            next: { revalidate: 3600 }, // Cache for 1 hour
-            headers: {
-                'Cache-Control': 'public, max-age=3600'
-            }
         });
         const responseData = await res.json();
         const data = responseData.data;
