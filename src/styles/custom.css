@@ -732,7 +732,7 @@ cubic-bezier(.4, 0, .2, 1);
   color: #555;
 }
 
-/* .btn-custom {
+.btn-custom {
   background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
   border: none;
   color: white;
@@ -747,20 +747,6 @@ cubic-bezier(.4, 0, .2, 1);
 .btn-custom:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-} */
-
-/* Force sufficient contrast */
-.btn-custom {
-    color: #ffffff !important;
-    background-color: #007bff !important;
-    border-color: #0056b3 !important;
-}
-
-/* Or if you prefer dark theme */
-.btn-custom {
-    color: #ffffff !important;
-    background-color: #343a40 !important;
-    border-color: #212529 !important;
 }
 
 .slider-controls {
