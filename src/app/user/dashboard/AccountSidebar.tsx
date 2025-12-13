@@ -17,9 +17,9 @@ export const AccountSidebar = ({}: AccountSidebarProps) => {
     }, []);
     const menuItems = [
         { name: "My Orders", path: "/user/dashboard", icon: "bi bi-box-seam" },
-        { name: "Wishlist", path: "/", icon: "bi bi-heart" },
         { name: "My Address", path: "/user/my-address", icon: "bi bi-geo-alt" },
         { name: "Account Settings", path: "/user/account-setting", icon: "bi bi-gear" },
+        { name: "Wishlist", path: "/", icon: "bi bi-heart" },
     ];
     const handleLogout = () => {
         signOut({ redirect: true, callbackUrl: "/" }); // Redirect after logout

@@ -64,11 +64,6 @@ export default async function Addresses() {
                                 <span className="tab tab-home block text-xs">My Orders</span>
                             </Link>
 
-                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
-                                <i className="bi bi-heart"></i>
-                                <span className="tab tab-home block text-xs">Wishlist</span>
-                            </Link>
-
                             <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1 mobile-active" href="/user/my-address">
                                 <i className="bi bi-geo-alt"></i>
                                 <span className="tab tab-home block text-xs">My Address</span>
@@ -77,6 +72,11 @@ export default async function Addresses() {
                             <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/account-setting">
                                 <i className="bi bi-gear"></i>
                                 <span className="tab tab-home block text-xs">Account Settings</span>
+                            </Link>
+
+                            <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
+                                <i className="bi bi-heart"></i>
+                                <span className="tab tab-home block text-xs">Wishlist</span>
                             </Link>
                         </div>
                     </div>

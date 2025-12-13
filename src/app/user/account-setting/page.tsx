@@ -191,10 +191,6 @@ export default function AccountSetting() { // ✅ Removed 'async'
                       <span className="tab tab-home block text-xs">My Orders</span>
                   </Link>
 
-                  <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
-                      <i className="bi bi-heart"></i>
-                      <span className="tab tab-home block text-xs">Wishlist</span>
-                  </Link>
 
                   <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="/user/my-address">
                       <i className="bi bi-geo-alt"></i>
@@ -204,6 +200,10 @@ export default function AccountSetting() { // ✅ Removed 'async'
                   <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1 mobile-active" href="/user/account-setting">
                       <i className="bi bi-gear"></i>
                       <span className="tab tab-home block text-xs">Account Settings</span>
+                  </Link>
+                  <Link aria-current="page" className="w-full justify-center inline-block text-center pt-2 pb-1" href="#">
+                      <i className="bi bi-heart"></i>
+                      <span className="tab tab-home block text-xs">Wishlist</span>
                   </Link>
               </div>
           </div>
