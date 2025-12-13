@@ -732,7 +732,7 @@ cubic-bezier(.4, 0, .2, 1);
   color: #555;
 }
 
-.btn-custom {
+/* .btn-custom {
   background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
   border: none;
   color: white;
@@ -747,6 +747,30 @@ cubic-bezier(.4, 0, .2, 1);
 .btn-custom:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+} */
+
+.btn-custom {
+    background-color: #007bff; /* Example blue */
+    color: #ffffff; /* White text */
+    border: 1px solid #0056b3;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+    font-weight: 600; /* Make text bolder for better readability */
+}
+
+/* For better contrast, you might need darker colors */
+.btn-custom {
+    background-color: #0062cc; /* Darker blue */
+    color: #ffffff; /* White text */
+    /* This gives good contrast ratio */
+}
+
+/* Hover state */
+.btn-custom:hover {
+    background-color: #0056b3;
+    color: #ffffff;
 }
 
 .slider-controls {
