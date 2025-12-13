@@ -103,7 +103,7 @@ export const NewArrivals = ({ products }: NewArrivalsProps) => {
                                 className="col-lg-3 col-sm-6 col-6 px-product-item product-item my-3"
                                 >
                                 <div className="w-100 product-sec">
-                                    <div className="product">
+                                    <div className="product new-arrival-prd">
                                     <Link
                                         href={`/product/${product.slug}-${product.id}`}
                                         className="w-100"  prefetch={false}

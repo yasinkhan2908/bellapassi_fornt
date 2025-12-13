@@ -885,6 +885,15 @@ cubic-bezier(.4, 0, .2, 1);
     overflow: hidden;
     cursor: pointer
 }
+
+.container .product-item .new-arrival-prd {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer
+}
+
 .new-arrivel-products .text-right{
     text-align: right;
 }
