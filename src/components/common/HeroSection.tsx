@@ -43,7 +43,7 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
             <div className="content">
               <h2>{slide.heading}</h2>
               <p>{slide.sub_heading}</p>
-              <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link>
+              {/* <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link> */}
             </div>
           </div>
         </div>
