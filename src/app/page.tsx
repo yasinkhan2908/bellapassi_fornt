@@ -24,7 +24,7 @@ export default async function Home() {
   
   // 🟢 Fetch data from Laravel API (server-side)
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/home-data`, {
-    cache: 'no-store', // ensures fresh data each time
+    cache: 'force-cache', // ensures fresh data each time
     next: { revalidate: 3600 }, // Cache for 1 hour
     headers: {
       'Cache-Control': 'public, max-age=3600'
