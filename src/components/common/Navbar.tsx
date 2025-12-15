@@ -217,15 +217,22 @@ export default function Navbar() {
                         <div ref={sidebarRef} className={`custom-sidebar ${showSidebar ? 'show' : ''} ${isClosing ? 'closing' : ''}`} id="sidebar" aria-labelledby="sidebarLabel">
                             
                             <div className="left-sidebar-category">
-                                <ul className="nav nav-tabs " id="myTab">
+                                <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     {maincategorys.map((category, index) => (
-                                        <li key={index} onClick={() => handleClick(category.id)}  className="nav-item" role="presentation">
-                                            <span className={`nav-link ${ activeCategoryId === category.id ? "active" : "" }`} id="home-tab">
+                                        <li key={index} className="nav-item" role="presentation">
+                                            <button
+                                                type="button"
+                                                role="tab"
+                                                className={`nav-link ${activeCategoryId === category.id ? "active" : ""}`}
+                                                aria-selected={activeCategoryId === category.id}
+                                                onClick={() => handleClick(category.id)}
+                                            >
                                                 {category.name}
-                                            </span>
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>
+
                             </div>
                             
                             <div className="tab-content p-0 border border-top-0 left-sidebar-category-list">
