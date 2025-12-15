@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     ],
   },
   trailingSlash: true, // improves static hosting compatibility
+  experimental: {
+    forceSwcTransforms: false, // Ensure Babel is used if needed
+  },
 };
 
 export default nextConfig;
