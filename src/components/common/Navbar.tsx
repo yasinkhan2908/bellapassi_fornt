@@ -362,35 +362,28 @@ export default function Navbar() {
                             
                             <div className="p-4 page-link bg-white">
                                 {[
-                                    { icon: 'bi-house-door', text: 'My Account', href: token ? '/user/dashboard' : '/login' },
-                                    { icon: 'bi-cart', text: 'My Orders', href: token ? '/user/dashboard' : '/login' },
-                                    { icon: 'bi-envelope', text: 'My Support', href: '#' },
-                                    { icon: 'bi-award', text: 'My Coupon', href: '#' },
-                                    { icon: 'bi-fire', text: 'My Refunds', href: '#' },
-                                    { icon: 'bi-credit-card', text: 'Contact Details', href: '#' }
+                                { icon: 'bi-house-door', text: 'My Account', href: token ? '/user/dashboard' : '/login' },
+                                { icon: 'bi-cart', text: 'My Orders', href: token ? '/user/dashboard' : '/login' },
+                                { icon: 'bi-envelope', text: 'My Support', href: '#' },
+                                { icon: 'bi-award', text: 'My Coupon', href: '#' },
+                                { icon: 'bi-fire', text: 'My Refunds', href: '#' },
+                                { icon: 'bi-credit-card', text: 'Contact Details', href: '#' }
                                 ].map((item, index) => (
-                                    <div key={index} className="d-flex flex-row py-2.5">
-                                        <div>
-                                            <Link 
-                                                href={item.href} 
-                                                onClick={closeSidebar} 
-                                                className="inline-block no-underline hover:text-black"
-                                                prefetch={false}
-                                            >
-                                                <i className={`bi ${item.icon}`}></i>
-                                            </Link>
-                                        </div>
-                                        <Link 
-                                            href={item.href} 
-                                            onClick={closeSidebar}
-                                            prefetch={false}
-                                        >
-                                            <p className="font-semibold px-2 text-sm p-0 m-0">
-                                                {item.text}
-                                            </p>
-                                        </Link>
-                                    </div>
+                                <Link
+                                    key={index}
+                                    href={item.href}
+                                    onClick={closeSidebar}
+                                    prefetch={false}
+                                    className="d-flex flex-row py-2.5 no-underline hover:text-black"
+                                >
+                                    <i className={`bi ${item.icon}`} aria-hidden="true"></i>
+
+                                    <p className="font-semibold px-2 text-sm p-0 m-0">
+                                    {item.text}
+                                    </p>
+                                </Link>
                                 ))}
+
                             </div>
                             
                             <div className="accordion sidebar-accordion mb-5 pb-5" id="accordionExample">
