@@ -733,11 +733,11 @@ cubic-bezier(.4, 0, .2, 1);
 }
 
 .btn-custom {
-  color: white;
-  padding: 0.8rem 2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
+    background-color: #e6004c !important;
+    color: #ffffff !important;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
 }
 
 /* .btn-custom:hover {
@@ -1412,10 +1412,6 @@ button{
 }
 a,button{
     cursor: pointer !important;
-}
-.btn-custom{
-    background-color: #FF3F6C !important;
-    color: #fff !important;
 }
 .page-title h1{
     text-transform: capitalize !important;
