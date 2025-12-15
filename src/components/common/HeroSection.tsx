@@ -33,19 +33,16 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
           className={`slider-item ${index === currentSlide ? 'active' : ''}`}
         >
           <div className="image-section col-md-6">
-            <Image height={40} width={40} 
+            <Image 
+              height={40} 
+              width={40} 
               src={slide.image_url} 
               alt={slide.heading}
-              loading="lazy"
+              loading={index === 0 ? "eager" : "lazy"}
+              priority={index === 0} // This adds fetchpriority="high" in Next.js
             />
           </div>
-          <div className="content-section col-md-6">
-            <div className="content">
-              <h2>{slide.heading}</h2>
-              <p>{slide.sub_heading}</p>
-              <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link>
-            </div>
-          </div>
+          {/* ... rest of your code ... */}
         </div>
       ))}
       
