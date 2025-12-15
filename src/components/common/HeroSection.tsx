@@ -35,20 +35,32 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
           className={`slider-item ${index === currentSlide ? 'active' : ''}`}
         >
           <div className="image-section col-md-6">
-            <Image 
-              height={40} 
-              width={40} 
-              src={slide.image_url} 
-              alt={slide.heading}
-              loading="eager"  // or remove this line if using priority
-              priority={index === 0}  // This is crucial - adds fetchpriority="high"
-            />
+            {/* FIRST IMAGE: Eager load with high priority */}
+            {index === 0 ? (
+              <Image 
+                height={40} 
+                width={40} 
+                src={slide.image_url} 
+                alt={slide.heading}
+                priority={true}  // This adds fetchpriority="high" and loading="eager"
+              />
+            ) : (
+              <Image 
+                height={40} 
+                width={40} 
+                src={slide.image_url} 
+                alt={slide.heading}
+                loading="lazy"
+              />
+            )}
           </div>
           <div className="content-section col-md-6">
             <div className="content">
               <h2>{slide.heading}</h2>
               <p>{slide.sub_heading}</p>
-              <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link>
+              <Link href={slide.url} className="btn-custom" prefetch={false}>
+                Shop Collection
+              </Link>
             </div>
           </div>
         </div>
