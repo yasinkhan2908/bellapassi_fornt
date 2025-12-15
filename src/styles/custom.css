@@ -733,21 +733,17 @@ cubic-bezier(.4, 0, .2, 1);
 }
 
 .btn-custom {
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  border: none;
   color: white;
   padding: 0.8rem 2rem;
   border-radius: 50px;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
-.btn-custom:hover {
+/* .btn-custom:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .slider-controls {
   position: absolute;
