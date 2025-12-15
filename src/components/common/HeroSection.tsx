@@ -27,6 +27,8 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
   return (
     <section className='hero-section'>
       <div className="slider-container">
+      
+
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -38,11 +40,17 @@ export const HeroSection = ({ sliders }: SliderSectionProps) => {
               width={40} 
               src={slide.image_url} 
               alt={slide.heading}
-              loading={index === 0 ? "eager" : "lazy"}
-              priority={index === 0} // This adds fetchpriority="high" in Next.js
+              loading="eager"  // or remove this line if using priority
+              priority={index === 0}  // This is crucial - adds fetchpriority="high"
             />
           </div>
-          {/* ... rest of your code ... */}
+          <div className="content-section col-md-6">
+            <div className="content">
+              <h2>{slide.heading}</h2>
+              <p>{slide.sub_heading}</p>
+              <Link href={slide.url} className="btn-custom" prefetch={false}>Shop Collection</Link>
+            </div>
+          </div>
         </div>
       ))}
       
