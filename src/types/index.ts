@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export interface Category {
+  [x: string]: any;
   id: number;
   name: string;
   seo: string;
@@ -53,6 +54,27 @@ export interface Product {
   bgColor: string;
   placeholder_color: string;
 }
+
+// In your types file
+// In your types.ts file
+export interface ShopGramItem {
+  id: string | number;
+  // Check what property name actually exists for the image
+  image_video?: string;  // Add if missing
+  imageUrl?: string;     // OR maybe it's called imageUrl
+  image?: string;        // OR maybe just image
+  url?: string;          // OR maybe url
+  type?: string;          // OR maybe url
+}
+
+
+export interface ShopGramProps {
+  title: string;
+  subtitle: string;
+  shopgrams: ShopGramItem[]; // Array of shopgram items
+}
+
+
 
 export interface ShopGramProduct {
   image: string;
@@ -147,13 +169,6 @@ export interface NewArrivalsProps {
   showViewAll?: boolean;
 }
 
-
-export interface ShopGramProps {
-  title: string;
-  subtitle: string;
-  products: ShopGramProduct[];
-  showViewAll?: boolean;
-}
 
 export interface CaughtYourEyeSectionProps {
   title: string;

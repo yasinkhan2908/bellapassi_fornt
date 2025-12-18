@@ -945,7 +945,7 @@ cubic-bezier(.4, 0, .2, 1);
     transform: scale(0.9);
 }
 .container .shop-gram-item {
-    height: 180px;
+    /* height: 180px; */
     border: none;
     overflow: hidden;
     position: relative;

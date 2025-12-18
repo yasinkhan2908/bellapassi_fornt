@@ -6,7 +6,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import Link from "next/link";
+import Link from "next/link"; 
 export const CategorySection = ({ categories }: CategorySectionProps) => {
   return (
     <section className="category-section" data-aos="fade-up">

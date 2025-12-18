@@ -19,11 +19,12 @@ const nextConfig: NextConfig = {
     ],
   },
   trailingSlash: true, // improves static hosting compatibility
+  
   experimental: {
     forceSwcTransforms: false, // Ensure Babel is used if needed
-    optimizeCss: true, // Try enabling this
+    optimizeCss: true, // Enable CSS optimization
+    scrollRestoration: true,
   },
-  
 };
 
 export default nextConfig;

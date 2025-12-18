@@ -7,7 +7,7 @@ import Link from 'next/link';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-export const SecondCategory = ({}: SecondCategoryProps) => {
+export const SecondCategory = ({categories}: SecondCategoryProps) => {
   return (
     <section className="second-category-section" data-aos="fade-up">
         <div className="container">
@@ -30,72 +30,89 @@ export const SecondCategory = ({}: SecondCategoryProps) => {
                     pagination={{ clickable: true }}
                     navigation
                 >
-                <SwiperSlide className="text-center">
-                    <div className="collection-item-v2 hover-img">
-                        <Link href="/mordern-backpack" className="collection-inner" prefetch={false}>
-                            <div className="collection-image img-style">
-                                <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-27.jpg" src="/img/collection-27.jpg" alt="collection-img" loading="lazy"/>
-                            </div>
-                            <div className="collection-content">
-                                <div className="top wow fadeInUp">
-                                    <h5 className="heading">Mordern Backpack</h5>
-                                    <p className="subheading">Start from <span className="fw-6">$199</span></p>
+                    {categories.map((category) => (
+                        <SwiperSlide key={category.id} className="text-center">
+                            <div className="collection-item-v2 hover-img">
+                            <Link href={category.seo} className="collection-inner" prefetch={false}>
+                                <div className="collection-image img-style">
+                                <Image
+                                    src={category.image}
+                                    height={425}
+                                    width={472}
+                                    alt={category.name}
+                                    loading="lazy"
+                                />
                                 </div>
+
+                                <div className="collection-content">
+                                <div className="top wow fadeInUp">
+                                    <h5 className="heading">{category.name}</h5>
+
+                                    {/* Optional subtitle / price */}
+                                    {category.price && (
+                                        <p className="subheading">
+                                            Start from <span className="fw-6">${category.price}</span>
+                                        </p>
+                                    )}
+                                </div>
+
                                 <div className="bottom wow fadeInUp text-right">
                                     <div className="tf-btn btn-line collection-other-link fw-6">
-                                        <span>Shop Now</span>
-                                        <i className="icon icon-arrow1-top-left"></i>
+                                    <span>Shop Now</span>
+                                    <i className="icon icon-arrow1-top-left"></i>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className="text-center">
-                    <div className="collection-item-v2 hover-img">
-                        <Link href="/season-collection" className="collection-inner" prefetch={false}>
-                            <div className="collection-image img-style">
-                                <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-28.jpg" src="/img/collection-28.jpg" alt="collection-img" loading="lazy"/>
-                            </div>
-                            <div className="collection-content">
-                                <div className="top wow fadeInUp" data-wow-delay="0s" >
-                                    <h5 className="heading">Season Collection</h5>
-                                    <p className="subheading">Start from <span className="fw-6">$199</span></p>
                                 </div>
-                                <div className="bottom wow fadeInUp text-right" data-wow-delay="0s" >
-                                    <div className="tf-btn btn-line collection-other-link fw-6">
-                                        <span>Shop now</span>
-                                        <i className="icon icon-arrow1-top-left"></i>
+                            </Link>
+                            </div>
+                        </SwiperSlide>
+                        ))}
+
+                    {/* <SwiperSlide className="text-center">
+                        <div className="collection-item-v2 hover-img">
+                            <Link href="/season-collection" className="collection-inner" prefetch={false}>
+                                <div className="collection-image img-style">
+                                    <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-28.jpg" src="/img/collection-28.jpg" alt="collection-img" loading="lazy"/>
+                                </div>
+                                <div className="collection-content">
+                                    <div className="top wow fadeInUp" data-wow-delay="0s" >
+                                        <h5 className="heading">Season Collection</h5>
+                                        <p className="subheading">Start from <span className="fw-6">$199</span></p>
+                                    </div>
+                                    <div className="bottom wow fadeInUp text-right" data-wow-delay="0s" >
+                                        <div className="tf-btn btn-line collection-other-link fw-6">
+                                            <span>Shop now</span>
+                                            <i className="icon icon-arrow1-top-left"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className="text-center">
-                    <div className="collection-item-v2 hover-img">
-                        <Link href="/stradivarius-top-trainers" className="collection-inner" prefetch={false}>
-                            <div className="collection-image img-style">
-                                <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-26.jpg" src="/img/collection-26.jpg" alt="collection-img" loading="lazy"/>
-                            </div>
-                            <div className="collection-content">
-                                <div className="top wow fadeInUp" data-wow-delay="0s" >
-                                    <h5 className="heading">Stradivarius top trainers</h5>
-                                    <p className="subheading">Start from <span className="fw-6">$199</span></p>
+                            </Link>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide className="text-center">
+                        <div className="collection-item-v2 hover-img">
+                            <Link href="/stradivarius-top-trainers" className="collection-inner" prefetch={false}>
+                                <div className="collection-image img-style">
+                                    <Image height={425} width={472} className=" ls-is-cached lazyloaded" data-src="/img/collection-26.jpg" src="/img/collection-26.jpg" alt="collection-img" loading="lazy"/>
                                 </div>
-                                <div className="bottom wow fadeInUp text-right" data-wow-delay="0s" >
-                                    <div className="tf-btn btn-line collection-other-link fw-6">
-                                        <span>Shop now</span>
-                                        <i className="icon icon-arrow1-top-left"></i>
+                                <div className="collection-content">
+                                    <div className="top wow fadeInUp" data-wow-delay="0s" >
+                                        <h5 className="heading">Stradivarius top trainers</h5>
+                                        <p className="subheading">Start from <span className="fw-6">$199</span></p>
+                                    </div>
+                                    <div className="bottom wow fadeInUp text-right" data-wow-delay="0s" >
+                                        <div className="tf-btn btn-line collection-other-link fw-6">
+                                            <span>Shop now</span>
+                                            <i className="icon icon-arrow1-top-left"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    </div>
-                </SwiperSlide>
-            </Swiper>
+                            </Link>
+                        </div>
+                    </SwiperSlide> */}
+                </Swiper>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
   );
 };

@@ -24,16 +24,16 @@ export default async function Home() {
   
   // 🟢 Fetch data from Laravel API (server-side)
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/home-data`, {
-    cache: 'force-cache', // ensures fresh data each time
-    next: { revalidate: 3600 }, // Cache for 1 hour
-    headers: {
-      'Cache-Control': 'public, max-age=3600'
-    }
+    // cache: 'force-cache', // ensures fresh data each time
+    // next: { revalidate: 3600 }, // Cache for 1 hour
+    // headers: {
+    //   'Cache-Control': 'public, max-age=3600'
+    // }
   });
   
   const responseData = await res.json();
   const data = responseData.data;
-  //console.log(data.new_arrival);
+  //console.log(data.shop_gram);
 
   const upcomingProducts = [
     {
@@ -64,17 +64,17 @@ export default async function Home() {
       <main className="main">
         <HeroSection sliders={data.sliders} />
         <CategorySection categories={data.categories} /> 
-        <ComboCategory categories={data.categories} />
+        <ComboCategory categories={data.is_home_top} />
         <NewArrivals 
           title="Upcoming Drops"
           subtitle="Help Us to come up with new collection."
           products={data.new_arrival}
         /> 
-        <SecondCategory categories={data.categories} />
+        <SecondCategory categories={data.is_home_bottom} />
         <ShopGram 
           title="Shop Gram"
           subtitle="Inspire and let yourself be inspired, from one unique fashion to another."
-          products={upcomingProducts}
+          shopgrams={data.shop_gram}
         />
         <DeliveryOption categories={data.categories}/>
         <AboutStore stores={data.categories} />
