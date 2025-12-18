@@ -374,7 +374,7 @@ export default function Navbar() {
                                 { icon: 'bi-envelope', text: 'My Support', href: '#' },
                                 { icon: 'bi-award', text: 'My Coupon', href: '#' },
                                 { icon: 'bi-fire', text: 'My Refunds', href: '#' },
-                                { icon: 'bi-credit-card', text: 'Contact Details', href: 'contact' }
+                                { icon: 'bi-credit-card', text: 'Contact Details', href: '#' }
                                 ].map((item, index) => (
                                 <Link
                                     key={index}
@@ -404,22 +404,22 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href={'/returns-exchange'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Returns &amp; Exchange
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href={'/shipping-policy'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Shipping Policy
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href={'/faq'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     FAQ
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href={'/terms-conditions'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Terms &amp; Conditions
                                                 </Link>
                                             </div>
@@ -438,17 +438,17 @@ export default function Navbar() {
                                     <div className="accordion-body">
                                         <div className="d-flex flex-col">
                                             <div className="p-2 text-sm">
-                                                <Link href={'/about-us'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     About US
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href={'/our-stores'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Our Stores
                                                 </Link>
                                             </div>
                                             <div className="p-2 text-sm">
-                                                <Link href={'/privacy-policy'} className="" onClick={closeSidebar} prefetch={false}>
+                                                <Link href="#" className="" onClick={closeSidebar} prefetch={false}>
                                                     Privacy Policy
                                                 </Link>
                                             </div>
