@@ -374,7 +374,7 @@ export default function Navbar() {
                                 { icon: 'bi-envelope', text: 'My Support', href: '#' },
                                 { icon: 'bi-award', text: 'My Coupon', href: '#' },
                                 { icon: 'bi-fire', text: 'My Refunds', href: '#' },
-                                { icon: 'bi-credit-card', text: 'Contact Details', href: 'contact' }
+                                { icon: 'bi-credit-card', text: 'Contact Details', href: '/contact' }
                                 ].map((item, index) => (
                                 <Link
                                     key={index}
