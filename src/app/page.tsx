@@ -33,7 +33,7 @@ export default async function Home() {
   
   const responseData = await res.json();
   const data = responseData.data;
-  //console.log(data.shop_gram);
+  console.log(data);
 
   const upcomingProducts = [
     {
