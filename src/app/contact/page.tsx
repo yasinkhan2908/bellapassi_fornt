@@ -15,7 +15,7 @@ export default function Contact() {
                         For Online queries Contact
                     </div>
                     <div className="py-2 text-white">
-                        +91-11-41171712  (10 AM - 6 PM, Mon to Sat)
+                        +91-1234567890  (10 AM - 6 PM, Mon to Sat)
                     </div>
                     <div className="text-base font-semibold text-white">
                         Preferred method for Priority Support
@@ -70,7 +70,7 @@ export default function Contact() {
                 </div>
               </div>
             <div>
-              Office No.706, Pearl Business Park, Netaji Subhash Place, Pitampura, North West Delhi, Delhi-110034
+              New palasia indore
             </div>
           </div>
           <div className="office_add_view">
